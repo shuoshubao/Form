@@ -10,7 +10,7 @@
     },
     "scripts": {
         "dev": "npx react-cli serve",
-        "build": "rm -rf dist && node bin/init && npx rollup -c",
+        "build": "rm -rf dist && node bin/init && npx rollup -c && lessc lib/index.less dist/index.css",
         "publish-beta": "npm publish --tag beta",
         "prepublishOnly": "npm run build"
     },
@@ -33,8 +33,6 @@
         "prop-types": "^15.7.2",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "rollup": "^2.56.3",
-        "rollup-plugin-postcss": "^4.0.0",
-        "rollup-plugin-terser": "^7.0.2"
+        "rollup": "^2.56.3"
     }
 }

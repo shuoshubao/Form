@@ -3,6 +3,7 @@ import { Card } from 'antd';
 import { random } from 'lodash';
 import { sleep } from '@nbfe/tools';
 import Form from '../lib';
+import '../lib/index.less';
 
 const { Descriptions } = Form;
 

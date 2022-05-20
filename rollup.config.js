@@ -1,13 +1,4 @@
 import babel from '@rollup/plugin-babel';
-import postcss from 'rollup-plugin-postcss';
-// import { terser } from 'rollup-plugin-terser';
-
-const babelConfig = {
-    babelrc: false,
-    babelHelpers: 'bundled',
-    presets: ['@babel/preset-env', '@babel/preset-react'],
-    plugins: ['@babel/plugin-proposal-class-properties']
-};
 
 export default [
     {
@@ -17,7 +8,7 @@ export default [
             format: 'cjs',
             exports: 'default'
         },
-        plugins: [postcss({ extract: true }), babel(babelConfig)]
+        plugins: [babel()]
     },
     {
         input: 'lib/components.js',
@@ -25,7 +16,7 @@ export default [
             file: 'dist/components.esm.js',
             format: 'esm'
         },
-        plugins: [babel(babelConfig)]
+        plugins: [babel()]
     },
     {
         input: 'lib/form/index.js',
@@ -33,6 +24,6 @@ export default [
             file: 'dist/form.esm.js',
             format: 'esm'
         },
-        plugins: [babel(babelConfig)]
+        plugins: [babel()]
     }
 ];
