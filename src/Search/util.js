@@ -145,7 +145,6 @@ const getTooltipTitleNode = tooltip => {
         })
         .map(v => {
             return v.replace(linkReg, (...args) => {
-                console.log(111, args);
                 const [, text, href] = args;
                 return `<a href="${href}" target="_blank" style="color: #1890ff; text-decoration: underline;">${text}</a>`;
             });

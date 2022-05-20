@@ -85,8 +85,6 @@ class Index extends Component {
                 const { columns } = state;
                 const params = this.formRef.current.getFieldsValue();
                 const searchValues = getSearchValues(params, columns);
-                console.log('searchValues');
-                console.log(searchValues);
                 if (isFunction(props.onSubmit)) {
                     props.onSubmit(searchValues, params);
                 }

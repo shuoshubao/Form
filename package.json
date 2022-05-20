@@ -1,7 +1,15 @@
 {
     "name": "@jiaoyi/search",
-    "version": "0.1.1-beta-3",
+    "version": "0.1.1-beta-4",
     "main": "dist/index.js",
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "npx rollup -c",
+        "publish-beta": "npm publish --tag beta",
+        "prepublishOnly": "npm run build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
     "devDependencies": {
         "@babel/preset-env": "^7.13.9",
         "@babel/preset-react": "^7.12.13",
@@ -16,15 +24,6 @@
         "react-scripts": "4.0.3",
         "rollup": "^2.40.0",
         "rollup-plugin-postcss": "^4.0.0"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build-": "react-scripts build",
-        "build": "npx rollup -c",
-        "publish-beta": "npm publish --tag beta",
-        "prepublishOnly": "npm run build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
     },
     "eslintConfig": {
         "extends": [
