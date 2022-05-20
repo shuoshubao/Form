@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { cloneDeep, debounce, isFunction, omit, merge } from 'lodash';
+import { cloneDeep, debounce, isFunction, omit, pick, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy, classNames } from '@nbfe/tools';
 import {
     Card,
@@ -253,8 +253,9 @@ class Index extends Component {
                 formItemNode = (
                     <Select {...omit(formItemNodeProps, ['options', 'allItem'])}>
                         {[allItem, ...options].filter(Boolean).map(v => {
+                            const optionProps = pick(v, ['className', 'disabled', 'title', 'value']);
                             return (
-                                <Select.Option value={v.value} key={v.value}>
+                                <Select.Option key={v.value} {...optionProps}>
                                     {v.label}
                                 </Select.Option>
                             );
@@ -321,7 +322,6 @@ class Index extends Component {
                 formItemNode = <DynamicComponent {...formItemNodeProps} />;
             }
 
-            // const { label, name, inline, template } = v;
             const formItemProps = getFormItemProps(v, { index: i, labelWidth });
 
             if (isAntdV3) {
