@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Card, Divider } from 'antd';
 import { random } from 'lodash';
-import { sleep, rules } from '@nbfe/tools';
+import { sleep, isUniq, rules } from '@nbfe/tools';
 import Form from '../lib';
 import '../lib/index.less';
 
@@ -101,19 +101,34 @@ const columns = [
     {
         label: '姓名',
         name: 'nameList',
-        defaultValue: ['aaa', 'bb'],
+        defaultValue: [11, null],
         // defaultValue: [],
         formListProps: {
             min: 1,
             max: 5,
-            entity: ''
+            entity: '',
+            rules: [
+                {
+                    validator: (rule, value) => {
+                        console.log(222);
+                        console.log(value);
+                        console.log(rule);
+                        if (!isUniq(value)) {
+                            return Promise.reject(new Error('不得重复'));
+                        }
+                        return Promise.resolve();
+                    }
+                }
+            ]
         },
-        rules: [selectRequired],
+        rules: [selectRequired('label')],
         template: {
-            // tpl: 'select',
-            options: selectOptions['1']
+            tpl: 'select',
+            options: selectOptions['1'],
+            allItem: { value: null, label: '全部' }
+            // allowClear: true
         }
-    },
+    }
 ];
 
 export default () => {
@@ -139,7 +154,9 @@ export default () => {
     return (
         <div style={{ padding: 10 }}>
             <Card title="Descriptions" style={{ marginTop: 10 }} size="small">
-                <Button onClick={handleClick} type="primary">隐藏第一个</Button>
+                <Button onClick={handleClick} type="primary">
+                    隐藏第一个
+                </Button>
             </Card>
             <Divider />
             <Form
@@ -150,9 +167,15 @@ export default () => {
                 showSearchBtn={false}
                 showResetBtn={false}
             >
-                <Button type="primary" onClick={() => {
-                    formRef.current.getFormData()
-                }}>提交</Button>
+                <Button
+                    type="primary"
+                    onClick={async () => {
+                        const data = await formRef.current.getFormData();
+                        console.log(data);
+                    }}
+                >
+                    提交
+                </Button>
             </Form>
         </div>
     );
