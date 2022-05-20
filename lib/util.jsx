@@ -144,9 +144,8 @@ export const getInitialValues = (columns = []) => {
         // 日期范围
         if (tpl === 'range-picker') {
             const [startTimeKey, endTimeKey] = name.split(searchSeparator);
-            prev[startTimeKey] = '';
-            prev[endTimeKey] = '';
-            return prev;
+            prev[startTimeKey] = defaultValue[0] || '';
+            prev[endTimeKey] = defaultValue[1] || '';
         }
         prev[name] = defaultValue;
         return prev;
