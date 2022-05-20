@@ -11,6 +11,15 @@ export default [
         plugins: [babel()]
     },
     {
+        input: 'lib/v3.js',
+        output: {
+            file: 'dist/v3.js',
+            format: 'cjs',
+            exports: 'default'
+        },
+        plugins: [babel()]
+    },
+    {
         input: 'lib/components.js',
         output: {
             file: 'dist/components.esm.js',
