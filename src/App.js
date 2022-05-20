@@ -92,7 +92,7 @@ const columns = [
         defaultValue: [0.1],
         template: {
             tpl: 'range-number',
-            separatorPlaceholder: '-',
+            separator: '-',
             min: 0,
             max: 1,
             step: 0.1
@@ -163,21 +163,29 @@ const columns = [
         name: 'a1',
         defaultValue: '123',
         template: {
-            inputType: 'input',
+            inputType: 'input'
         }
     },
     {
         label: '关键字2',
         name: 'a2',
         template: {
-            inputType: 'textarea',
+            inputType: 'textarea'
+        }
+    },
+    {
+        label: '关键字22',
+        name: 'a22',
+        template: {
+            inputType: 'password'
         }
     },
     {
         label: '关键字3',
         name: 'a3,a33',
+        visible: false,
         tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
-        inline: false,
+        // inline: false,
         defaultValue: ['contractNo', '123'],
         template: {
             inputType: 'select-search',

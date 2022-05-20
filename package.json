@@ -12,14 +12,18 @@
         "prepublishOnly": "npm run build"
     },
     "dependencies": {
-        "@nbfe/tools": "^0.2.12"
+        "@nbfe/tools": "^0.2.12",
+        "rc-field-form": "^1.22.0",
+        "rc-motion": "^2.4.4",
+        "rc-util": "^5.15.0",
+        "scroll-into-view-if-needed": "^2.2.28"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.13.9",
         "@babel/preset-react": "^7.12.13",
         "@nbfe/react-cli": "^0.1.7",
         "@rollup/plugin-babel": "^5.3.0",
-        "antd": "^3.26.20",
+        "antd": "3.26.20",
         "prettier": "^2.2.1",
         "prop-types": "^15.7.2",
         "rc-image": "^5.2.5",
