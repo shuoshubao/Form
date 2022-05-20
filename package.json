@@ -6,7 +6,7 @@
         "dev": "vite",
         "build": "rm -rf dist && npx rollup -c",
         "build-docs": "vite build && cp -R dist/ docs/ && rm -rf dist",
-        "publish-beta": "npm publish --tag beta",
+        "publish-beta": "npm publish --tag beta --registry=http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/",
         "prepublishOnly": "npm run build"
     },
     "dependencies": {

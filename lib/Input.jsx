@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Input, Select } from 'antd';
 import { isFunction, omit } from 'lodash';
 import { setAsyncState } from '@nbfe/tools';
-import { defaultColumn, searchSeparator } from './config';
+import { searchSeparator } from './config';
 import { getDisplayName } from './util.jsx';
 
 class Index extends Component {
@@ -31,7 +31,7 @@ class Index extends Component {
         const { column, value, style } = props;
         const { selectValue, inputValue } = state;
         const { name, defaultValue, inline, template } = column;
-        const { inputType, options, selectWidth = 100, inputWidth = defaultColumn.template.width } = template;
+        const { inputType, options, selectWidth, inputWidth } = template;
         if (['select-search', 'select-input'].includes(inputType)) {
             if (defaultValue === '') {
                 this.setState({
@@ -92,8 +92,9 @@ class Index extends Component {
         const { column, defaultValue, value, style } = props;
         const { selectValue, inputValue } = state;
         const { name, inline, template } = column;
-        const { inputType, options, selectWidth = 100, inputWidth = defaultColumn.template.width } = template;
+        const { inputType, options, selectWidth, inputWidth } = template;
         const inputProps = omit(props, ['column', 'defaultValue', 'value', 'onChange', 'onSearch', 'style']);
+        inputProps.style = { width: inputWidth };
         if (inputType === 'search') {
             return (
                 <Input.Search
@@ -110,7 +111,7 @@ class Index extends Component {
         if (['select-search', 'select-input'].includes(inputType)) {
             const { label } = options.find(v => v.value === selectValue) || {};
             return (
-                <Input.Group compact {...inputProps}>
+                <Input.Group compact>
                     <Select
                         value={selectValue}
                         onChange={onSelectChange}
@@ -121,7 +122,6 @@ class Index extends Component {
                         <Input.Search
                             {...inputProps}
                             value={inputValue}
-                            style={{ width: inputWidth }}
                             onChange={onInputChange}
                             onSearch={() => {
                                 onSearch();
@@ -130,8 +130,8 @@ class Index extends Component {
                         />
                     ) : (
                         <Input
+                            {...inputProps}
                             value={inputValue}
-                            style={{ width: inputWidth }}
                             onChange={onInputChange}
                             placeholder={['请输入', label].join('')}
                         />
@@ -139,7 +139,7 @@ class Index extends Component {
                 </Input.Group>
             );
         }
-        return <Input {...inputProps} style={{ width: inputWidth }} />;
+        return <Input {...inputProps} />;
     }
 }
 

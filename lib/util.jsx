@@ -38,12 +38,14 @@ export const mergeColumns = (columns = []) => {
             if (tpl === 'input') {
                 template = {
                     inputType: 'input',
+                    inputWidth: defaultColumn.template.width,
                     ...template
                 };
                 const { inputType } = template;
                 column.placeholder = label ? ['请输入', label].join('') : '';
                 if (['select-search', 'select-input'].includes(inputType)) {
                     template = {
+                        selectWidth: 100,
                         options: [],
                         ...template
                     };
