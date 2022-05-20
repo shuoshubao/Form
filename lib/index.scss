@@ -2,6 +2,13 @@
     background-color: #fff;
 
     &.dyna-form-container-disabled {
+        input,
+        select,
+        textarea {
+            &::placeholder {
+                color: transparent;
+            }
+        }
         .dyna-form-form-item-label::before {
             display: none !important;
         }
