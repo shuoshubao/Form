@@ -65,6 +65,9 @@
         }
         .ant-cascader-picker-label {
             z-index: 1;
+            text-overflow: initial;
+            overflow: initial;
+            white-space: initial;
         }
         .ant-radio-disabled + span,
         .ant-checkbox-disabled + span {
