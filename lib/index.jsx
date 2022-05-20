@@ -28,7 +28,6 @@ import {
     getClassNames,
     validateColumns,
     mergeColumns,
-    injectColumnsWithRemoteConfig,
     getInitialValues,
     getSearchValues,
     getFormItemLabelWidth,
@@ -89,7 +88,6 @@ class Index extends Component {
         const { disabled, columns, autoSubmit } = this.props;
         const innerColumns = mergeColumns(columns, { disabled });
         validateColumns(innerColumns);
-        injectColumnsWithRemoteConfig(this, innerColumns);
         // 初始值
         const initialValues = getInitialValues(innerColumns);
         await setAsyncState(this, { columns: innerColumns, initialValues });

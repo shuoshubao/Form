@@ -156,11 +156,11 @@ const columns = [
                         data: [
                             {
                                 code: 1,
-                                label: 'a'
+                                label: 'aa'
                             },
                             {
                                 code: 2,
-                                label: 'b'
+                                label: 'bb'
                             }
                         ],
                         message: '成功'

@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { omit, pick, last, isNumber } from 'lodash';
 import { Select } from 'antd';
+import { omit, pick, isObject, cloneDeep } from 'lodash';
+import { convertDataToEnum } from '@nbfe/tools';
 import { getDisplayName } from './util.jsx';
 
 class Index extends PureComponent {
@@ -16,14 +17,38 @@ class Index extends PureComponent {
         remoteConfig: PropTypes.object
     };
 
-    render() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            options: cloneDeep(props.options)
+        };
+    }
+
+    async componentDidMount() {
         const { props } = this;
-        const { value, onChange, options, allItem } = props;
+        const { remoteConfig } = props;
+        if (!isObject(remoteConfig)) {
+            return;
+        }
+        const { fetch: fetchFunc, process: processFunc = noop } = remoteConfig;
+        const responseData = await fetchFunc();
+        const options = convertDataToEnum(
+            processFunc(responseData) || responseData,
+            pick(remoteConfig, ['path', 'valueKey', 'labelKey'])
+        );
+        this.setState({ options });
+    }
+
+    render() {
+        const { props, state } = this;
+        const { value, onChange, allItem } = props;
+        const { options } = state;
         const selectProps = omit(props, [
             'defaultValue',
             'value',
             'onChange',
             'onCustomChange',
+            'options',
             'allItem',
             'remoteConfig'
         ]);

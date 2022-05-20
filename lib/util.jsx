@@ -115,27 +115,6 @@ export const mergeColumns = (columns = [], { disabled }) => {
         .filter(v => Boolean(v.visible));
 };
 
-// 异步数据源
-export const injectColumnsWithRemoteConfig = async (context, columns = []) => {
-    const innerColumns = cloneDeep(columns);
-    await Promise.all(
-        innerColumns.map(async v => {
-            const { name, template } = v;
-            const { tpl, remoteConfig } = template;
-            if (['select'].includes(tpl) && isObject(remoteConfig)) {
-                const { fetch: fetchFunc, process: processFunc = noop } = remoteConfig;
-                const responseData = await fetchFunc();
-                const list = convertDataToEnum(
-                    processFunc(responseData) || responseData,
-                    pick(remoteConfig, ['path', 'valueKey', 'labelKey'])
-                );
-                template.options = list;
-            }
-        })
-    );
-    context.setState({ columns: innerColumns });
-};
-
 // 校验参数
 export const validateColumns = (columns = []) => {
     columns.forEach(column => {
