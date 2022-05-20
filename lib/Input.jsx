@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Input, Select } from 'antd';
 import { isFunction, omit } from 'lodash';
 import { setAsyncState } from '@nbfe/tools';
-import { defaultColumn } from './config';
+import { defaultColumn, searchSeparator } from './config';
 
 class Index extends Component {
     static displayName = 'SearchInput';
@@ -20,8 +20,34 @@ class Index extends Component {
         super(props);
         this.state = {
             selectValue: null,
-            inputValue: null
+            inputValue: ''
         };
+    }
+
+    componentDidMount() {
+        const { state, onSelectChange, onInputChange } = this;
+        const { column, value, style } = this.props;
+        const { selectValue, inputValue } = state;
+        const { name, defaultValue, inline, template } = column;
+        const {
+            inputType = 'input',
+            options = [],
+            selectWidth = 100,
+            inputWidth = defaultColumn.template.width
+        } = template;
+        if (['select-search', 'select-input'].includes(inputType)) {
+            if (defaultValue === '') {
+                this.setState({
+                    selectValue: options[0].value
+                });
+            }
+            if (Array.isArray(defaultValue) && defaultValue.length === 2) {
+                this.setState({
+                    selectValue: defaultValue[0],
+                    inputValue: defaultValue[1]
+                });
+            }
+        }
     }
 
     onSelectChange = async value => {
@@ -38,20 +64,17 @@ class Index extends Component {
         if (!isFunction(this.props.onChange)) {
             return;
         }
-        const { column, defaultValue, value, style } = this.props;
+        const { column, value, style } = this.props;
         const { selectValue, inputValue } = this.state;
         const { name, inline, template } = column;
         const { inputType = 'input' } = template;
-        const result = {};
         if (['input', 'search'].includes(inputType)) {
             this.props.onChange(inputValue);
             return;
         }
-        if (['select-search'].includes(inputType)) {
-            const [selectKey, inputKey] = name.split(',');
-            result[selectKey] = selectValue;
-            result[inputKey] = inputValue;
-            this.props.onChange(result);
+        if (['select-search', 'select-input'].includes(inputType)) {
+            const [selectKey, inputKey] = name.split(searchSeparator);
+            this.props.onChange([selectValue, inputValue]);
             return;
         }
     };
@@ -69,26 +92,36 @@ class Index extends Component {
         } = template;
         const inputProps = omit(this.props, ['column', 'defaultValue', 'value', 'onChange', 'style']);
         if (inputType === 'search') {
-            return <Input.Search {...inputProps} value={inputValue} onChange={onInputChange} />;
+            return (
+                <Input.Search {...inputProps} defaultValue={defaultValue} value={inputValue} onChange={onInputChange} />
+            );
         }
         const { label } = options.find(v => v.value === selectValue) || {};
-        if (inputType === 'select-search') {
+        if (['select-search', 'select-input'].includes(inputType)) {
             return (
                 <Input.Group compact {...inputProps}>
                     <Select
-                        defaultValue={options[0].value}
                         value={selectValue}
                         onChange={onSelectChange}
                         options={options}
                         style={{ width: selectWidth }}
                     />
-                    <Input
-                        defaultValue=""
-                        value={inputValue}
-                        style={{ width: inputWidth }}
-                        onChange={onInputChange}
-                        placeholder={['请输入', label].join('')}
-                    />
+                    {inputType === 'select-search' ? (
+                        <Input.Search
+                            {...inputProps}
+                            value={inputValue}
+                            style={{ width: inputWidth }}
+                            onChange={onInputChange}
+                            placeholder={['请输入', label].join('')}
+                        />
+                    ) : (
+                        <Input
+                            value={inputValue}
+                            style={{ width: inputWidth }}
+                            onChange={onInputChange}
+                            placeholder={['请输入', label].join('')}
+                        />
+                    )}
                 </Input.Group>
             );
         }

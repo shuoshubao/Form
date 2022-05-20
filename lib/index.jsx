@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button, Form, Select, DatePicker, Radio, Checkbox, Cascader } from 'antd';
 import { debounce, isFunction, omit, merge } from 'lodash';
-import { isEmptyArray, setAsyncState, isEveryFalsy } from '@nbfe/tools';
+import { isEmptyArray, setAsyncState, isEveryFalsy, classNames } from '@nbfe/tools';
 import Switch from './Switch.jsx';
 import Input from './Input.jsx';
 import { defaulCardProps, defaulFormProps } from './config';
@@ -23,7 +23,7 @@ class Index extends Component {
 
     static defaultProps = {
         autoSubmit: true,
-        showSearchBtn: true,
+        showSearchBtn: false,
         showResetBtn: true,
         cardProps: {},
         formProps: {},
@@ -111,7 +111,7 @@ class Index extends Component {
                     let formItemNode = null;
                     // Input
                     if (tpl === 'input') {
-                        formItemNode = <Input column={v} {...formItemNodeProps} />
+                        formItemNode = <Input column={v} {...formItemNodeProps} />;
                     }
 
                     // Select
@@ -172,23 +172,33 @@ class Index extends Component {
                 if (isEveryFalsy(showSearchBtn, showResetBtn)) {
                     return null;
                 }
-                const btns = [];
-                if (showSearchBtn) {
-                    btns.push(
-                        <Button type="primary" htmlType="submit" key="submit">
+                let showSearch = showSearchBtn;
+                let showReset = showResetBtn;
+                // 只有一项
+                if (columns.length === 1) {
+                    const { template } = columns[0];
+                    const { tpl, inputType } = template;
+                    // 只有一个输入框
+                    if (tpl === 'input' && inputType == 'input') {
+                        showSearch = true;
+                    }
+                    showReset = false;
+                }
+                return (
+                    <Form.Item
+                        className={classNames('dyna-search-form-item', {
+                            'dyna-search-form-item-hide-submit': !showSearch,
+                            'dyna-search-form-item-hide-reset': !showReset
+                        })}
+                    >
+                        <Button type="primary" htmlType="submit" key="submit" className="dyna-search-form-item-submit">
                             查询
                         </Button>
-                    );
-                }
-                // 只有一个子组件时, 就不需要重置按钮了
-                if (columns.length > 1 && showResetBtn) {
-                    btns.push(
-                        <Button style={{ marginLeft: 5 }} onClick={onReset} key="reset">
+                        <Button onClick={onReset} key="reset" className="dyna-search-form-item-reset">
                             重置
                         </Button>
-                    );
-                }
-                return <Form.Item>{btns}</Form.Item>;
+                    </Form.Item>
+                );
             }
         };
     }

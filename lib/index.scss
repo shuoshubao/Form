@@ -7,6 +7,21 @@
 
     .ant-form-item {
         margin-top: 10px;
+        &.dyna-search-form-item {
+            .ant-btn:not(:first-child) {
+                margin-left: 5px;
+            }
+            &.dyna-search-form-item-hide-submit {
+                .dyna-search-form-item-submit {
+                    display: none;
+                }
+            }
+            &.dyna-search-form-item-hide-reset {
+                .dyna-search-form-item-reset {
+                    display: none;
+                }
+            }
+        }
     }
 }
 

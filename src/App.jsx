@@ -47,6 +47,62 @@ const columns = [
             ]
         }
     },
+    {
+        label: '关键字4',
+        name: 'a4,a41',
+        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
+        inline: false,
+        template: {
+            inputType: 'select-search',
+            enterButton: '搜索',
+            options: [
+                {
+                    label: '交易编号',
+                    value: 'businessCode'
+                },
+                {
+                    label: '合同编号',
+                    value: 'contractNo'
+                },
+                {
+                    label: '买方',
+                    value: 'buyerName'
+                },
+                {
+                    label: '卖方',
+                    value: 'sellerName'
+                }
+            ]
+        }
+    },
+    {
+        label: '关键字5',
+        name: 'a5,a51',
+        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
+        inline: false,
+        template: {
+            inputType: 'select-input',
+            enterButton: '搜索',
+            options: [
+                {
+                    label: '交易编号',
+                    value: 'businessCode'
+                },
+                {
+                    label: '合同编号',
+                    value: 'contractNo'
+                },
+                {
+                    label: '买方',
+                    value: 'buyerName'
+                },
+                {
+                    label: '卖方',
+                    value: 'sellerName'
+                }
+            ]
+        }
+    },
     // {
     //     label: '姓名',
     //     name: 'b',

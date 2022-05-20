@@ -4,10 +4,7 @@ import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { omit, merge, cloneDeep, flatten } from 'lodash';
 import { isSomeFalsy, formatTime } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
-import { defaultColumn, pickerFormatMap, formItemTooltopMargin } from './config';
-
-// 日期范围 开始时间 + 结束时间 拼接的分隔符
-const rangePickerSeparator = '___';
+import { defaultColumn, pickerFormatMap, formItemTooltopMargin, searchSeparator } from './config';
 
 // 处理 props.columns
 export const mergeColumns = columns => {
@@ -18,6 +15,14 @@ export const mergeColumns = columns => {
             const { tpl } = template;
             if (tpl === 'input') {
                 column.placeholder = label ? ['请输入', label].join('') : '';
+                const { inputType } = template;
+                if (['select-search', 'select-input'].includes(inputType)) {
+                    const [selectKey, inputKey] = name.split(',');
+                    if (isSomeFalsy(selectKey, inputKey)) {
+                        throw new Error('range-picker 必须传参数: "name" 需为长度为 "selectKey,inputKey"');
+                    }
+                    column.name = [selectKey, inputKey].join(searchSeparator);
+                }
             }
             if (tpl === 'select') {
                 column.placeholder = label ? ['请选择', label].join('') : '';
@@ -43,7 +48,7 @@ export const mergeColumns = columns => {
                 if (isSomeFalsy(startTimeKey, endTimeKey)) {
                     throw new Error('range-picker 必须传参数: "name" 需为长度为 "startTimeKey,endTimeKey"');
                 }
-                column.name = [startTimeKey, endTimeKey].join(rangePickerSeparator);
+                column.name = [startTimeKey, endTimeKey].join(searchSeparator);
                 const format = template.format || 'YYYY-MM-DD HH:mm:ss';
 
                 template.format = format;
@@ -62,7 +67,7 @@ export const getInitialValues = columns => {
         const { tpl } = template;
         // 日期范围
         if (tpl === 'range-picker') {
-            const [startTimeKey, endTimeKey] = name.split(rangePickerSeparator);
+            const [startTimeKey, endTimeKey] = name.split(searchSeparator);
             prev[startTimeKey] = '';
             prev[endTimeKey] = '';
             return prev;
@@ -79,6 +84,15 @@ export const getSearchValues = (params, columns) => {
         const { name, defaultValue, template } = v;
         const { tpl } = template;
         const value = params[name];
+        if (tpl === 'input') {
+            const { inputType } = template;
+            if (['select-search', 'select-input'].includes(inputType)) {
+                const [selectKey, inputKey] = name.split(searchSeparator);
+                result[selectKey] = value[0];
+                result[inputKey] = value[1];
+                return;
+            }
+        }
         if (tpl === 'date-picker') {
             const { format } = template;
             if (value) {
@@ -90,7 +104,7 @@ export const getSearchValues = (params, columns) => {
         }
         if (tpl === 'range-picker') {
             const { format } = template;
-            const [startTimeKey, endTimeKey] = name.split(rangePickerSeparator);
+            const [startTimeKey, endTimeKey] = name.split(searchSeparator);
             if (value) {
                 result[startTimeKey] = formatTime(value[0], format);
                 result[endTimeKey] = formatTime(value[1], format);
