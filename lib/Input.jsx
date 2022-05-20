@@ -151,6 +151,21 @@ class Index extends Component {
                 </Input.Group>
             );
         }
+        if (inputType === 'textarea') {
+            return (
+                <Input.TextArea
+                    {...omit(inputProps, ['enterButton'])} value={inputValue} onChange={onInputChange}
+                />
+            );
+        }
+
+        if (inputType === 'password') {
+            return (
+                <Input.Password
+                    {...omit(inputProps, ['enterButton'])} value={inputValue} onChange={onInputChange}
+                />
+            );
+        }
         return <Input {...omit(inputProps, ['enterButton'])} value={inputValue} onChange={onInputChange} />;
     }
 }

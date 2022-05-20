@@ -2,7 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cloneDeep, debounce, isFunction, omit, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy, classNames } from '@nbfe/tools';
-import { Card, Button, Form, Select, DatePicker, Radio, Checkbox, Cascader, AutoComplete, message } from './antd';
+import {
+    Card,
+    Button,
+    Form,
+    Select,
+    DatePicker,
+    Radio,
+    Checkbox,
+    Cascader,
+    AutoComplete,
+    InputNumber,
+    message
+} from './antd';
 import Switch from './Switch.jsx';
 import Input from './Input.jsx';
 import FilterPanel from './FilterPanel.jsx';
@@ -199,6 +211,11 @@ class Index extends Component {
                         }}
                     />
                 );
+            }
+
+            // InputNumber
+            if (tpl === 'input-number') {
+                formItemNode = <InputNumber {...formItemNodeProps} />;
             }
 
             // AutoComplete

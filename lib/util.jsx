@@ -216,7 +216,7 @@ export const getFormItemNodeStyle = column => {
     const { tpl, width } = template;
     const style = {};
     // 单选 复选 日期范围
-    if (['radio', 'checkbox', 'range-picker'].includes(tpl)) {
+    if (['radio', 'checkbox', 'input-number', 'range-picker'].includes(tpl)) {
         style.width = undefined;
     } else {
         style.width = width;
