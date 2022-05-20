@@ -31,20 +31,10 @@ class Index extends Component {
 
     render() {
         const { props } = this;
-        const { onChange, column, options } = props;
+        const { onChange, onCustomChange, column, options } = props;
         const shouldBeNumber = isNumber(last(options).value);
         const innerValue = String(props.value);
-        const tabsProps = omit(props, [
-            'column',
-            'defaultValue',
-            'value',
-            'onChange',
-            'onSearch',
-            'style',
-            'inputType',
-            'inputWidth',
-            'selectWidth'
-        ]);
+        const tabsProps = omit(props, ['column', 'defaultValue', 'value', 'onChange', 'onCustomChange', 'style']);
         return (
             <Tabs
                 animated={false}
@@ -53,6 +43,7 @@ class Index extends Component {
                 defaultActiveKey={innerValue}
                 onChange={activeKey => {
                     onChange(shouldBeNumber ? Number(activeKey) : activeKey);
+                    onCustomChange();
                 }}
             >
                 {options.map(v => {

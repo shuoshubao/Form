@@ -285,7 +285,19 @@ class Index extends Component {
 
             // Tabs
             if (tpl === 'tabs') {
-                formItemNode = <Tabs column={v} {...formItemNodeProps} />;
+                const { emitReset = false } = formItemNodeProps;
+                formItemNode = (
+                    <Tabs
+                        column={v}
+                        {...omit(formItemNodeProps, ['emitReset'])}
+                        onCustomChange={() => {
+                            // 触发重置, 清空其他条件
+                            if (emitReset) {
+                                this.onReset();
+                            }
+                        }}
+                    />
+                );
             }
 
             // DatePicker
