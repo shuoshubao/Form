@@ -59,9 +59,6 @@ class Index extends Component {
         };
         this.formRef = React.createRef();
         this.filterPanelRef = React.createRef();
-        this.customEvents = this.getCustomEvents();
-        this.domEvents = this.getDomEvents();
-        this.renderResult = this.getRenderResult();
     }
 
     async componentDidMount() {
@@ -75,207 +72,190 @@ class Index extends Component {
             return;
         }
         if (autoSubmit) {
-            this.domEvents.onSearch();
+            this.onSearch();
         }
     }
 
-    getCustomEvents() {
-        return {};
-    }
+    // 获取 formNode
+    getFormRefNode = () => {
+        return isAntdV3 ? this.props.form : this.formRef.current;
+    };
 
-    getDomEvents() {
-        return {
-            // 立即查询
-            onImmediateSearch: column => {
-                const { immediate, template } = column;
-                const { tpl } = template;
-                this.domEvents.debounceFilterPanelSetFields();
-                if (!immediate) {
-                    return;
-                }
-                if (['input'].includes(tpl)) {
-                    return;
-                }
-                this.domEvents.onSearch();
-            },
-            // 查询
-            onSearch: debounce(() => {
-                const { state, props } = this;
-                const { columns } = state;
-                const formRefNode = isAntdV3 ? this.props.form : this.formRef.current;
-                const params = formRefNode.getFieldsValue();
-                const searchValues = getSearchValues(params, columns);
-                if (isFunction(props.onSubmit)) {
-                    props.onSubmit(searchValues, params);
-                }
-                this.domEvents.debounceFilterPanelSetFields();
-            }, 100),
-            debounceFilterPanelSetFields: debounce(() => {
-                const { visibleFilterPanel } = this.props;
-                if (visibleFilterPanel) {
-                    this.filterPanelRef.current.setFields();
-                }
-            }, 100 + 10),
-            // 重置
-            onReset: () => {
-                const formRefNode = isAntdV3 ? this.props.form : this.formRef.current;
-                formRefNode.resetFields();
-                this.domEvents.onSearch();
+    // 立即查询
+    onImmediateSearch = column => {
+        const { immediate, template } = column;
+        const { tpl } = template;
+        this.debounceFilterPanelSetFields();
+        if (!immediate) {
+            return;
+        }
+        if (['input'].includes(tpl)) {
+            return;
+        }
+        this.onSearch();
+    };
+
+    // 查询
+    onSearch = debounce(() => {
+        const { state, props } = this;
+        const { columns } = state;
+        const formRefNode = this.getFormRefNode();
+        const params = formRefNode.getFieldsValue();
+        const searchValues = getSearchValues(params, columns);
+        if (isFunction(props.onSubmit)) {
+            props.onSubmit(searchValues, params);
+        }
+        this.debounceFilterPanelSetFields();
+    }, 100);
+
+    // 筛选域
+    debounceFilterPanelSetFields = debounce(() => {
+        const { visibleFilterPanel } = this.props;
+        if (visibleFilterPanel) {
+            this.filterPanelRef.current.setFields();
+        }
+    }, 100 + 10);
+
+    // 重置
+    onReset = () => {
+        const formRefNode = this.getFormRefNode();
+        formRefNode.resetFields();
+        this.onSearch();
+    };
+
+    // Form.Item
+    renderColumns = () => {
+        const { props, state } = this;
+        const { initialValues, columns } = state;
+        const labelWidth = props.labelWidth || getFormItemLabelWidth(columns);
+        return columns.map((v, i) => {
+            const { label, name, inline, template } = v;
+            const { tpl } = template;
+            const formItemNodeProps = getFormItemNodeProps(v);
+            formItemNodeProps.onChange = () => {
+                this.onImmediateSearch(v);
+            };
+            let formItemNode = null;
+            // Input
+            if (tpl === 'input') {
+                formItemNode = (
+                    <Input
+                        column={v}
+                        {...formItemNodeProps}
+                        onSearch={() => {
+                            this.onSearch();
+                        }}
+                    />
+                );
             }
-        };
-    }
 
-    getRenderResult() {
-        return {
-            renderColumns: () => {
-                const { props, state } = this;
-                const { initialValues, columns } = state;
-                const labelWidth = props.labelWidth || getFormItemLabelWidth(columns);
-                return columns.map((v, i) => {
-                    const { label, name, inline, template } = v;
-                    const { tpl } = template;
-                    const formItemNodeProps = getFormItemNodeProps(v);
-                    formItemNodeProps.onChange = () => {
-                        this.domEvents.onImmediateSearch(v);
-                    };
-                    let formItemNode = null;
-                    // Input
-                    if (tpl === 'input') {
-                        formItemNode = (
-                            <Input
-                                column={v}
-                                {...formItemNodeProps}
-                                onSearch={() => {
-                                    this.domEvents.onSearch();
-                                }}
-                            />
-                        );
-                    }
-
-                    // Select
-                    if (tpl === 'select') {
-                        formItemNode = (
-                            <Select {...omit(formItemNodeProps, ['options'])}>
-                                {formItemNodeProps.options.map(v => {
-                                    return (
-                                        <Select.Option value={v.value} key={v.value}>
-                                            {v.label}
-                                        </Select.Option>
-                                    );
-                                })}
-                            </Select>
-                        );
-                    }
-
-                    // Cascader
-                    if (tpl === 'cascader') {
-                        formItemNode = <Cascader {...formItemNodeProps} />;
-                    }
-
-                    // Radio
-                    if (tpl === 'radio') {
-                        formItemNode = <Radio.Group {...formItemNodeProps} />;
-                    }
-
-                    // Checkbox
-                    if (tpl === 'checkbox') {
-                        formItemNode = <Checkbox.Group {...formItemNodeProps} />;
-                    }
-
-                    // DatePicker
-                    if (tpl === 'date-picker') {
-                        formItemNode = <DatePicker {...formItemNodeProps} />;
-                    }
-
-                    // RangePicker
-                    if (tpl === 'range-picker') {
-                        formItemNode = <DatePicker.RangePicker {...formItemNodeProps} />;
-                    }
-
-                    // Switch
-                    if (tpl === 'switch') {
-                        formItemNode = <Switch {...formItemNodeProps} />;
-                    }
-
-                    const labelNode = renderFormItemLabel(v, { labelWidth });
-
-                    const key = [i, label, name].join('_');
-                    if (isAntdV3) {
-                        const { getFieldDecorator } = this.props.form;
-                        return (
-                            <Form.Item
-                                label={labelNode}
-                                name={name}
-                                key={key}
-                                style={{ width: inline ? undefined : '100%' }}
-                            >
-                                {getFieldDecorator(name, {
-                                    initialValue: initialValues[name]
-                                })(formItemNode)}
-                            </Form.Item>
-                        );
-                    }
-                    return (
-                        <Form.Item
-                            label={labelNode}
-                            name={name}
-                            key={key}
-                            style={{ width: inline ? undefined : '100%' }}
-                        >
-                            {formItemNode}
-                        </Form.Item>
-                    );
-                });
-            },
-            renderSearchReset: () => {
-                const { state, domEvents } = this;
-                const { columns } = state;
-                const { onReset } = domEvents;
-                const { showSearchBtn, showResetBtn } = this.props;
-                if (isEveryFalsy(showSearchBtn, showResetBtn)) {
-                    return null;
-                }
-                let showSearch = showSearchBtn;
-                let showReset = showResetBtn;
-                // 只有一项
-                if (columns.length === 1) {
-                    const { template } = columns[0];
-                    const { tpl, inputType } = template;
-                    // 只有一个输入框
-                    if (tpl === 'input' && inputType == 'input') {
-                        showSearch = true;
-                    }
-                    showReset = false;
-                }
-                return (
-                    <Form.Item
-                        className={getClassNames('form-item', {
-                            'form-item-hide-submit': !showSearch,
-                            'form-item-hide-reset': !showReset
+            // Select
+            if (tpl === 'select') {
+                formItemNode = (
+                    <Select {...omit(formItemNodeProps, ['options'])}>
+                        {formItemNodeProps.options.map(v => {
+                            return (
+                                <Select.Option value={v.value} key={v.value}>
+                                    {v.label}
+                                </Select.Option>
+                            );
                         })}
-                    >
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            key="submit"
-                            className={getClassNames('form-item-submit')}
-                        >
-                            查询
-                        </Button>
-                        <Button onClick={onReset} key="reset" className={getClassNames('form-item-reset')}>
-                            重置
-                        </Button>
+                    </Select>
+                );
+            }
+
+            // Cascader
+            if (tpl === 'cascader') {
+                formItemNode = <Cascader {...formItemNodeProps} />;
+            }
+
+            // Radio
+            if (tpl === 'radio') {
+                formItemNode = <Radio.Group {...formItemNodeProps} />;
+            }
+
+            // Checkbox
+            if (tpl === 'checkbox') {
+                formItemNode = <Checkbox.Group {...formItemNodeProps} />;
+            }
+
+            // DatePicker
+            if (tpl === 'date-picker') {
+                formItemNode = <DatePicker {...formItemNodeProps} />;
+            }
+
+            // RangePicker
+            if (tpl === 'range-picker') {
+                formItemNode = <DatePicker.RangePicker {...formItemNodeProps} />;
+            }
+
+            // Switch
+            if (tpl === 'switch') {
+                formItemNode = <Switch {...formItemNodeProps} />;
+            }
+
+            const labelNode = renderFormItemLabel(v, { labelWidth });
+
+            const key = [i, label, name].join('_');
+            if (isAntdV3) {
+                const { getFieldDecorator } = this.props.form;
+                return (
+                    <Form.Item label={labelNode} name={name} key={key} style={{ width: inline ? undefined : '100%' }}>
+                        {getFieldDecorator(name, {
+                            initialValue: initialValues[name]
+                        })(formItemNode)}
                     </Form.Item>
                 );
             }
-        };
-    }
+            return (
+                <Form.Item label={labelNode} name={name} key={key} style={{ width: inline ? undefined : '100%' }}>
+                    {formItemNode}
+                </Form.Item>
+            );
+        });
+    };
+
+    // 查询, 重置
+    renderSearchReset = () => {
+        const { state, onReset } = this;
+        const { columns } = state;
+        const { showSearchBtn, showResetBtn } = this.props;
+        if (isEveryFalsy(showSearchBtn, showResetBtn)) {
+            return null;
+        }
+        let showSearch = showSearchBtn;
+        let showReset = showResetBtn;
+        // 只有一项
+        if (columns.length === 1) {
+            const { template } = columns[0];
+            const { tpl, inputType } = template;
+            // 只有一个输入框
+            if (tpl === 'input' && inputType == 'input') {
+                showSearch = true;
+            }
+            showReset = false;
+        }
+        return (
+            <Form.Item
+                className={getClassNames('form-item', {
+                    'form-item-hide-submit': !showSearch,
+                    'form-item-hide-reset': !showReset
+                })}
+            >
+                <Button type="primary" htmlType="submit" key="submit" className={getClassNames('form-item-submit')}>
+                    查询
+                </Button>
+                <Button onClick={onReset} key="reset" className={getClassNames('form-item-reset')}>
+                    重置
+                </Button>
+            </Form.Item>
+        );
+    };
 
     render() {
-        const { props, state, domEvents, renderResult } = this;
+        const { props, state, onSearch, renderColumns, renderSearchReset } = this;
         const { columns, initialValues } = state;
         const { visibleFilterPanel } = props;
-        const { onSearch } = domEvents;
         if (isEmptyArray(columns)) {
             return null;
         }
@@ -294,21 +274,21 @@ class Index extends Component {
         return (
             <Card className={getClassNames('container')} {...cardProps}>
                 <Form {...formProps}>
-                    {renderResult.renderColumns()}
-                    {renderResult.renderSearchReset()}
+                    {renderColumns()}
+                    {renderSearchReset()}
                 </Form>
                 {visibleFilterPanel && (
                     <FilterPanel
                         ref={this.filterPanelRef}
                         columns={columns}
                         getFieldsValue={() => {
-                            const formRefNode = isAntdV3 ? this.props.form : this.formRef.current;
+                            const formRefNode = this.getFormRefNode();
                             return formRefNode.getFieldsValue();
                         }}
                         onChange={fields => {
-                            const formRefNode = isAntdV3 ? this.props.form : this.formRef.current;
+                            const formRefNode = this.getFormRefNode();
                             formRefNode.setFields(fields);
-                            this.domEvents.onSearch();
+                            this.onSearch();
                         }}
                     />
                 )}
