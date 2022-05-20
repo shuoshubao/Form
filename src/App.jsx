@@ -7,7 +7,7 @@ const columns = [
         label: '关键字',
         prop: 'a',
         tooltip: ['这里填写姓名', 'a[a|https://ke.com]b']
-    },
+    }
     // {
     //     label: '姓名',
     //     prop: 'b',
@@ -166,9 +166,12 @@ const columns = [
 ];
 
 const App = () => {
+    const onSubmit = params => {
+        console.log(params);
+    };
     return (
         <div className="App" style={{ padding: 10, background: '#edf0f3' }}>
-            <Search columns={columns} />
+            <Search columns={columns} onSubmit={onSubmit} />
         </div>
     );
 };
