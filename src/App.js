@@ -1,7 +1,10 @@
 import React from 'react';
+import { Card } from 'antd';
 import { random } from 'lodash';
 import { sleep } from '@nbfe/tools';
 import Form from '../lib';
+
+const { Descriptions } = Form;
 
 const mockVal = str => {
     // 模拟搜索不到的情况
@@ -341,6 +344,25 @@ const columns = [
     }
 ];
 
+const DescriptionsData = {
+    a: 123,
+    b: 456
+};
+
+const DescriptionsColumns = [
+    {
+        label: 'A',
+        name: 'a'
+    },
+    {
+        label: 'B',
+        name: 'b',
+        render: (value, record) => {
+            return <div>hhh</div>;
+        }
+    }
+];
+
 export default () => {
     const onSubmit = (params, searchParams) => {
         console.log('搜索:');
@@ -348,27 +370,17 @@ export default () => {
         // console.log(searchParams);
     };
     return (
-        <div className="App" style={{ padding: 10, background: '#edf0f3' }}>
-            <Form
-                columns={columns}
-                onSubmit={onSubmit}
-                showSearchBtn
-                onValuesChange={({ key, value }, { columns, updateColumns, setFieldsValue }) => {
-                    // console.log(333);
-                    // console.log(key, value);
-                    if (key === 'a') {
-                        columns.forEach(v => {
-                            if (v.name === 'b') {
-                                v.template.options = selectOptions[value] || [];
-                                setFieldsValue({ b: undefined });
-                                updateColumns(columns);
-                            }
-                        });
-                    }
-                    // console.log(columns);
-                    // console.log(allFields);
-                }}
-            />
+        <div style={{ padding: 10 }}>
+            <Card title="Form" size="small">
+                <Form
+                    columns={columns}
+                    onSubmit={onSubmit}
+                    showSearchBtn
+                />
+            </Card>
+            <Card title="Descriptions" style={{ marginTop: 10 }} size="small">
+                <Descriptions data={DescriptionsData} columns={DescriptionsColumns} />
+            </Card>
         </div>
     );
 };
