@@ -17,13 +17,5 @@ export default [
             format: 'esm'
         },
         plugins: [babel()]
-    },
-    {
-        input: 'lib/form/index.js',
-        output: {
-            file: 'dist/form.esm.js',
-            format: 'esm'
-        },
-        plugins: [babel()]
     }
 ];
