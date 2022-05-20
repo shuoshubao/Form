@@ -229,6 +229,10 @@ const columns = [
         name: 'a',
         template: {
             tpl: 'select',
+            mode: 'multiple',
+            allItem: {
+                label: '全部'
+            },
             options: [
                 {
                     value: 1,
