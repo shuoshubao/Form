@@ -17,6 +17,7 @@ import {
     message
 } from './antd';
 import Input from './Input.jsx';
+import RangeNumber from './RangeNumber.jsx';
 import Tabs from './Tabs.jsx';
 import Switch from './Switch.jsx';
 import FilterPanel from './FilterPanel.jsx';
@@ -314,6 +315,11 @@ class Index extends Component {
             // RangePicker
             if (tpl === 'range-picker') {
                 formItemNode = <DatePicker.RangePicker {...formItemNodeProps} />;
+            }
+
+            // RangeNumber 数字范围
+            if (tpl === 'range-number') {
+                formItemNode = <RangeNumber column={v} {...formItemNodeProps} />;
             }
 
             // Switch

@@ -2,7 +2,7 @@ import React from 'react';
 import { Tooltip } from './antd';
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { get, pick, omit, merge, cloneDeep, flatten, noop, isFunction, isObject } from 'lodash';
-import { classNames, isSomeFalsy, formatTime, convertDataToEnum } from '@nbfe/tools';
+import { classNames, isSomeFalsy, formatTime, convertDataToEnum, isEmptyValue } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
 import {
     isAntdV3,
@@ -91,13 +91,19 @@ export const mergeColumns = (columns = []) => {
                 column.placeholder = undefined;
             }
             if (tpl === 'range-picker') {
-                const [startTimeKey, endTimeKey] = name.split(',');
-                column.name = [startTimeKey, endTimeKey].join(searchSeparator);
+                const [key1, key2] = name.split(',');
+                column.name = [key1, key2].join(searchSeparator);
                 template = {
                     format: 'YYYY-MM-DD HH:mm:ss',
                     ...template
                 };
                 column.placeholder = undefined;
+            }
+            if (tpl === 'range-number') {
+                const [minValueKey, maxValueKey] = name.split(',');
+                column.name = [minValueKey, maxValueKey].join(searchSeparator);
+                column.placeholder = column.placeholder || '最小值,最大值';
+                column.defaultValue = defaultValue === defaultColumn.defaultValue ? [] : defaultValue;
             }
             column.template = template;
             return column;
@@ -149,10 +155,11 @@ export const validateColumns = (columns = []) => {
                 throw new Error(`[${componentName}] auto-complete 必须传参数: "template.remoteConfig.fetch" 需为函数`);
             }
         }
-        if (tpl === 'range-picker') {
-            const [startTimeKey, endTimeKey] = name.split(searchSeparator);
-            if (isSomeFalsy(startTimeKey, endTimeKey)) {
-                throw new Error(`[${componentName}] range-picker 必须传参数: "name" 形式为 "startTimeKey,endTimeKey"`);
+        // 日期范围 数字范围
+        if (['range-picker', 'range-number'].includes(tpl)) {
+            const [key1, key2] = name.split(searchSeparator);
+            if (isSomeFalsy(key1, key2)) {
+                throw new Error(`[${componentName}] ${tpl} 必须传参数: "name" 形式为 "key1,key2"`);
             }
         }
     });
@@ -163,11 +170,11 @@ export const getInitialValues = (columns = []) => {
     return cloneDeep(columns).reduce((prev, cur) => {
         const { name, defaultValue, template } = cur;
         const { tpl } = template;
-        // 日期范围
-        if (tpl === 'range-picker') {
-            const [startTimeKey, endTimeKey] = name.split(searchSeparator);
-            prev[startTimeKey] = defaultValue[0] || '';
-            prev[endTimeKey] = defaultValue[1] || '';
+        // 日期范围 数字范围
+        if (['range-picker', 'range-number'].includes(tpl)) {
+            const [key1, key2] = name.split(searchSeparator);
+            prev[key1] = defaultValue[0] || '';
+            prev[key2] = defaultValue[1] || '';
         }
         prev[name] = defaultValue;
         return prev;
@@ -201,14 +208,21 @@ export const getSearchValues = (params, columns) => {
         }
         if (tpl === 'range-picker') {
             const { format } = template;
-            const [startTimeKey, endTimeKey] = name.split(searchSeparator);
+            const [key1, key2] = name.split(searchSeparator);
             if (value) {
-                result[startTimeKey] = formatTime(value[0], format);
-                result[endTimeKey] = formatTime(value[1], format);
+                result[key1] = formatTime(value[0], format);
+                result[key2] = formatTime(value[1], format);
             } else {
-                result[startTimeKey] = '';
-                result[endTimeKey] = '';
+                result[key1] = '';
+                result[key2] = '';
             }
+            return;
+        }
+        if (tpl === 'range-number') {
+            const [key1, key2] = name.split(searchSeparator);
+            const [value1, value2] = value;
+            result[key1] = isEmptyValue(value1) ? null : value1;
+            result[key2] = isEmptyValue(value2) ? null : value2;
             return;
         }
         result[name] = value;

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Input, Select } from './antd';
 import { isFunction, omit } from 'lodash';
 import { setAsyncState } from '@nbfe/tools';
-import { searchSeparator } from './config';
 import { getDisplayName } from './util.jsx';
 
 class Index extends Component {
@@ -82,7 +81,6 @@ class Index extends Component {
         const { name, inline, template } = column;
         const { inputType } = template;
         if (['select-search', 'select-input'].includes(inputType)) {
-            const [selectKey, inputKey] = name.split(searchSeparator);
             onChange([selectValue, inputValue]);
             return;
         }

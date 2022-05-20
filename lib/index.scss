@@ -18,6 +18,35 @@
                 margin-left: 10px;
             }
         }
+        .dyna-search-range-number {
+            .dyna-search-range-number-min,
+            .dyna-search-range-number-max {
+                margin-right: 0;
+                position: relative;
+                z-index: 2;
+                &:hover,
+                &:focus {
+                    border-left-color: #40a9ff;
+                    border-right-color: #40a9ff;
+                }
+                .ant-input-number-input {
+                    text-align: center;
+                    padding: 0 24px 0 4px;
+                }
+            }
+            .dyna-search-range-number-min {
+                border-right-color: transparent;
+            }
+            .dyna-search-range-number-max {
+                border-left-color: transparent;
+            }
+            .dyna-search-range-number-separator {
+                border-left: 0;
+                border-right: 0;
+                pointer-events: none;
+                background-color: #fff;
+            }
+        }
     }
 
     .ant-form-item-label > label {
