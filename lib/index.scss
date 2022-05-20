@@ -1,6 +1,12 @@
 .dyna-search-container {
     background-color: #fff;
 
+    &.dyna-search-container-disabled {
+        .ant-form-item {
+            margin-bottom: 10px;
+        }
+    }
+
     .ant-card-body {
         padding-top: 0px;
     }

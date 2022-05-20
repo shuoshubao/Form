@@ -40,6 +40,7 @@ class Index extends Component {
     static displayName = componentName;
 
     static defaultProps = {
+        disabled: false, // false: 编辑模式; true: 详情模式
         autoSubmit: true,
         showSearchBtn: false,
         showResetBtn: true,
@@ -50,6 +51,7 @@ class Index extends Component {
     };
 
     static propTypes = {
+        disabled: PropTypes.boolean,
         columns: PropTypes.array.isRequired,
         // 自动触发搜索
         autoSubmit: PropTypes.bool,
@@ -82,8 +84,8 @@ class Index extends Component {
     }
 
     async componentDidMount() {
-        const { columns, autoSubmit } = this.props;
-        const innerColumns = mergeColumns(columns);
+        const { disabled, columns, autoSubmit } = this.props;
+        const innerColumns = mergeColumns(columns, { disabled });
         validateColumns(innerColumns);
         injectColumnsWithRemoteConfig(this, innerColumns);
         // 初始值
@@ -402,7 +404,7 @@ class Index extends Component {
     render() {
         const { props, state, onSearch, renderColumns, renderSearchReset } = this;
         const { columns, initialValues } = state;
-        const { visibleFilterPanel } = props;
+        const { disabled, visibleFilterPanel } = props;
         if (isEmptyArray(columns)) {
             return null;
         }
@@ -440,7 +442,12 @@ class Index extends Component {
             }
         }
         return (
-            <Card className={getClassNames('container')} {...cardProps}>
+            <Card
+                className={classNames(getClassNames('container'), {
+                    [getClassNames('container-disabled')]: disabled
+                })}
+                {...cardProps}
+            >
                 <Form {...formProps}>
                     {renderColumns()}
                     {renderSearchReset()}

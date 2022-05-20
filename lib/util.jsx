@@ -29,7 +29,7 @@ export const getClassNames = (...args) => {
 };
 
 // 处理 props.columns
-export const mergeColumns = (columns = []) => {
+export const mergeColumns = (columns = [], { disabled }) => {
     return cloneDeep(columns)
         .map((v, i) => {
             const column = merge({}, defaultColumn, v);
@@ -106,6 +106,10 @@ export const mergeColumns = (columns = []) => {
                 column.defaultValue = defaultValue === defaultColumn.defaultValue ? [] : defaultValue;
             }
             column.template = template;
+            // 详情模式
+            if (disabled) {
+                column.template.disabled = true;
+            }
             return column;
         })
         .filter(v => Boolean(v.visible));
