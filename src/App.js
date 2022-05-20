@@ -1,9 +1,11 @@
 import React from 'react';
 import { Button, Card, Divider } from 'antd';
 import { random } from 'lodash';
-import { sleep } from '@nbfe/tools';
+import { sleep, rules } from '@nbfe/tools';
 import Form from '../lib';
 import '../lib/index.less';
+
+const { required, selectRequired } = rules;
 
 const mockVal = str => {
     // 模拟搜索不到的情况
@@ -23,21 +25,21 @@ const selectOptions = {
     1: [
         {
             value: 11,
-            label: '11'
+            label: 'label-11'
         },
         {
             value: 12,
-            label: '12'
+            label: 'label-12'
         }
     ],
     2: [
         {
             value: 21,
-            label: '21'
+            label: 'label-21'
         },
         {
             value: 22,
-            label: '22'
+            label: 'label-22'
         }
     ]
 };
@@ -92,259 +94,26 @@ const treeData = [
 
 const columns = [
     {
-        label: '数字范围',
-        name: 'aa1,aa2',
-        tooltip: '数字范围',
-        defaultValue: [0.1],
-        template: {
-            tpl: 'range-number',
-            separator: '-',
-            min: 0,
-            max: 1,
-            step: 0.1
-        }
-    },
-    {
-        label: '级联',
-        name: 'cascader',
-        tooltip: '级联',
-        transform: value => {
-            return (value && value[1]) || '';
-        },
-        template: {
-            tpl: 'cascader',
-            remoteConfig: {
-                fetch: async () => {
-                    return {
-                        code: 0,
-                        data: cascaderOptions,
-                        mesg: 'success'
-                    };
-                },
-                path: 'data'
-            }
-        }
-    },
-    {
-        label: '自动完成',
-        name: 'auto-complete',
-        tooltip: '自动完成',
-        // defaultValue: 'shuoshubao',
-        template: {
-            tpl: 'auto-complete',
-            // options: [
-            //     {
-            //         label: '硕鼠宝',
-            //         value: 'shuoshubao'
-            //     }
-            // ],
-            remoteConfig: {
-                fetch: async searchText => {
-                    await sleep(0.1);
-                    return !searchText ? [] : mockVal(searchText);
-                }
-            }
-        }
-    },
-    {
-        label: '选择树',
-        name: 'tree-select',
-        tooltip: '自动完成',
-        template: {
-            tpl: 'tree-select',
-            // multiple: true,
-            // treeCheckable: true,
-            treeDefaultExpandAll: true,
-            showCheckedStrategy: 'SHOW_PARENT',
-            remoteConfig: {
-                fetch: async () => {
-                    await sleep(1);
-                    return treeData;
-                }
-            }
-        }
-    },
-    {
-        label: '关键字1',
-        name: 'a1',
-        defaultValue: '123',
-        template: {
-            inputType: 'input'
-        }
-    },
-    {
-        label: '关键字2',
-        name: 'a2',
-        template: {
-            inputType: 'textarea'
-        }
-    },
-    {
-        label: '关键字22',
-        name: 'a22',
-        template: {
-            inputType: 'password'
-        }
-    },
-    {
-        label: '关键字3',
-        name: 'a3,a33',
-        visible: false,
-        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
-        // inline: false,
-        defaultValue: ['contractNo', '123'],
-        template: {
-            inputType: 'select-search',
-            options: [
-                {
-                    label: '交易编号',
-                    value: 'businessCode'
-                },
-                {
-                    label: '合同编号',
-                    value: 'contractNo'
-                },
-                {
-                    label: '买方',
-                    value: 'buyerName'
-                },
-                {
-                    label: '卖方',
-                    value: 'sellerName'
-                }
-            ]
-        }
-    },
-    // {
-    //     label: '创建时间1',
-    //     name: 'b',
-    //     tooltip: '创建时间1',
-    //     template: {
-    //         tpl: 'date-picker'
-    //     }
-    // },
-    {
-        label: '下拉框1',
+        label: '文',
         name: 'a',
-        template: {
-            tpl: 'select',
-            mode: 'multiple',
-            allItem: {
-                label: '全部'
-            },
-            options: [
-                {
-                    value: 1,
-                    label: 'a'
-                },
-                {
-                    value: 2,
-                    label: 'b'
-                }
-            ]
-        }
+        rules: [required]
     },
     {
-        label: 'checkbox',
-        name: 'b',
-        // defaultValue: [2],
+        label: '姓名',
+        name: 'nameList',
+        defaultValue: ['aaa', 'bb'],
+        // defaultValue: [],
+        formListProps: {
+            min: 1,
+            max: 5,
+            entity: ''
+        },
+        rules: [selectRequired],
         template: {
-            tpl: 'checkbox',
-            indeterminate: true,
-            defaultSelectAll: true,
-            // options: [
-            //     {
-            //         value: 1,
-            //         label: 'a'
-            //     },
-            //     {
-            //         value: 2,
-            //         label: 'b'
-            //     }
-            // ]
-            remoteConfig: {
-                fetch: async () => {
-                    await sleep(1);
-                    return {
-                        code: 0,
-                        data: [
-                            {
-                                code: 1,
-                                label: 'a'
-                            },
-                            {
-                                code: 2,
-                                label: 'b'
-                            },
-                            {
-                                code: 3,
-                                label: 'c'
-                            }
-                        ],
-                        message: '成功'
-                    };
-                },
-                path: 'data',
-                valueKey: 'code',
-                process: data => {
-                    // console.log(123);
-                    // console.log(data);
-                }
-            }
+            // tpl: 'select',
+            options: selectOptions['1']
         }
     },
-    {
-        label: 'slider',
-        name: 'slider',
-        defaultValue: 1,
-        template: {
-            tpl: 'slider'
-        }
-    },
-    {
-        label: 'switch',
-        name: 'switch',
-        defaultValue: true,
-        template: {
-            tpl: 'switch'
-        }
-    },
-    {
-        label: '下拉框2',
-        name: 'c',
-        defaultValue: 1,
-        template: {
-            tpl: 'select',
-            allowClear: true,
-            allItem: { value: null, label: '全部' },
-            options: [],
-            remoteConfig: {
-                fetch: async () => {
-                    await sleep(1);
-                    return {
-                        code: 0,
-                        data: [
-                            {
-                                code: 1,
-                                label: 'aa'
-                            },
-                            {
-                                code: 2,
-                                label: 'bb'
-                            }
-                        ],
-                        message: '成功'
-                    };
-                },
-                path: 'data',
-                valueKey: 'code',
-                process: data => {
-                    // console.log(123);
-                    // console.log(data);
-                }
-            }
-        }
-    }
 ];
 
 export default () => {
@@ -376,10 +145,15 @@ export default () => {
             <Form
                 ref={formRef}
                 cardProps={{ bordered: true }}
+                formProps={{ layout: 'horizontal' }}
                 columns={columns}
-                onSubmit={handleSubmit}
-                showSearchBtn
-            />
+                showSearchBtn={false}
+                showResetBtn={false}
+            >
+                <Button type="primary" onClick={() => {
+                    formRef.current.getFormData()
+                }}>提交</Button>
+            </Form>
         </div>
     );
 };
