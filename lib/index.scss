@@ -13,6 +13,7 @@
         .ant-input-number,
         .ant-select-selector,
         .ant-cascader-picker,
+        .ant-checkbox-wrapper,
         .ant-select-selection-item,
         .ant-picker {
             cursor: default !important;
@@ -36,9 +37,11 @@
                 border-right-color: #fff !important;
             }
         }
+        .ant-radio-inner,
+        .ant-checkbox,
         .ant-select-arrow,
         .ant-cascader-picker-arrow {
-            display: none;
+            display: none !important;
         }
         .ant-input-number {
             &:hover {
@@ -52,6 +55,15 @@
         }
         .ant-cascader-picker-label {
             z-index: 1;
+        }
+        .ant-radio-disabled + span,
+        .ant-checkbox-disabled + span {
+            cursor: default !important;
+            color: rgba(0, 0, 0, 0.85) !important;
+        }
+        .ant-radio-wrapper-disabled:not(.ant-radio-wrapper-checked),
+        .ant-checkbox-wrapper-disabled:not(.ant-checkbox-wrapper-checked) {
+            display: none;
         }
     }
 

@@ -51,7 +51,7 @@ class Index extends Component {
     };
 
     static propTypes = {
-        disabled: PropTypes.boolean,
+        disabled: PropTypes.bool,
         columns: PropTypes.array.isRequired,
         // 自动触发搜索
         autoSubmit: PropTypes.bool,
