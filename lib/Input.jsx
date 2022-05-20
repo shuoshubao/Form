@@ -93,7 +93,16 @@ class Index extends Component {
         const { selectValue, inputValue } = state;
         const { name, inline, template } = column;
         const { inputType, options, selectWidth, inputWidth } = template;
-        const inputProps = omit(props, ['column', 'defaultValue', 'value', 'onChange', 'onSearch', 'style']);
+        const inputProps = omit(props, [
+            'column',
+            'defaultValue',
+            'value',
+            'onChange',
+            'onSearch',
+            'style',
+            'inputWidth',
+            'selectWidth'
+        ]);
         inputProps.style = { width: inputWidth };
         if (inputType === 'search') {
             return (
@@ -130,7 +139,7 @@ class Index extends Component {
                         />
                     ) : (
                         <Input
-                            {...inputProps}
+                            {...omit(inputProps, ['enterButton'])}
                             value={inputValue}
                             onChange={onInputChange}
                             placeholder={['请输入', label].join('')}
@@ -139,7 +148,7 @@ class Index extends Component {
                 </Input.Group>
             );
         }
-        return <Input {...inputProps} />;
+        return <Input {...omit(inputProps, ['enterButton'])} />;
     }
 }
 
