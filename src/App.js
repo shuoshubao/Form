@@ -237,9 +237,10 @@ const columns = [
     {
         label: 'checkbox',
         name: 'b',
-        defaultValue: [1],
+        defaultValue: [1, 2],
         template: {
             tpl: 'checkbox',
+            indeterminate: true,
             options: [
                 {
                     value: 1,
