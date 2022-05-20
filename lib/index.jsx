@@ -89,6 +89,7 @@ class Index extends Component {
             onImmediateSearch: column => {
                 const { immediate, template } = column;
                 const { tpl } = template;
+                this.domEvents.debounceFilterPanelSetFields();
                 if (!immediate) {
                     return;
                 }
@@ -106,8 +107,11 @@ class Index extends Component {
                 if (isFunction(props.onSubmit)) {
                     props.onSubmit(searchValues, params);
                 }
-                this.filterPanelRef.current.setFields();
+                this.domEvents.debounceFilterPanelSetFields();
             }, 100),
+            debounceFilterPanelSetFields: debounce(() => {
+                this.filterPanelRef.current.setFields();
+            }, 100 + 10),
             // 重置
             onReset: () => {
                 this.formRef.current.resetFields();
@@ -264,10 +268,6 @@ class Index extends Component {
                         return this.formRef.current.getFieldsValue();
                     }}
                     onChange={(name, value) => {
-                        {
-                            /*this.formRef.current.resetFields();*/
-                        }
-                        console.log(name, value);
                         this.formRef.current.setFields([
                             {
                                 name,
