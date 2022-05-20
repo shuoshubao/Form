@@ -1,4 +1,3 @@
-
 export const defaulCardProps = {
     size: 'small',
     bordered: false

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button, Form, Input, Select, DatePicker, Radio, Checkbox } from 'antd';
+import { Card, Button, Form, Input, Select, DatePicker, Radio, Checkbox, Cascader } from 'antd';
 import { debounce, isFunction, omit, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy } from '@nbfe/tools';
 import Switch from './Switch';
@@ -115,6 +115,7 @@ class Index extends Component {
                     if (tpl === 'input') {
                         formItemNode = <Input {...formItemNodeProps} style={getFormItemNodeStyle(v)} />;
                     }
+
                     // Select
                     if (tpl === 'select') {
                         const { data = [] } = template;
@@ -129,6 +130,7 @@ class Index extends Component {
                             </Select>
                         );
                     }
+
                     // Radio
                     if (tpl === 'radio') {
                         const { data = [] } = template;
@@ -140,6 +142,7 @@ class Index extends Component {
                             ></Radio.Group>
                         );
                     }
+
                     // Checkbox
                     if (tpl === 'checkbox') {
                         const { data = [] } = template;
@@ -151,25 +154,41 @@ class Index extends Component {
                             ></Checkbox.Group>
                         );
                     }
-                    // Switch
-                    if (tpl === 'switch') {
-                        formItemNode = <Switch {...formItemNodeProps} style={getFormItemNodeStyle(v)}></Switch>;
-                    }
+
                     // DatePicker
                     if (tpl === 'date-picker') {
                         formItemNode = <DatePicker {...formItemNodeProps} style={getFormItemNodeStyle(v)} />;
                     }
+
                     // RangePicker
                     if (tpl === 'range-picker') {
                         formItemNodeProps = omit(formItemNodeProps, ['startTimeKey', 'endTimeKey']);
                         formItemNode = <RangePicker {...formItemNodeProps} style={getFormItemNodeStyle(v)} />;
                     }
 
+                    // Cascader
+                    if (tpl === 'cascader') {
+                        const { data = [] } = template;
+                        formItemNode = (
+                            <Cascader {...formItemNodeProps} options={data} style={getFormItemNodeStyle(v)} />
+                        );
+                    }
+
+                    // Switch
+                    if (tpl === 'switch') {
+                        formItemNode = <Switch {...formItemNodeProps} style={getFormItemNodeStyle(v)}></Switch>;
+                    }
+
                     const labelNode = renderFormItemLabel(v, { labelWidth });
 
                     const key = [i, label, prop || formItemName].join('_');
                     return (
-                        <Form.Item label={labelNode} name={formItemName} key={key} style={{width: inline ? undefined : '100%'}}>
+                        <Form.Item
+                            label={labelNode}
+                            name={formItemName}
+                            key={key}
+                            style={{ width: inline ? undefined : '100%' }}
+                        >
                             {formItemNode}
                         </Form.Item>
                     );

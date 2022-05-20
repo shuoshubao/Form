@@ -14,13 +14,6 @@ class Index extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-
-        };
-    }
-
-    componentDidMount() {
-        console.log(333, this.props);
     }
 
     onChange = (checked, event) => {
@@ -31,13 +24,13 @@ class Index extends Component {
 
     render() {
         const { defaultValue, value, style } = this.props;
-        console.log(111, defaultValue);
-        console.log(222, this.props);
         const { onChange } = this;
         const switchProps = omit(this.props, ['value', 'defaultValue', 'onChange', 'style']);
-        return <div style={style}>
-            <Switch checked={value} defaultChecked={defaultValue} onChange={onChange} {...switchProps} />
-        </div>;
+        return (
+            <div style={style}>
+                <Switch checked={value} defaultChecked={defaultValue} onChange={onChange} {...switchProps} />
+            </div>
+        );
     }
 }
 
