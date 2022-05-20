@@ -7,7 +7,7 @@ const columns = [
         label: '关键字',
         name: 'a',
         tooltip: ['这里填写姓名', 'a[a|https://ke.com]b']
-    }
+    },
     // {
     //     label: '姓名',
     //     name: 'b',
@@ -115,17 +115,15 @@ const columns = [
     //         picker: 'month'
     //     }
     // },
-    // {
-    //     label: '时间区间',
-    //     name: 'e',
-    //     inline: false,
-    //     template: {
-    //         tpl: 'range-picker',
-    //         format: 'YYYY-MM-DD HH:mm:ss',
-    //         startTimeKey: 'sTime',
-    //         endTimeKey: 'eTime'
-    //     }
-    // },
+    {
+        label: '时间区间',
+        name: ['sTime', 'eTime'],
+        inline: false,
+        template: {
+            tpl: 'range-picker',
+            format: 'YYYY-MM-DD HH:mm:ss',
+        }
+    },
     // {
     //     label: '状态',
     //     name: 'f',
@@ -166,8 +164,10 @@ const columns = [
 ];
 
 export default () => {
-    const onSubmit = params => {
+    const onSubmit = (params, searchParams) => {
+        console.log('搜索:');
         console.log(params);
+        console.log(searchParams);
     };
     return (
         <div className="App" style={{ padding: 10, background: '#edf0f3' }}>

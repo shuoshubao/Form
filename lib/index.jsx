@@ -22,7 +22,7 @@ class Index extends Component {
 
     static defaultProps = {
         autoSubmit: true,
-        showSearchBtn: false,
+        showSearchBtn: true,
         showResetBtn: true,
         cardProps: {},
         formProps: {},

@@ -38,9 +38,9 @@ export const mergeColumns = columns => {
                 column.placeholder = undefined;
             }
             if (tpl === 'range-picker') {
-                const [startTimeKey, endTimeKey] = name || [];
+                const [startTimeKey, endTimeKey] = name.split(',');
                 if (isSomeFalsy(startTimeKey, endTimeKey)) {
-                    throw new Error('range-picker 必须传参数: "name" 需为长度为 2 的数组');
+                    throw new Error('range-picker 必须传参数: "name" 需为长度为 "startTimeKey,endTimeKey"');
                 }
                 column.name = [startTimeKey, endTimeKey].join(rangePickerSeparator);
                 const format = template.format || 'YYYY-MM-DD HH:mm:ss';
