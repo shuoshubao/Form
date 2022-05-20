@@ -425,8 +425,8 @@ class Index extends Component {
                         {
                             key,
                             value,
-                            changedFields,
-                            allFields
+                            changedFields: cloneDeep(changedFields),
+                            allFields: cloneDeep(allFields)
                         },
                         {
                             columns: cloneDeep(columns),
