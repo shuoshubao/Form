@@ -25,6 +25,7 @@ import {
     getClassNames,
     validateColumns,
     mergeColumns,
+    injectColumnsWithRemoteConfig,
     getInitialValues,
     getSearchValues,
     getFormItemLabelWidth,
@@ -83,6 +84,7 @@ class Index extends Component {
         const { columns, autoSubmit } = this.props;
         const innerColumns = mergeColumns(columns);
         validateColumns(innerColumns);
+        injectColumnsWithRemoteConfig(this, innerColumns);
         // 初始值
         const initialValues = getInitialValues(innerColumns);
         await setAsyncState(this, { columns: innerColumns, initialValues });
@@ -254,7 +256,7 @@ class Index extends Component {
             if (tpl === 'select') {
                 const { options, allItem } = formItemNodeProps;
                 formItemNode = (
-                    <Select {...omit(formItemNodeProps, ['options', 'allItem'])}>
+                    <Select {...omit(formItemNodeProps, ['options', 'allItem', 'remoteConfig'])}>
                         {[allItem, ...options].filter(Boolean).map(v => {
                             const optionProps = pick(v, ['className', 'disabled', 'title', 'value']);
                             return (

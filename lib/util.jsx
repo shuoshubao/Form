@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tooltip } from './antd';
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
-import { get, omit, merge, cloneDeep, flatten, isFunction } from 'lodash';
-import { classNames, isSomeFalsy, formatTime } from '@nbfe/tools';
+import { get, pick, omit, merge, cloneDeep, flatten, isFunction, isObject } from 'lodash';
+import { classNames, isSomeFalsy, formatTime, convertDataToEnum } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
 import {
     isAntdV3,
@@ -66,6 +66,7 @@ export const mergeColumns = (columns = []) => {
             if (tpl === 'select') {
                 column.placeholder = label ? ['请选择', label].join('') : '';
                 column.defaultValue = defaultValue === defaultColumn.defaultValue ? undefined : defaultValue;
+                column.template.options = column.template.options || [];
             }
             if (tpl === 'cascader') {
                 column.placeholder = label ? ['请选择', label].join('') : '';
@@ -102,6 +103,27 @@ export const mergeColumns = (columns = []) => {
             return column;
         })
         .filter(v => Boolean(v.visible));
+};
+
+// 异步数据源
+export const injectColumnsWithRemoteConfig = async (context, columns = []) => {
+    const innerColumns = cloneDeep(columns);
+    await Promise.all(
+        innerColumns.map(async v => {
+            const { name, template } = v;
+            const { tpl, remoteConfig } = template;
+            if (['select'].includes(tpl) && isObject(remoteConfig)) {
+                const { fetch: fetchFunc, process: processFunc } = remoteConfig;
+                const responseData = await fetchFunc();
+                const list = convertDataToEnum(
+                    processFunc(responseData) || responseData,
+                    pick(remoteConfig, ['path', 'valueKey', 'labelKey'])
+                );
+                template.options = list;
+            }
+        })
+    );
+    context.setState({ columns: innerColumns });
 };
 
 // 校验参数
