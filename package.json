@@ -1,6 +1,6 @@
 {
     "name": "@ke/form",
-    "version": "1.2.6",
+    "version": "1.2.7",
     "main": "dist/index.js",
     "files": [
         "dist/"
@@ -10,7 +10,7 @@
     },
     "scripts": {
         "dev": "npx react-cli serve",
-        "build": "rm -rf dist && node bin/init && npx rollup -c && lessc lib/index.less dist/index.css",
+        "build": "rm -rf dist && npx rollup -c && lessc lib/index.less dist/index.css",
         "publish-beta": "npm publish --tag beta",
         "prepublishOnly": "npm run build"
     },
