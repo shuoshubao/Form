@@ -88,6 +88,9 @@ class Index extends Component {
         const { onChange, columns, getFieldsValue } = props;
         const formData = getFieldsValue();
         const { name, value } = item;
+        const column = find(columns, { name });
+        const { template } = column;
+        const { tpl } = template;
         this.setState(prevState => {
             const oldData = cloneDeep(prevState.data);
             oldData.splice(i, 1);
@@ -97,13 +100,22 @@ class Index extends Component {
         });
         let newValue = cloneDeep(formData[name]);
         if (Array.isArray(newValue)) {
-            remove(newValue, v => {
-                return v === value;
-            });
+            if (tpl === 'range-picker') {
+                newValue = '';
+            } else {
+                remove(newValue, v => {
+                    return v === value;
+                });
+            }
         } else {
             newValue = '';
         }
-        onChange(name, newValue);
+        onChange([
+            {
+                name,
+                value: newValue
+            }
+        ]);
     };
 
     render() {

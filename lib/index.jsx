@@ -267,13 +267,8 @@ class Index extends Component {
                     getFieldsValue={() => {
                         return this.formRef.current.getFieldsValue();
                     }}
-                    onChange={(name, value) => {
-                        this.formRef.current.setFields([
-                            {
-                                name,
-                                value
-                            }
-                        ]);
+                    onChange={fields => {
+                        this.formRef.current.setFields(fields);
                         this.domEvents.onSearch();
                     }}
                 />
