@@ -6,7 +6,7 @@ import { Card, Button, Form, Select, DatePicker, Radio, Checkbox, Cascader } fro
 import Switch from './Switch.jsx';
 import Input from './Input.jsx';
 import FilterPanel from './FilterPanel.jsx';
-import { componentName, defaulCardProps, defaulFormProps } from './config';
+import { isAntdV3, componentName, defaulCardProps, defaulFormProps } from './config';
 import {
     getClassNames,
     validateColumns,
@@ -102,7 +102,8 @@ class Index extends Component {
             onSearch: debounce(() => {
                 const { state, props } = this;
                 const { columns } = state;
-                const params = this.formRef.current.getFieldsValue();
+                const formRefNode = isAntdV3 ? this.props.form : this.formRef.current;
+                const params = formRefNode.getFieldsValue();
                 const searchValues = getSearchValues(params, columns);
                 if (isFunction(props.onSubmit)) {
                     props.onSubmit(searchValues, params);
@@ -117,7 +118,8 @@ class Index extends Component {
             }, 100 + 10),
             // 重置
             onReset: () => {
-                this.formRef.current.resetFields();
+                const formRefNode = isAntdV3 ? this.props.form : this.formRef.current;
+                formRefNode.resetFields();
                 this.domEvents.onSearch();
             }
         };
@@ -127,7 +129,7 @@ class Index extends Component {
         return {
             renderColumns: () => {
                 const { props, state } = this;
-                const { columns } = state;
+                const { initialValues, columns } = state;
                 const labelWidth = props.labelWidth || getFormItemLabelWidth(columns);
                 return columns.map((v, i) => {
                     const { label, name, inline, template } = v;
@@ -152,13 +154,17 @@ class Index extends Component {
 
                     // Select
                     if (tpl === 'select') {
-                        formItemNode = <Select {...omit(formItemNodeProps, ['options'])}>
-                            {
-                                formItemNodeProps.options.map(v => {
-                                    return <Select.Option value={v.value} key={v.value}>{v.label}</Select.Option>
-                                })
-                            }
-                        </Select>;
+                        formItemNode = (
+                            <Select {...omit(formItemNodeProps, ['options'])}>
+                                {formItemNodeProps.options.map(v => {
+                                    return (
+                                        <Select.Option value={v.value} key={v.value}>
+                                            {v.label}
+                                        </Select.Option>
+                                    );
+                                })}
+                            </Select>
+                        );
                     }
 
                     // Cascader
@@ -194,6 +200,21 @@ class Index extends Component {
                     const labelNode = renderFormItemLabel(v, { labelWidth });
 
                     const key = [i, label, name].join('_');
+                    if (isAntdV3) {
+                        const { getFieldDecorator } = this.props.form;
+                        return (
+                            <Form.Item
+                                label={labelNode}
+                                name={name}
+                                key={key}
+                                style={{ width: inline ? undefined : '100%' }}
+                            >
+                                {getFieldDecorator(name, {
+                                    initialValue: initialValues[name]
+                                })(formItemNode)}
+                            </Form.Item>
+                        );
+                    }
                     return (
                         <Form.Item
                             label={labelNode}
@@ -260,14 +281,19 @@ class Index extends Component {
         }
         const cardProps = merge({}, props.cardProps, defaulCardProps);
         const formProps = merge({}, props.formProps, defaulFormProps);
+        if (isAntdV3) {
+            formProps.onSubmit = e => {
+                e.preventDefault();
+                onSearch();
+            };
+        } else {
+            formProps.onFinish = onSearch;
+            formProps.initialValues = initialValues;
+            formProps.ref = this.formRef;
+        }
         return (
             <Card className={getClassNames('container')} {...cardProps}>
-                <Form
-                    ref={this.formRef}
-                    {...omit(formProps, ['ref', 'onFinish', 'initialValues'])}
-                    onFinish={onSearch}
-                    initialValues={initialValues}
-                >
+                <Form {...formProps}>
                     {renderResult.renderColumns()}
                     {renderResult.renderSearchReset()}
                 </Form>
@@ -276,10 +302,12 @@ class Index extends Component {
                         ref={this.filterPanelRef}
                         columns={columns}
                         getFieldsValue={() => {
-                            return this.formRef.current.getFieldsValue();
+                            const formRefNode = isAntdV3 ? this.props.form : this.formRef.current;
+                            return formRefNode.getFieldsValue();
                         }}
                         onChange={fields => {
-                            this.formRef.current.setFields(fields);
+                            const formRefNode = isAntdV3 ? this.props.form : this.formRef.current;
+                            formRefNode.setFields(fields);
                             this.domEvents.onSearch();
                         }}
                     />
@@ -289,4 +317,9 @@ class Index extends Component {
     }
 }
 
-export default Index;
+export default () => {
+    if (isAntdV3) {
+        return Form.create({ name: 'form' })(Index);
+    }
+    return Index;
+};
