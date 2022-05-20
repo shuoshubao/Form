@@ -3,11 +3,14 @@ import { random } from 'lodash';
 import { sleep } from '@nbfe/tools';
 import Form from '../lib';
 
-const mockVal = (str, repeat = 1) => {
-    return {
-        value: str.repeat(repeat),
-        label: str.repeat(repeat) + '(label)',
-    }
+const mockVal = (str) => {
+    return [1, 2, 3].map((v) => {
+        const name = [str, v].join('');
+        return {
+            value: name,
+            label: `${name}(${name}@qq.com)`
+        };
+    });
 };
 
 const selectData = {
@@ -64,7 +67,7 @@ const columns = [
             remoteConfig: {
                 fetch: async searchText => {
                     await sleep(0.1);
-                    return !searchText ? [] : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)];
+                    return !searchText ? [] : mockVal(searchText);
                 }
             }
         }
