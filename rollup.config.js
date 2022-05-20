@@ -2,7 +2,7 @@ import babel from '@rollup/plugin-babel';
 import postcss from 'rollup-plugin-postcss';
 
 export default {
-    input: 'src/Search/index.js',
+    input: 'lib/index.jsx',
     output: {
         file: 'dist/index.js',
         format: 'cjs'
@@ -11,7 +11,7 @@ export default {
         postcss({ extract: true }),
         babel({
             babelrc: false,
-            presets: ['@babel/preset-react', '@babel/preset-env'],
+            presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: ['@babel/plugin-proposal-class-properties']
         })
     ]
