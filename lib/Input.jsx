@@ -139,7 +139,7 @@ class Index extends Component {
                 </Input.Group>
             );
         }
-        return <Input {...inputProps} />;
+        return <Input {...inputProps} style={{ width: inputWidth }} />;
     }
 }
 

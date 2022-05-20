@@ -266,7 +266,7 @@ export default () => {
     };
     return (
         <div className="App" style={{ padding: 10, background: '#edf0f3' }}>
-            <Search columns={columns} onSubmit={onSubmit} />
+            <Search columns={columns} onSubmit={onSubmit} visibleFilterPanel={true} />
         </div>
     );
 };
