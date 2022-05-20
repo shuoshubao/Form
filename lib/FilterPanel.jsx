@@ -107,6 +107,8 @@ class Index extends Component {
                     return v === value;
                 });
             }
+        } else if (tpl === 'select') {
+            newValue = undefined;
         } else {
             newValue = '';
         }
