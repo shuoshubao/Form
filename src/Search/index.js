@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button, Form, Input, Select, DatePicker } from 'antd';
-import { isFunction, omit, merge } from 'lodash';
-import { isEmptyArray, setAsyncState } from '@nbfe/tools';
+import { debounce, isFunction, omit, merge } from 'lodash';
+import { isEmptyArray, setAsyncState, isEveryFalsy } from '@nbfe/tools';
 import { defaulCardProps, defaulFormProps } from './config';
 import {
-    isEveryFalsy,
     mergeColumns,
     getInitialValues,
     getSearchValues,
@@ -80,14 +79,14 @@ class Index extends Component {
     getDomEvents() {
         return {
             // 查询
-            onSearch: () => {
+            onSearch: debounce(() => {
                 const { state, props } = this;
                 const { columns } = state;
                 const params = this.formRef.current.getFieldsValue();
                 if (isFunction(props.onSubmit)) {
                     props.onSubmit(getSearchValues(params, columns), params);
                 }
-            },
+            }, 100),
             // 重置
             onReset: () => {
                 this.formRef.current.resetFields();

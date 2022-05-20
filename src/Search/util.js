@@ -1,29 +1,9 @@
 import React from 'react';
 import { Tooltip } from 'antd';
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
-import { merge, cloneDeep, flatten, maxBy } from 'lodash';
-import { formatTime, getWordWidth } from '@nbfe/tools';
+import { merge, cloneDeep, flatten } from 'lodash';
+import { formatTime, isSomeFalsy } from '@nbfe/tools';
 import { defaultColumn, pickerFormatMap, formItemTooltopMargin } from './config';
-
-// 全真
-export const isEveryTruthy = (...args) => {
-    return flatten(args).every(Boolean);
-};
-
-// 全假
-export const isEveryFalsy = (...args) => {
-    return flatten(args).every(v => !Boolean(v));
-};
-
-// 部分真
-export const isSomeTruthy = (...args) => {
-    return flatten(args).some(Boolean);
-};
-
-// 部分假
-export const isSomeFalsy = (...args) => {
-    return flatten(args).some(v => !Boolean(v));
-};
 
 // 处理 props.columns
 export const mergeColumns = columns => {
@@ -103,14 +83,18 @@ const iconWidth = 14;
 
 // 获取 Form.Item label 的宽度
 export const getFormItemLabelWidth = columns => {
-    const maxLengthLabel = maxBy(columns, v => {
+    if (columns.length === 1) {
+        return 0;
+    }
+    const labelWidthList = columns.map(v => {
         const { label, tooltip } = v;
-        if (tooltip) {
-            return label.length + iconWidth + formItemTooltopMargin;
+        let labelWidth = label.length * iconWidth;
+        if (tooltip.length) {
+            labelWidth += iconWidth + formItemTooltopMargin;
         }
-        return label.length;
+        return labelWidth;
     });
-    return getWordWidth(maxLengthLabel);
+    return Math.max(...labelWidthList);
 };
 
 // 获取 Form.Item value 的宽度
@@ -140,19 +124,23 @@ const getTooltipTitleNode = tooltip => {
         })
         .map(v => {
             return v.replace(linkReg, (...args) => {
-                const { 1: text, 2: href } = args;
+                console.log(111, args);
+                const [, text, href] = args;
                 return `<a href="${href}" target="_blank" style="color: #1890ff; text-decoration: underline;">${text}</a>`;
             });
         });
-    return innerTooltip.map(v2 => {
-        return <div dangerouslySetInnerHTML={{ __html: v2 }} />;
+    return innerTooltip.map((v2, i2) => {
+        return <div key={[i2].join()} dangerouslySetInnerHTML={{ __html: v2 }} />;
     });
 };
 
 export const renderFormItemLabel = (column, { labelWidth }) => {
     const { label, tooltip } = column;
+    if (!label.trim()) {
+        return null;
+    }
     return (
-        <div style={{ width: labelWidth }}>
+        <div style={{ width: labelWidth || undefined }}>
             <span>{label}</span>
             {!!tooltip && (
                 <Tooltip title={getTooltipTitleNode(tooltip)}>
