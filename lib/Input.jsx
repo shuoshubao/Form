@@ -81,15 +81,12 @@ class Index extends Component {
         const { selectValue, inputValue } = state;
         const { name, inline, template } = column;
         const { inputType } = template;
-        if (['input', 'search'].includes(inputType)) {
-            onChange(inputValue);
-            return;
-        }
         if (['select-search', 'select-input'].includes(inputType)) {
             const [selectKey, inputKey] = name.split(searchSeparator);
             onChange([selectValue, inputValue]);
             return;
         }
+        onChange(inputValue);
     };
 
     render() {
