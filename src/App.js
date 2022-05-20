@@ -129,6 +129,14 @@ const columns = [
         rules: [required]
     },
     {
+        label: '评分',
+        name: 'rate',
+        rules: [required],
+        template: {
+            tpl: 'rate'
+        }
+    },
+    {
         label: '用户列表',
         name: 'users',
         defaultValue: [
