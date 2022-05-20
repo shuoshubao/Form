@@ -2,15 +2,18 @@ import React from 'react';
 import { Tooltip } from 'antd';
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { omit, merge, cloneDeep, flatten } from 'lodash';
-import { isSomeFalsy, formatTime, removeProperties } from '@nbfe/tools';
+import { isSomeFalsy, formatTime } from '@nbfe/tools';
 import { defaultColumn, pickerFormatMap, formItemTooltopMargin } from './config';
+
+// 日期范围 开始时间 + 结束时间 拼接的分隔符
+const rangePickerSeparator = '___';
 
 // 处理 props.columns
 export const mergeColumns = columns => {
     return cloneDeep(columns)
         .map((v, i) => {
             const column = merge({}, defaultColumn, v);
-            const { label, defaultValue, template } = column;
+            const { name, label, defaultValue, template } = column;
             const { tpl } = template;
             if (tpl === 'input') {
                 column.placeholder = label ? ['请输入', label].join('') : '';
@@ -35,15 +38,17 @@ export const mergeColumns = columns => {
                 column.placeholder = undefined;
             }
             if (tpl === 'range-picker') {
-                const { startTimeKey, endTimeKey } = template;
+                const [startTimeKey, endTimeKey] = name || [];
                 if (isSomeFalsy(startTimeKey, endTimeKey)) {
-                    throw new Error('range-picker 必须传参数: startTimeKey, endTimeKey');
+                    throw new Error('range-picker 必须传参数: "name" 需为长度为 2 的数组');
                 }
+                column.name = [startTimeKey, endTimeKey].join(rangePickerSeparator);
                 const format = template.format || 'YYYY-MM-DD HH:mm:ss';
+
                 template.format = format;
                 column.placeholder = undefined;
             }
-            // startTime
+            column.template = template;
             return column;
         })
         .filter(v => Boolean(v.visible));
@@ -52,7 +57,15 @@ export const mergeColumns = columns => {
 // 表单初始值
 export const getInitialValues = columns => {
     return cloneDeep(columns).reduce((prev, cur) => {
-        const { name, defaultValue } = cur;
+        const { name, defaultValue, template } = cur;
+        const { tpl } = template;
+        // 日期范围
+        if (tpl === 'range-picker') {
+            const [startTimeKey, endTimeKey] = name.split(rangePickerSeparator);
+            prev[startTimeKey] = '';
+            prev[endTimeKey] = '';
+            return prev;
+        }
         prev[name] = defaultValue;
         return prev;
     }, {});
@@ -62,23 +75,29 @@ export const getInitialValues = columns => {
 export const getSearchValues = (params, columns) => {
     const result = {};
     columns.forEach(v => {
-        const { name, template } = v;
+        const { name, defaultValue, template } = v;
         const { tpl } = template;
         const value = params[name];
         if (tpl === 'date-picker') {
             const { format } = template;
             if (value) {
                 result[name] = formatTime(value, format);
-                return;
+            } else {
+                result[name] = defaultValue;
             }
+            return;
         }
         if (tpl === 'range-picker') {
-            const { format, startTimeKey, endTimeKey } = template;
+            const { format } = template;
+            const [startTimeKey, endTimeKey] = name.split(rangePickerSeparator);
             if (value) {
                 result[startTimeKey] = formatTime(value[0], format);
                 result[endTimeKey] = formatTime(value[1], format);
-                return;
+            } else {
+                result[startTimeKey] = '';
+                result[endTimeKey] = '';
             }
+            return;
         }
         result[name] = value;
     });
@@ -109,7 +128,7 @@ export const getFormItemNodeStyle = column => {
     const { template } = column;
     const { tpl, width } = template;
     const style = {};
-    // 日期范围
+    // 单选 复选 日期范围
     if (['radio', 'checkbox', 'range-picker'].includes(tpl)) {
         style.width = undefined;
     } else {
@@ -127,9 +146,6 @@ export const getFormItemNodeProps = column => {
         style: getFormItemNodeStyle(column),
         ...omit(template, ['width', 'tpl'])
     };
-    if (tpl === 'range-picker') {
-        removeProperties(formItemNodeProps, ['startTimeKey', 'endTimeKey']);
-    }
     return formItemNodeProps;
 };
 
