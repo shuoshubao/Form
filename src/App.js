@@ -1,170 +1,210 @@
-import { UserOutlined } from '@ant-design/icons';
-import Search from './Search';
+import React from 'react';
+import { random } from 'lodash';
+import { sleep } from '@nbfe/tools';
+import Form from '../lib';
+
+const mockVal = (str, repeat = 1) => ({
+    value: str.repeat(repeat)
+});
+
+const selectData = {
+    1: [
+        {
+            value: 11,
+            label: '11'
+        },
+        {
+            value: 12,
+            label: '12'
+        }
+    ],
+    2: [
+        {
+            value: 21,
+            label: '21'
+        },
+        {
+            value: 22,
+            label: '22'
+        }
+    ]
+};
 
 const columns = [
     {
-        label: '姓名',
-        prop: 'b',
-        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b']
-    },
-    {
-        label: '搜索框',
-        prop: 'a',
+        label: '数字范围',
+        name: 'a1,a2',
+        tooltip: '数字范围',
+        defaultValue: [0.1],
         template: {
-            inputType: 'search',
-            // prefix: <UserOutlined />,
-            // addonAfter: 'addonAfter',
-            enterButton: true,
-            allowClear: true
+            tpl: 'range-number',
+            inputNumberProps: {
+                min: 0,
+                max: 1,
+                step: 0.1
+            }
         }
     },
     {
-        label: '性别',
-        prop: 'c',
-        defaultValue: 2,
+        label: '关键字3',
+        name: 'a3,a31',
+        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
+        inline: false,
         template: {
-            tpl: 'select',
-            allowClear: true,
+            inputType: 'select-search',
             options: [
-                { label: '男', value: 1, disabled: true },
-                { label: '女', value: 2 }
+                {
+                    label: '交易编号',
+                    value: 'businessCode'
+                },
+                {
+                    label: '合同编号',
+                    value: 'contractNo'
+                },
+                {
+                    label: '买方',
+                    value: 'buyerName'
+                },
+                {
+                    label: '卖方',
+                    value: 'sellerName'
+                }
             ]
         }
     },
+    // {
+    //     label: '创建时间1',
+    //     name: 'b',
+    //     tooltip: '创建时间1',
+    //     template: {
+    //         tpl: 'date-picker'
+    //     }
+    // },
     {
-        label: '地区',
-        prop: 'c2',
-        defaultValue: ['zhejiang', 'hangzhou', 'xihu'],
+        label: '级联',
+        name: 'b2',
+        tooltip: '级联',
         template: {
-            tpl: 'cascader',
-            allowClear: true,
-            expandTrigger: 'hover',
+            tpl: 'cascader'
+        }
+    },
+    {
+        label: '下拉框1',
+        name: 'a',
+        template: {
+            tpl: 'select',
             options: [
                 {
-                    value: 'zhejiang',
-                    label: 'Zhejiang',
-                    children: [
-                        {
-                            value: 'hangzhou',
-                            label: 'Hangzhou',
-                            children: [
-                                {
-                                    value: 'xihu',
-                                    label: 'West Lake'
-                                }
-                            ]
-                        }
-                    ]
+                    value: 1,
+                    label: 'a'
                 },
                 {
-                    value: 'jiangsu',
-                    label: 'Jiangsu',
-                    children: [
-                        {
-                            value: 'nanjing',
-                            label: 'Nanjing',
-                            children: [
-                                {
-                                    value: 'zhonghuamen',
-                                    label: 'Zhong Hua Men'
-                                }
-                            ]
-                        }
-                    ]
+                    value: 2,
+                    label: 'b'
                 }
             ]
         }
     },
     {
-        label: '创建时间1',
-        prop: 'd',
-        tooltip: '创建时间1',
-        template: {
-            tpl: 'date-picker'
-        }
-    },
-    {
-        label: '创建时间2',
-        prop: 'd1',
-        template: {
-            tpl: 'date-picker',
-            format: 'YYYY-MM-DD HH:mm',
-            showTime: true
-        }
-    },
-    {
-        label: '创建时间3',
-        prop: 'd2',
-        template: {
-            tpl: 'date-picker',
-            format: 'YYYY-MM-DD HH:mm:ss',
-            showTime: true
-        }
-    },
-    {
-        label: '创建时间4',
-        prop: 'd3',
-        template: {
-            tpl: 'date-picker',
-            picker: 'month'
-        }
-    },
-    {
-        label: '时间区间',
-        prop: 'e',
-        inline: false,
-        template: {
-            tpl: 'range-picker',
-            format: 'YYYY-MM-DD HH:mm:ss',
-            startTimeKey: 'sTime',
-            endTimeKey: 'eTime'
-        }
-    },
-    {
-        label: '状态',
-        prop: 'f',
-        inline: false,
-        // defaultValue: 2,
-        template: {
-            tpl: 'radio',
-            options: [
-                { label: '待存管', value: 1 },
-                { label: '部分存管', value: 2, disabled: true },
-                { label: '存管完成', value: 3 },
-                { label: '已解冻', value: 4 }
-            ]
-        }
-    },
-    {
-        label: '状态',
-        prop: 'g',
-        inline: false,
+        label: 'checkbox',
+        name: 'b',
+        defaultValue: [1],
         template: {
             tpl: 'checkbox',
             options: [
-                { label: '待存管', value: 1 },
-                { label: '部分存管', value: 2, disabled: true },
-                { label: '存管完成', value: 3 },
-                { label: '已解冻', value: 4 }
+                {
+                    value: 1,
+                    label: 'a'
+                },
+                {
+                    value: 2,
+                    label: 'b'
+                }
             ]
         }
     },
     {
-        label: '开关',
-        prop: 'h',
+        label: 'slider',
+        name: 'slider',
+        defaultValue: 1,
+        template: {
+            tpl: 'slider'
+        }
+    },
+    {
+        label: 'switch',
+        name: 'switch',
         defaultValue: true,
         template: {
             tpl: 'switch'
         }
+    },
+    {
+        label: '下拉框2',
+        name: 'c',
+        defaultValue: 1,
+        template: {
+            tpl: 'select',
+            allowClear: true,
+            allItem: { value: null, label: '全部' },
+            options: [],
+            remoteConfig: {
+                fetch: async () => {
+                    await sleep(1);
+                    return {
+                        code: 0,
+                        data: [
+                            {
+                                code: 1,
+                                label: 'aa'
+                            },
+                            {
+                                code: 2,
+                                label: 'bb'
+                            }
+                        ],
+                        message: '成功'
+                    };
+                },
+                path: 'data',
+                valueKey: 'code',
+                process: data => {
+                    // console.log(123);
+                    // console.log(data);
+                }
+            }
+        }
     }
 ];
 
-const App = () => {
+export default () => {
+    const onSubmit = (params, searchParams) => {
+        // console.log('搜索:');
+        // console.log(params);
+        // console.log(searchParams);
+    };
     return (
         <div className="App" style={{ padding: 10, background: '#edf0f3' }}>
-            <Search columns={columns} />
+            <Form
+                columns={columns}
+                onSubmit={onSubmit}
+                showSearchBtn
+                onValuesChange={({ key, value }, { columns, updateColumns, setFieldsValue }) => {
+                    console.log(333);
+                    console.log(key, value);
+                    if (key === 'a') {
+                        columns.forEach(v => {
+                            if (v.name === 'b') {
+                                v.template.options = selectData[value] || [];
+                                setFieldsValue({ b: undefined });
+                                updateColumns(columns);
+                            }
+                        });
+                    }
+                    console.log(columns);
+                    // console.log(allFields);
+                }}
+            />
         </div>
     );
 };
-
-export default App;
