@@ -357,7 +357,8 @@ const DescriptionsData = {
 const DescriptionsColumns = [
     {
         label: 'A',
-        name: 'a'
+        name: 'a',
+        tooltip: '提示文案: [链接|baidu.com]'
     },
     {
         label: 'B',
