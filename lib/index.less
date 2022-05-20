@@ -91,9 +91,26 @@
             }
         }
         .ant-form.ant-form-horizontal {
+            .ant-form-item-with-help {
+              margin-bottom: 3px;
+            }
             .ant-form-item-control {
                 display: inline-block;
             }
+            .ant-form-item-label {
+              vertical-align: top;
+            }
+        }
+        .ant-form-item-has-error {
+          .ant-input,
+          .ant-select-selection,
+          .ant-input-number,
+          .ant-input-group-compact .ant-input {
+            border-color: #ff4d4f;
+          }
+        }
+        .ant-form-error {
+          color: #ff4d4f;
         }
         .ant-form-item-label {
             label {
@@ -109,8 +126,8 @@
         }
     }
 
-    .ant-card-body {
-        padding-top: 0px;
+    .ant-card-body > .ant-form {
+        margin-top: -10px;
     }
 
     .ant-form.ant-form-horizontal {
