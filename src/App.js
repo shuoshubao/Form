@@ -237,20 +237,45 @@ const columns = [
     {
         label: 'checkbox',
         name: 'b',
-        defaultValue: [1, 2],
+        defaultValue: [2],
         template: {
             tpl: 'checkbox',
             indeterminate: true,
-            options: [
-                {
-                    value: 1,
-                    label: 'a'
+            // options: [
+            //     {
+            //         value: 1,
+            //         label: 'a'
+            //     },
+            //     {
+            //         value: 2,
+            //         label: 'b'
+            //     }
+            // ]
+            remoteConfig: {
+                fetch: async () => {
+                    await sleep(1);
+                    return {
+                        code: 0,
+                        data: [
+                            {
+                                code: 1,
+                                label: 'a'
+                            },
+                            {
+                                code: 2,
+                                label: 'b'
+                            }
+                        ],
+                        message: '成功'
+                    };
                 },
-                {
-                    value: 2,
-                    label: 'b'
+                path: 'data',
+                valueKey: 'code',
+                process: data => {
+                    // console.log(123);
+                    // console.log(data);
                 }
-            ]
+            }
         }
     },
     {
