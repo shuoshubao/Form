@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip } from './antd';
+import { Tooltip } from 'antd';
 import { get, pick, omit, merge, cloneDeep, flatten, noop, isFunction, isObject } from 'lodash';
 import { classNames, isSomeFalsy, formatTime, convertDataToEnum, isEmptyValue, isEmptyArray } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';

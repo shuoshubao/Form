@@ -16,7 +16,7 @@ import {
     Input,
     InputNumber,
     message
-} from './antd';
+} from 'antd';
 import ComplexInput from './Input.jsx';
 import RangeNumber from './RangeNumber.jsx';
 import Tabs from './Tabs.jsx';

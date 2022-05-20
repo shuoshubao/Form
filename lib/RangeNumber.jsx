@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { InputNumber, Input, Select } from './antd';
+import { InputNumber, Input, Select } from 'antd';
 import { isFunction, omit } from 'lodash';
 import { isEveryTruthy, isEmptyValue, setAsyncState } from '@nbfe/tools';
 import { searchSeparator } from './config';

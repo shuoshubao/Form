@@ -1,7 +1,7 @@
 import React from 'react';
 import { random } from 'lodash';
 import { sleep } from '@nbfe/tools';
-import Search from '../lib';
+import Form from '../lib';
 
 const mockVal = (str, repeat = 1) => ({
     value: str.repeat(repeat)
@@ -179,7 +179,7 @@ export default () => {
     };
     return (
         <div className="App" style={{ padding: 10, background: '#edf0f3' }}>
-            <Search
+            <Form
                 columns={columns}
                 onSubmit={onSubmit}
                 showSearchBtn

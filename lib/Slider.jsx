@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Slider, InputNumber } from './antd';
+import { Slider, InputNumber } from 'antd';
 import { isFunction, omit } from 'lodash';
 
 class Index extends Component {

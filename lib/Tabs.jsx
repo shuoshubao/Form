@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { omit, last, isNumber } from 'lodash';
-import { Tabs } from './antd';
+import { Tabs } from 'antd';
 import { getDisplayName } from './util.jsx';
 
 const { TabPane } = Tabs;
