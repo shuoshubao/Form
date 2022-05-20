@@ -151,7 +151,7 @@ class Index extends Component {
                 </Input.Group>
             );
         }
-        return <Input {...omit(inputProps, ['enterButton'])} />;
+        return <Input {...omit(inputProps, ['enterButton'])} value={inputValue} onChange={onInputChange} />;
     }
 }
 
