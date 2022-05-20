@@ -279,7 +279,7 @@ export const getFormItemProps = (column, { index, labelWidth }) => {
         'template'
     ]);
     const labelNode = renderFormItemLabel(column, { labelWidth });
-    const key = [index, label, name].join('_');
+    const key = [index, label, name, column.key].join('_');
     return merge(
         {
             label: labelNode,
