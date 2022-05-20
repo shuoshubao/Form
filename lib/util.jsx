@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip } from './antd';
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
-import { omit, merge, cloneDeep, flatten } from 'lodash';
+import { get, omit, merge, cloneDeep, flatten, isFunction } from 'lodash';
 import { classNames, isSomeFalsy, formatTime } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
 import {
@@ -54,6 +54,9 @@ export const mergeColumns = (columns = []) => {
                     column.name = [selectKey, inputKey].join(searchSeparator);
                 }
             }
+            if (tpl === 'auto-complete') {
+                column.placeholder = label ? ['请输入', label].join('') : '';
+            }
             if (tpl === 'select') {
                 column.placeholder = label ? ['请选择', label].join('') : '';
                 column.defaultValue = defaultValue === defaultColumn.defaultValue ? undefined : defaultValue;
@@ -103,23 +106,25 @@ export const validateColumns = (columns = []) => {
         if (tpl === 'input') {
             const { inputType = 'input' } = template;
             if (!inputTypeList.includes(inputType)) {
-                throw new Error(`[${componentName}]inputType 参数非法, 需为其中一种: ${inputTypeList.join('|')}`);
+                throw new Error(`[${componentName}] inputType 参数非法, 需为其中一种: ${inputTypeList.join('|')}`);
             }
             if (['select-search', 'select-input'].includes(inputType)) {
                 const [selectKey, inputKey] = name.split(searchSeparator);
                 if (isSomeFalsy(selectKey, inputKey)) {
-                    throw new Error(
-                        `[${componentName}]range-picker 必须传参数: "name" 需为长度为 "selectKey,inputKey"`
-                    );
+                    throw new Error(`[${componentName}] range-picker 必须传参数: "name" 形式为 "selectKey,inputKey"`);
                 }
+            }
+        }
+        if (tpl === 'auto-complete') {
+            const fetchFunc = get(template, 'remoteConfig.fetch');
+            if (!isFunction(fetchFunc)) {
+                throw new Error(`[${componentName}] auto-complete 必须传参数: "template.remoteConfig.fetch" 需为函数`);
             }
         }
         if (tpl === 'range-picker') {
             const [startTimeKey, endTimeKey] = name.split(searchSeparator);
             if (isSomeFalsy(startTimeKey, endTimeKey)) {
-                throw new Error(
-                    `[${componentName}]range-picker 必须传参数: "name" 需为长度为 "startTimeKey,endTimeKey"`
-                );
+                throw new Error(`[${componentName}] range-picker 必须传参数: "name" 形式为 "startTimeKey,endTimeKey"`);
             }
         }
     });

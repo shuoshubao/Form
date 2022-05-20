@@ -1,8 +1,27 @@
 import React from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import Search from '../lib';
+import { random } from 'lodash';
+import { sleep } from '@nbfe/tools';
+
+const mockVal = (str, repeat = 1) => ({
+    value: str.repeat(repeat)
+});
 
 const columns = [
+    {
+        label: 'AutoComplete',
+        name: 'AutoComplete',
+        template: {
+            tpl: 'auto-complete',
+            remoteConfig: {
+                fetch: async searchText => {
+                    await sleep(random(0.5, 1.5));
+                    return !searchText ? [] : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)];
+                }
+            }
+        }
+    },
     {
         label: '关键字1',
         name: 'a1',

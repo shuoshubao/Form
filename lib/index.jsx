@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { debounce, isFunction, omit, merge } from 'lodash';
+import { cloneDeep, debounce, isFunction, omit, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy, classNames } from '@nbfe/tools';
-import { Card, Button, Form, Select, DatePicker, Radio, Checkbox, Cascader } from './antd';
+import { Card, Button, Form, Select, DatePicker, Radio, Checkbox, Cascader, AutoComplete } from './antd';
 import Switch from './Switch.jsx';
 import Input from './Input.jsx';
 import FilterPanel from './FilterPanel.jsx';
@@ -56,7 +56,9 @@ class Index extends Component {
         super(props);
         this.state = {
             columns: [],
-            initialValues: {}
+            initialValues: {},
+            // AutoComplete 数据项
+            autoCompleteOptions: {}
         };
         this.formRef = React.createRef();
         this.filterPanelRef = React.createRef();
@@ -90,7 +92,7 @@ class Index extends Component {
         if (!immediate) {
             return;
         }
-        if (['input'].includes(tpl)) {
+        if (['input', 'auto-complete'].includes(tpl)) {
             return;
         }
         this.onSearch();
@@ -124,10 +126,29 @@ class Index extends Component {
         this.onSearch();
     };
 
+    // AutoComplete 查询
+    onAutoCompleteSearch = debounce(async (searchText, column) => {
+        const {
+            name,
+            template: { remoteConfig }
+        } = column;
+        let data = [];
+        if (searchText) {
+            data = await remoteConfig.fetch(searchText);
+        }
+        this.setState(prevState => {
+            const autoCompleteOptions = cloneDeep(prevState.autoCompleteOptions);
+            autoCompleteOptions[name] = data;
+            return {
+                autoCompleteOptions
+            };
+        });
+    }, 100);
+
     // Form.Item
     renderColumns = () => {
         const { props, state } = this;
-        const { initialValues, columns } = state;
+        const { initialValues, columns, autoCompleteOptions } = state;
         const labelWidth = props.labelWidth || getFormItemLabelWidth(columns);
         return columns.map((v, i) => {
             const { label, name, inline, template } = v;
@@ -144,6 +165,23 @@ class Index extends Component {
                         column={v}
                         {...formItemNodeProps}
                         onSearch={() => {
+                            this.onSearch();
+                        }}
+                    />
+                );
+            }
+
+            // AutoComplete
+            if (tpl === 'auto-complete') {
+                formItemNode = (
+                    <AutoComplete
+                        {...omit(formItemNodeProps, ['remoteConfig'])}
+                        allowClear
+                        options={autoCompleteOptions[name] || []}
+                        onSearch={searchText => {
+                            this.onAutoCompleteSearch(searchText.trim(), v);
+                        }}
+                        onSelect={() => {
                             this.onSearch();
                         }}
                     />
