@@ -107,7 +107,7 @@ export const mergeColumns = (columns = []) => {
 // 校验参数
 export const validateColumns = (columns = []) => {
     columns.forEach(column => {
-        const { name, label, defaultValue, template } = column;
+        const { name, label, template } = column;
         const { tpl } = template;
         if (tpl === 'input') {
             const { inputType = 'input' } = template;

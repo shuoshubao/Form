@@ -45,6 +45,11 @@ class Index extends Component {
                 });
             }
         }
+        if (['input', 'textarea', 'password'].includes(inputType)) {
+            this.setState({
+                inputValue: defaultValue
+            });
+        }
     }
 
     onSelectChange = async value => {
