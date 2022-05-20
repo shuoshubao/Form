@@ -1,42 +1,48 @@
 import React from 'react';
-import { UserOutlined } from '@ant-design/icons';
-import Search from '../lib';
 import { random } from 'lodash';
 import { sleep } from '@nbfe/tools';
+import Search from '../lib';
 
 const mockVal = (str, repeat = 1) => ({
     value: str.repeat(repeat)
 });
 
+const selectData = {
+    1: [
+        {
+            value: 11,
+            label: '11'
+        },
+        {
+            value: 12,
+            label: '12'
+        }
+    ],
+    2: [
+        {
+            value: 21,
+            label: '21'
+        },
+        {
+            value: 22,
+            label: '22'
+        }
+    ]
+};
+
 const columns = [
     {
-        label: 'AutoComplete',
-        name: 'AutoComplete',
+        label: '数字范围',
+        name: 'a1,a2',
+        tooltip: '数字范围',
+        defaultValue: [0.1],
         template: {
-            tpl: 'auto-complete',
-            remoteConfig: {
-                fetch: async searchText => {
-                    await sleep(random(0.5, 1.5));
-                    return !searchText ? [] : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)];
-                }
+            tpl: 'range-number',
+            inputNumberProps: {
+                min: 0,
+                max: 1,
+                step: 0.1
             }
-        }
-    },
-    {
-        label: '关键字1',
-        name: 'a1',
-        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
-        template: {
-            inputType: 'search'
-        }
-    },
-    {
-        label: '关键字2',
-        name: 'a2',
-        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
-        template: {
-            inputType: 'search',
-            enterButton: '搜索'
         }
     },
     {
@@ -66,226 +72,133 @@ const columns = [
             ]
         }
     },
+    // {
+    //     label: '创建时间1',
+    //     name: 'b',
+    //     tooltip: '创建时间1',
+    //     template: {
+    //         tpl: 'date-picker'
+    //     }
+    // },
     {
-        label: '关键字4',
-        name: 'a4,a41',
-        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
-        inline: false,
+        label: '级联',
+        name: 'b2',
+        tooltip: '级联',
         template: {
-            inputType: 'select-search',
-            enterButton: '搜索',
-            options: [
-                {
-                    label: '交易编号',
-                    value: 'businessCode'
-                },
-                {
-                    label: '合同编号',
-                    value: 'contractNo'
-                },
-                {
-                    label: '买方',
-                    value: 'buyerName'
-                },
-                {
-                    label: '卖方',
-                    value: 'sellerName'
-                }
-            ]
+            tpl: 'cascader',
+
         }
     },
     {
-        label: '关键字5',
-        name: 'a5,a51',
-        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
-        inline: false,
-        template: {
-            inputType: 'select-input',
-            enterButton: '搜索',
-            options: [
-                {
-                    label: '交易编号',
-                    value: 'businessCode'
-                },
-                {
-                    label: '合同编号',
-                    value: 'contractNo'
-                },
-                {
-                    label: '买方',
-                    value: 'buyerName'
-                },
-                {
-                    label: '卖方',
-                    value: 'sellerName'
-                }
-            ]
-        }
-    },
-    {
-        label: '姓名',
-        name: 'b',
-        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b']
-    },
-    {
-        label: '搜索框',
+        label: '下拉框',
         name: 'a',
-        template: {
-            inputType: 'search',
-            prefix: <UserOutlined />,
-            // addonAfter: 'addonAfter',
-            enterButton: true,
-            allowClear: true
-        }
-    },
-    {
-        label: '性别',
-        name: 'c',
         defaultValue: 2,
         template: {
             tpl: 'select',
             allowClear: true,
             options: [
-                { label: '男', value: 1, disabled: true },
-                { label: '女', value: 2 }
-            ]
-        }
-    },
-    // {
-    //     label: '地区',
-    //     name: 'c2',
-    //     defaultValue: ['zhejiang', 'hangzhou', 'xihu'],
-    //     template: {
-    //         tpl: 'cascader',
-    //         allowClear: true,
-    //         expandTrigger: 'hover',
-    //         options: [
-    //             {
-    //                 value: 'zhejiang',
-    //                 label: 'Zhejiang',
-    //                 children: [
-    //                     {
-    //                         value: 'hangzhou',
-    //                         label: 'Hangzhou',
-    //                         children: [
-    //                             {
-    //                                 value: 'xihu',
-    //                                 label: 'West Lake'
-    //                             }
-    //                         ]
-    //                     }
-    //                 ]
-    //             },
-    //             {
-    //                 value: 'jiangsu',
-    //                 label: 'Jiangsu',
-    //                 children: [
-    //                     {
-    //                         value: 'nanjing',
-    //                         label: 'Nanjing',
-    //                         children: [
-    //                             {
-    //                                 value: 'zhonghuamen',
-    //                                 label: 'Zhong Hua Men'
-    //                             }
-    //                         ]
-    //                     }
-    //                 ]
-    //             }
-    //         ]
-    //     }
-    // },
-    {
-        label: '创建时间1',
-        name: 'd',
-        tooltip: '创建时间1',
-        template: {
-            tpl: 'date-picker'
-        }
-    },
-    {
-        label: '创建时间2',
-        name: 'd1',
-        template: {
-            tpl: 'date-picker',
-            format: 'YYYY-MM-DD HH:mm',
-            showTime: true
-        }
-    },
-    {
-        label: '创建时间3',
-        name: 'd2',
-        template: {
-            tpl: 'date-picker',
-            format: 'YYYY-MM-DD HH:mm:ss',
-            showTime: true
-        }
-    },
-    {
-        label: '创建时间4',
-        name: 'd3',
-        template: {
-            tpl: 'date-picker',
-            picker: 'month'
-        }
-    },
-    {
-        label: '时间区间',
-        name: 'sTime,eTime',
-        inline: false,
-        template: {
-            tpl: 'range-picker',
-            format: 'YYYY-MM-DD'
-        }
-    },
-    {
-        label: '状态',
-        name: 'f',
-        inline: false,
-        // defaultValue: 2,
-        template: {
-            tpl: 'radio',
-            options: [
-                { label: '待存管', value: 1 },
-                { label: '部分存管', value: 2, disabled: true },
-                { label: '存管完成', value: 3 },
-                { label: '已解冻', value: 4 }
+                {
+                    value: 1,
+                    label: 'a'
+                },
+                {
+                    value: 2,
+                    label: 'b'
+                }
             ]
         }
     },
     {
-        label: '状态',
-        name: 'g',
-        inline: false,
+        label: 'checkbox',
+        name: 'b',
+        defaultValue: [1],
         template: {
             tpl: 'checkbox',
             options: [
-                { label: '待存管', value: 1 },
-                { label: '部分存管', value: 2, disabled: true },
-                { label: '存管完成', value: 3 },
-                { label: '已解冻', value: 4 }
+                {
+                    value: 1,
+                    label: 'a'
+                },
+                {
+                    value: 2,
+                    label: 'b'
+                }
             ]
         }
     },
     {
-        label: '开关',
-        name: 'h',
-        defaultValue: true,
+        label: 'slider',
+        name: 'slider',
+        defaultValue: 1,
         template: {
-            tpl: 'switch'
+            tpl: 'slider',
+        }
+    },
+    {
+        label: '下拉框',
+        name: 'c',
+        defaultValue: 2,
+        template: {
+            tpl: 'select',
+            allowClear: true,
+            options: [],
+            remoteConfig: {
+                fetch: async () => {
+                    await sleep(1);
+                    return {
+                        code: 0,
+                        data: [
+                            {
+                                code: 1,
+                                label: 'a'
+                            },
+                            {
+                                code: 2,
+                                label: 'b'
+                            }
+                        ],
+                        message: '成功'
+                    };
+                },
+                path: 'data',
+                valueKey: 'code',
+                process: data => {
+                    // console.log(123);
+                    // console.log(data);
+                }
+            }
         }
     }
 ];
 
 export default () => {
     const onSubmit = (params, searchParams) => {
-        console.log('搜索:');
-        console.log(params);
+        // console.log('搜索:');
+        // console.log(params);
         // console.log(searchParams);
     };
     return (
         <div className="App" style={{ padding: 10, background: '#edf0f3' }}>
-            <Search columns={columns} onSubmit={onSubmit} visibleFilterPanel={true} />
+            <Search
+                columns={columns}
+                onSubmit={onSubmit}
+                showSearchBtn
+                onValuesChange={({ key, value }, { columns, updateColumns, setFieldsValue }) => {
+                    console.log(333);
+                    console.log(key, value);
+                    if (key === 'a') {
+                        columns.forEach(v => {
+                            if (v.name === 'b') {
+                                v.template.options = selectData[value] || [];
+                                setFieldsValue({ b: undefined });
+                                updateColumns(columns);
+                            }
+                        });
+                    }
+                    console.log(columns);
+                    // console.log(allFields);
+                }}
+            />
         </div>
     );
 };
