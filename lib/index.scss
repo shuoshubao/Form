@@ -2,6 +2,9 @@
     background-color: #fff;
 
     &.dyna-form-container-disabled {
+        .dyna-form-form-item-label::before {
+            display: none !important;
+        }
         .ant-form-item {
             margin-bottom: 10px;
         }
