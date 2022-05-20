@@ -5,6 +5,54 @@
         .ant-form-item {
             margin-bottom: 10px;
         }
+        .ant-picker-suffix,
+        .ant-input-group-addon {
+            visibility: hidden;
+        }
+        .ant-input,
+        .ant-input-number,
+        .ant-select-selector,
+        .ant-cascader-picker,
+        .ant-select-selection-item,
+        .ant-picker {
+            cursor: default !important;
+            color: rgba(0, 0, 0, 0.85) !important;
+            background-color: #fff !important;
+            border-color: #fff !important;
+            .ant-select-selection-placeholder {
+                display: none;
+            }
+        }
+        .ant-select input,
+        .ant-input-number-input,
+        .ant-picker-separator,
+        .ant-picker-input > input[disabled] {
+            cursor: default !important;
+        }
+        .ant-select {
+            &:hover .ant-select-selector {
+                border-color: #fff !important;
+                border-left-color: #fff !important;
+                border-right-color: #fff !important;
+            }
+        }
+        .ant-select-arrow,
+        .ant-cascader-picker-arrow {
+            display: none;
+        }
+        .ant-input-number {
+            &:hover {
+                border-color: #fff !important;
+                border-left-color: #fff !important;
+                border-right-color: #fff !important;
+            }
+        }
+        .ant-input-textarea-show-count:after {
+            display: none;
+        }
+        .ant-cascader-picker-label {
+            z-index: 1;
+        }
     }
 
     .ant-card-body {

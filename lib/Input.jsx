@@ -122,7 +122,7 @@ class Index extends Component {
             const { label } = options.find(v => v.value === selectValue) || {};
             return (
                 <Input.Group compact>
-                    <Select value={selectValue} onChange={onSelectChange} style={{ width: selectWidth }}>
+                    <Select disabled={props.disabled} value={selectValue} onChange={onSelectChange} style={{ width: selectWidth }}>
                         {options.map(v => {
                             return (
                                 <Select.Option value={v.value} key={v.value}>
