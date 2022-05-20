@@ -3,8 +3,8 @@ import { random } from 'lodash';
 import { sleep } from '@nbfe/tools';
 import Form from '../lib';
 
-const mockVal = (str) => {
-    return [1, 2, 3].map((v) => {
+const mockVal = str => {
+    return [1, 2, 3].map(v => {
         const name = [str, v].join('');
         return {
             value: name,
@@ -13,7 +13,7 @@ const mockVal = (str) => {
     });
 };
 
-const selectData = {
+const selectOptions = {
     1: [
         {
             value: 11,
@@ -35,6 +35,54 @@ const selectData = {
         }
     ]
 };
+
+const cascaderOptions = [
+  {
+    value: 'zhejiang',
+    label: 'Zhejiang',
+    children: [
+      {
+        value: 'hangzhou',
+        label: 'Hangzhou',
+      },
+    ],
+  },
+  {
+    value: 'jiangsu',
+    label: 'Jiangsu',
+    children: [
+      {
+        value: 'nanjing',
+        label: 'Nanjing',
+      },
+    ],
+  },
+];
+
+const treeData = [
+  {
+    title: 'Node1',
+    value: '0-0',
+    key: '0-0',
+    children: [
+      {
+        title: 'Child Node1',
+        value: '0-0-1',
+        key: '0-0-1',
+      },
+      {
+        title: 'Child Node2',
+        value: '0-0-2',
+        key: '0-0-2',
+      },
+    ],
+  },
+  {
+    title: 'Node2',
+    value: '0-1',
+    key: '0-1',
+  },
+];
 
 const columns = [
     {
@@ -68,6 +116,24 @@ const columns = [
                 fetch: async searchText => {
                     await sleep(0.1);
                     return !searchText ? [] : mockVal(searchText);
+                }
+            }
+        }
+    },
+    {
+        label: '选择树',
+        name: 'tree-select',
+        tooltip: '自动完成',
+        template: {
+            tpl: 'tree-select',
+            // multiple: true,
+            // treeCheckable: true,
+            treeDefaultExpandAll: true,
+            showCheckedStrategy: 'SHOW_PARENT',
+            remoteConfig: {
+                fetch: async () => {
+                    await sleep(1);
+                    return treeData;
                 }
             }
         }
@@ -109,10 +175,14 @@ const columns = [
     // },
     {
         label: '级联',
-        name: 'b2',
+        name: 'cascader',
         tooltip: '级联',
+        transform: (value) => {
+            return value[1] || '';
+        },
         template: {
-            tpl: 'cascader'
+            tpl: 'cascader',
+            options: cascaderOptions
         }
     },
     {
@@ -222,7 +292,7 @@ export default () => {
                     if (key === 'a') {
                         columns.forEach(v => {
                             if (v.name === 'b') {
-                                v.template.options = selectData[value] || [];
+                                v.template.options = selectOptions[value] || [];
                                 setFieldsValue({ b: undefined });
                                 updateColumns(columns);
                             }

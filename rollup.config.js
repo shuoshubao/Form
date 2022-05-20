@@ -1,5 +1,6 @@
 import babel from '@rollup/plugin-babel';
 import postcss from 'rollup-plugin-postcss';
+// import { terser } from 'rollup-plugin-terser';
 
 const babelConfig = {
     babelrc: false,
@@ -16,7 +17,7 @@ export default [
             format: 'cjs',
             exports: 'default'
         },
-        plugins: [postcss({ extract: true }), babel(babelConfig)]
+        plugins: [postcss({ extract: true, minimize: true }), babel(babelConfig)]
     },
     {
         input: 'lib/components.js',
