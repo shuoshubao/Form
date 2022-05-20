@@ -1,7 +1,8 @@
 {
     "name": "@ke/form",
-    "version": "1.0.7",
+    "version": "1.0.9",
     "main": "dist/index.js",
+    "files": ["dist/"],
     "publishConfig": {
         "registry": "http://artifactory.ke.com/artifactory/api/npm/npm-virtual/"
     },
