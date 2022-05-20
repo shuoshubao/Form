@@ -179,8 +179,8 @@ const columns = [
 
 export default () => {
     const onSubmit = (params, searchParams) => {
-        // console.log('搜索:');
-        // console.log(params);
+        console.log('搜索:');
+        console.log(params);
         // console.log(searchParams);
     };
     return (
