@@ -1,6 +1,6 @@
 {
     "name": "@jiaoyi/search",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "main": "dist/index.js",
     "publishConfig": {
         "registry": "http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/"
