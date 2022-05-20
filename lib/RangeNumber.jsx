@@ -56,6 +56,7 @@ class Index extends Component {
         return (
             <Input.Group compact className={getClassNames('range-number')}>
                 <InputNumber
+                    disabled={props.disabled}
                     value={minValue}
                     onChange={async value => {
                         await setAsyncState(this, { minValue: value });
@@ -77,6 +78,7 @@ class Index extends Component {
                     placeholder={separatorPlaceholder}
                 />
                 <InputNumber
+                    disabled={props.disabled}
                     value={maxValue}
                     onChange={async value => {
                         await setAsyncState(this, { maxValue: value });
