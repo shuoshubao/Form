@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { omit, pick, isObject, cloneDeep } from 'lodash';
+import { omit, pick, isObject, cloneDeep, noop } from 'lodash';
 import { convertDataToEnum } from '@nbfe/tools';
 import { getDisplayName } from './util.jsx';
 
