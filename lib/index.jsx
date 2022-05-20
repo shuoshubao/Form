@@ -21,6 +21,7 @@ import ComplexInput from './Input.jsx';
 import RangeNumber from './RangeNumber.jsx';
 import Tabs from './Tabs.jsx';
 import Switch from './Switch.jsx';
+import Slider from './Slider.jsx';
 import FilterPanel from './FilterPanel.jsx';
 import { isAntdV3, componentName, defaulCardProps, defaulFormProps } from './config';
 import {
@@ -355,6 +356,11 @@ class Index extends Component {
             // Switch
             if (tpl === 'switch') {
                 formItemNode = <Switch {...formItemNodeProps} />;
+            }
+
+            // Slider
+            if (tpl === 'slider') {
+                formItemNode = <Slider {...formItemNodeProps} />;
             }
 
             // 自定义组件
