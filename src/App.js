@@ -110,7 +110,7 @@ const columns = [
         name: 'cascader',
         tooltip: '级联',
         transform: value => {
-            return value[1] || '';
+            return value && value[1] || '';
         },
         template: {
             tpl: 'cascader',
