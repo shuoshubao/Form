@@ -6,7 +6,6 @@ import {
     Card,
     Button,
     Form,
-    Select,
     TreeSelect,
     DatePicker,
     Radio,
@@ -19,6 +18,7 @@ import {
 } from 'antd';
 import ComplexInput from './Input.jsx';
 import RangeNumber from './RangeNumber.jsx';
+import Select from './Select.jsx';
 import Tabs from './Tabs.jsx';
 import Switch from './Switch.jsx';
 import Slider from './Slider.jsx';
@@ -286,19 +286,7 @@ class Index extends Component {
 
             // Select
             if (tpl === 'select') {
-                const { options, allItem } = formItemNodeProps;
-                formItemNode = (
-                    <Select {...omit(formItemNodeProps, ['options', 'allItem', 'remoteConfig'])}>
-                        {[allItem, ...options].filter(Boolean).map(v => {
-                            const optionProps = pick(v, ['className', 'disabled', 'title', 'value']);
-                            return (
-                                <Select.Option key={v.value} {...optionProps}>
-                                    {v.label}
-                                </Select.Option>
-                            );
-                        })}
-                    </Select>
-                );
+                formItemNode = <Select {...formItemNodeProps} />;
             }
 
             // TreeSelect
@@ -508,6 +496,7 @@ class Index extends Component {
 }
 
 Index.ComplexInput = ComplexInput;
+Index.Select = Select;
 Index.RangeNumber = RangeNumber;
 Index.Tabs = Tabs;
 Index.Switch = Switch;

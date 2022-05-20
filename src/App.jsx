@@ -89,12 +89,10 @@ const columns = [
         }
     },
     {
-        label: '下拉框',
+        label: '下拉框1',
         name: 'a',
-        defaultValue: 2,
         template: {
             tpl: 'select',
-            allowClear: true,
             options: [
                 {
                     value: 1,
@@ -142,12 +140,13 @@ const columns = [
         }
     },
     {
-        label: '下拉框',
+        label: '下拉框2',
         name: 'c',
-        defaultValue: 2,
+        defaultValue: 1,
         template: {
             tpl: 'select',
             allowClear: true,
+            allItem: { value: null, label: '全部' },
             options: [],
             remoteConfig: {
                 fetch: async () => {

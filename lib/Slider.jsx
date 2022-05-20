@@ -26,7 +26,14 @@ class Index extends Component {
     render() {
         const { defaultValue, value, style, InputNumberWidth } = this.props;
         const { onChange } = this;
-        const SliderProps = omit(this.props, ['defaultValue', 'value', 'onChange', 'onCustomChange', 'style', 'InputNumberWidth']);
+        const SliderProps = omit(this.props, [
+            'defaultValue',
+            'value',
+            'onChange',
+            'onCustomChange',
+            'style',
+            'InputNumberWidth'
+        ]);
         return (
             <div
                 style={{
