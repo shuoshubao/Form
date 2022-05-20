@@ -14,6 +14,10 @@ import {
     inputTypeList
 } from './config';
 
+export const getDisplayName = (name = '') => {
+    return [componentName, name].join('');
+};
+
 export const getClassNames = (...args) => {
     return classNames(args)
         .split(' ')

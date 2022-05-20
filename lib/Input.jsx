@@ -4,9 +4,10 @@ import { Input, Select } from 'antd';
 import { isFunction, omit } from 'lodash';
 import { setAsyncState } from '@nbfe/tools';
 import { defaultColumn, searchSeparator } from './config';
+import { getDisplayName } from './util';
 
 class Index extends Component {
-    static displayName = 'SearchInput';
+    static displayName = getDisplayName('Input');
 
     static defaultProps = {};
 
@@ -58,7 +59,7 @@ class Index extends Component {
 
     onSearch = () => {
         const { props, state } = this;
-        const { onChange } = props;
+        const { onSearch } = props;
         if (!isFunction(onSearch)) {
             return;
         }

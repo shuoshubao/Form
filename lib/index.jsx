@@ -5,7 +5,7 @@ import { debounce, isFunction, omit, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy, classNames } from '@nbfe/tools';
 import Switch from './Switch.jsx';
 import Input from './Input.jsx';
-import SelectPanel from './SelectPanel.jsx';
+import FilterPanel from './FilterPanel.jsx';
 import { componentName, defaulCardProps, defaulFormProps } from './config';
 import {
     getClassNames,
@@ -58,6 +58,7 @@ class Index extends Component {
             initialValues: {}
         };
         this.formRef = React.createRef();
+        this.filterPanelRef = React.createRef();
         this.customEvents = this.getCustomEvents();
         this.domEvents = this.getDomEvents();
         this.renderResult = this.getRenderResult();
@@ -105,6 +106,7 @@ class Index extends Component {
                 if (isFunction(props.onSubmit)) {
                     props.onSubmit(searchValues, params);
                 }
+                this.filterPanelRef.current.setFields();
             }, 100),
             // 重置
             onReset: () => {
@@ -247,15 +249,33 @@ class Index extends Component {
         return (
             <Card className={getClassNames('container')} {...cardProps}>
                 <Form
-                    {...omit(formProps, ['ref', 'onFinish', 'initialValues'])}
                     ref={this.formRef}
+                    {...omit(formProps, ['ref', 'onFinish', 'initialValues'])}
                     onFinish={onSearch}
                     initialValues={initialValues}
                 >
                     {renderResult.renderColumns()}
                     {renderResult.renderSearchReset()}
                 </Form>
-                <SelectPanel />
+                <FilterPanel
+                    ref={this.filterPanelRef}
+                    columns={columns}
+                    getFieldsValue={() => {
+                        return this.formRef.current.getFieldsValue();
+                    }}
+                    onChange={(name, value) => {
+                        {
+                            /*this.formRef.current.resetFields();*/
+                        }
+                        console.log(name, value);
+                        this.formRef.current.setFields([
+                            {
+                                name,
+                                value
+                            }
+                        ]);
+                    }}
+                />
             </Card>
         );
     }
