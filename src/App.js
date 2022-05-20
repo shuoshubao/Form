@@ -92,11 +92,10 @@ const columns = [
         defaultValue: [0.1],
         template: {
             tpl: 'range-number',
-            inputNumberProps: {
-                min: 0,
-                max: 1,
-                step: 0.1
-            }
+            separatorPlaceholder: '-',
+            min: 0,
+            max: 1,
+            step: 0.1
         }
     },
     {
