@@ -165,7 +165,7 @@ const columns = [
     // }
 ];
 
-const App = () => {
+export default () => {
     const onSubmit = params => {
         console.log(params);
     };
@@ -175,5 +175,3 @@ const App = () => {
         </div>
     );
 };
-
-export default App;
