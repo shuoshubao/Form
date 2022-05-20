@@ -16,8 +16,9 @@ import {
     InputNumber,
     message
 } from './antd';
-import Switch from './Switch.jsx';
 import Input from './Input.jsx';
+import Tabs from './Tabs.jsx';
+import Switch from './Switch.jsx';
 import FilterPanel from './FilterPanel.jsx';
 import { isAntdV3, componentName, defaulCardProps, defaulFormProps } from './config';
 import {
@@ -270,6 +271,11 @@ class Index extends Component {
                 formItemNode = <Checkbox.Group {...formItemNodeProps} />;
             }
 
+            // Tabs
+            if (tpl === 'tabs') {
+                formItemNode = <Tabs column={v} {...formItemNodeProps} />;
+            }
+
             // DatePicker
             if (tpl === 'date-picker') {
                 formItemNode = <DatePicker {...formItemNodeProps} />;
@@ -304,11 +310,7 @@ class Index extends Component {
                     </Form.Item>
                 );
             }
-            return (
-                <Form.Item {...formItemProps}>
-                    {formItemNode}
-                </Form.Item>
-            );
+            return <Form.Item {...formItemProps}>{formItemNode}</Form.Item>;
         });
         if (children) {
             const childrenNode = (
