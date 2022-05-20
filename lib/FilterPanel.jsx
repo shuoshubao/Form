@@ -131,22 +131,24 @@ class Index extends Component {
                     <span>已选</span>
                     <Badge count={data.length} offset={[5, -3]} size="small" />
                 </Divider>
-                {data.map((v, i) => {
-                    const { label, value, valueText } = v;
-                    const tagText = `${label}(${valueText})`;
-                    return (
-                        <Tag
-                            color="blue"
-                            closable
-                            key={[i, value].join()}
-                            onClose={() => {
-                                onRemove(v, i);
-                            }}
-                        >
-                            {tagText}
-                        </Tag>
-                    );
-                })}
+                <div className={getClassNames('filter-panel-tags')}>
+                    {data.map((v, i) => {
+                        const { label, value, valueText } = v;
+                        const tagText = `${label}(${valueText})`;
+                        return (
+                            <Tag
+                                color="blue"
+                                closable
+                                key={[i, value].join()}
+                                onClose={() => {
+                                    onRemove(v, i);
+                                }}
+                            >
+                                {tagText}
+                            </Tag>
+                        );
+                    })}
+                </div>
             </div>
         );
     }

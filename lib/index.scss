@@ -24,8 +24,15 @@
         }
     }
     .dyna-search-filter-panel {
-        .ant-tag {
-            padding: 5px 6px;
+        .dyna-search-filter-panel-tags {
+            margin-top: -8px;
+            .ant-tag {
+                padding: 5px 6px;
+                margin-top: 8px;
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
         }
     }
 }
