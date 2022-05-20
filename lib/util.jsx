@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip } from './antd';
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
-import { get, pick, omit, merge, cloneDeep, flatten, isFunction, isObject } from 'lodash';
+import { get, pick, omit, merge, cloneDeep, flatten, noop, isFunction, isObject } from 'lodash';
 import { classNames, isSomeFalsy, formatTime, convertDataToEnum } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
 import {
@@ -113,7 +113,7 @@ export const injectColumnsWithRemoteConfig = async (context, columns = []) => {
             const { name, template } = v;
             const { tpl, remoteConfig } = template;
             if (['select'].includes(tpl) && isObject(remoteConfig)) {
-                const { fetch: fetchFunc, process: processFunc } = remoteConfig;
+                const { fetch: fetchFunc, process: processFunc = noop } = remoteConfig;
                 const responseData = await fetchFunc();
                 const list = convertDataToEnum(
                     processFunc(responseData) || responseData,
