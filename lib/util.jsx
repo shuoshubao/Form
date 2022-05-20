@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip } from './antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { get, pick, omit, merge, cloneDeep, flatten, noop, isFunction, isObject } from 'lodash';
 import { classNames, isSomeFalsy, formatTime, convertDataToEnum, isEmptyValue, isEmptyArray } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
