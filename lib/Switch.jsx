@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Switch } from 'antd';
+import { Switch } from './antd';
 import { isFunction, omit } from 'lodash';
 
 class Index extends Component {

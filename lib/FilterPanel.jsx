@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Divider, Badge, Tag, Button } from 'antd';
+import { Divider, Badge, Tag, Button } from './antd';
 import { omit, find, flatten, sortBy, cloneDeep, remove } from 'lodash';
 import { isEveryFalsy, setAsyncState, isEmptyArray, isEmptyValue, getLabelByValue, formatTime } from '@nbfe/tools';
 import { defaultColumn, searchSeparator } from './config';

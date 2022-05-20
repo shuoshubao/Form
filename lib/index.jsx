@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button, Form, Select, DatePicker, Radio, Checkbox, Cascader } from 'antd';
+import { Card, Button, Form, Select, DatePicker, Radio, Checkbox, Cascader } from './antd';
 import { debounce, isFunction, omit, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy, classNames } from '@nbfe/tools';
 import Switch from './Switch.jsx';
