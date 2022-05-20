@@ -291,9 +291,6 @@ class Index extends React.Component {
                             return this.props.form.getFieldsValue();
                         }}
                         onChange={fields => {
-                            console.log('fields');
-                            console.log(fields);
-                            // return;
                             this.props.form.setFields(fields);
                             this.domEvents.onSearch();
                         }}
