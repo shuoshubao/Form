@@ -417,6 +417,27 @@ class Index extends Component {
             formProps.onFinish = onSearch;
             formProps.initialValues = initialValues;
             formProps.ref = this.formRef;
+            if (props.onValuesChange) {
+                formProps.onValuesChange = (changedFields, allFields) => {
+                    const formRefNode = this.getFormRefNode();
+                    const [[key, value]] = Object.entries(changedFields);
+                    props.onValuesChange(
+                        {
+                            key,
+                            value,
+                            changedFields,
+                            allFields
+                        },
+                        {
+                            columns: cloneDeep(columns),
+                            updateColumns: list => {
+                                this.setState({ columns: list });
+                            },
+                            ...formRefNode
+                        }
+                    );
+                };
+            }
         }
         return (
             <Card className={getClassNames('container')} {...cardProps}>
