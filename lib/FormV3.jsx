@@ -18,7 +18,7 @@ import {
     getFormItemNodeProps
 } from './util.jsx';
 
-class RegistrationForm extends React.Component {
+class Index extends React.Component {
     static displayName = componentName;
 
     static defaultProps = {
@@ -304,4 +304,6 @@ class RegistrationForm extends React.Component {
     }
 }
 
-export default Form.create({ name: 'register' })(RegistrationForm);
+export default () => {
+    return Form.create({ name: 'form' })(Index);
+}
