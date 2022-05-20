@@ -4,10 +4,10 @@ import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { omit, merge, cloneDeep, flatten } from 'lodash';
 import { isSomeFalsy, formatTime } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
-import { defaultColumn, pickerFormatMap, formItemTooltopMargin, searchSeparator, inputTypeList } from './config';
+import { componentName, defaultColumn, pickerFormatMap, formItemTooltopMargin, searchSeparator, inputTypeList } from './config';
 
 // 处理 props.columns
-export const mergeColumns = columns => {
+export const mergeColumns = (columns = []) => {
     return cloneDeep(columns)
         .map((v, i) => {
             const column = merge({}, defaultColumn, v);
@@ -15,17 +15,11 @@ export const mergeColumns = columns => {
             const { tpl } = template;
             if (tpl === 'input') {
                 const { inputType = 'input' } = template;
-                if (!inputTypeList.includes(inputType)) {
-                    throw new Error(`inputType 参数非法, 需为其中一种: ${inputTypeList.join('|')}`);
-                }
                 template.inputType = inputType;
                 column.placeholder = label ? ['请输入', label].join('') : '';
                 if (['select-search', 'select-input'].includes(inputType)) {
                     template.options = template.options || [];
                     const [selectKey, inputKey] = name.split(',');
-                    if (isSomeFalsy(selectKey, inputKey)) {
-                        throw new Error('range-picker 必须传参数: "name" 需为长度为 "selectKey,inputKey"');
-                    }
                     column.name = [selectKey, inputKey].join(searchSeparator);
                 }
             }
@@ -50,9 +44,6 @@ export const mergeColumns = columns => {
             }
             if (tpl === 'range-picker') {
                 const [startTimeKey, endTimeKey] = name.split(',');
-                if (isSomeFalsy(startTimeKey, endTimeKey)) {
-                    throw new Error('range-picker 必须传参数: "name" 需为长度为 "startTimeKey,endTimeKey"');
-                }
                 column.name = [startTimeKey, endTimeKey].join(searchSeparator);
                 const format = template.format || 'YYYY-MM-DD HH:mm:ss';
 
@@ -65,8 +56,34 @@ export const mergeColumns = columns => {
         .filter(v => Boolean(v.visible));
 };
 
+// 校验参数
+export const validateColumns = (columns = []) => {
+    columns.forEach(column => {
+        const { name, label, defaultValue, template } = column;
+        const { tpl } = template;
+        if (tpl === 'input') {
+            const { inputType = 'input' } = template;
+            if (!inputTypeList.includes(inputType)) {
+                throw new Error(`[${componentName}]inputType 参数非法, 需为其中一种: ${inputTypeList.join('|')}`);
+            }
+            if (['select-search', 'select-input'].includes(inputType)) {
+                const [selectKey, inputKey] = name.split(searchSeparator);
+                if (isSomeFalsy(selectKey, inputKey)) {
+                    throw new Error(`[${componentName}]range-picker 必须传参数: "name" 需为长度为 "selectKey,inputKey"`);
+                }
+            }
+        }
+        if (tpl === 'range-picker') {
+            const [startTimeKey, endTimeKey] = name.split(searchSeparator);
+            if (isSomeFalsy(startTimeKey, endTimeKey)) {
+                throw new Error(`[${componentName}]range-picker 必须传参数: "name" 需为长度为 "startTimeKey,endTimeKey"`);
+            }
+        }
+    });
+};
+
 // 表单初始值
-export const getInitialValues = columns => {
+export const getInitialValues = (columns = []) => {
     return cloneDeep(columns).reduce((prev, cur) => {
         const { name, defaultValue, template } = cur;
         const { tpl } = template;
@@ -172,6 +189,7 @@ export const getFormItemNodeProps = column => {
 // 解析url: [文案|链接]
 const linkReg = /\[(.+?)\|(.+?)\]/g;
 
+// Tooltip 支持链接的写法
 const getTooltipTitleNode = tooltip => {
     const innerTooltip = flatten([tooltip])
         .filter(Boolean)
@@ -197,11 +215,12 @@ const getTooltipTitleNode = tooltip => {
                 });
             });
         });
-    return innerTooltip.map((v2, i2) => {
-        return <div key={[i2].join()} dangerouslySetInnerHTML={{ __html: v2 }} />;
+    return innerTooltip.map((v, i) => {
+        return <div key={[i].join()} dangerouslySetInnerHTML={{ __html: v }} />;
     });
 };
 
+// Form.Item tooltip
 export const renderFormItemLabel = (column, { labelWidth }) => {
     const { label, tooltip } = column;
     if (!label.trim()) {

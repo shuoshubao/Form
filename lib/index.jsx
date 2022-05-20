@@ -5,8 +5,9 @@ import { debounce, isFunction, omit, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy, classNames } from '@nbfe/tools';
 import Switch from './Switch.jsx';
 import Input from './Input.jsx';
-import { defaulCardProps, defaulFormProps } from './config';
+import { componentName, defaulCardProps, defaulFormProps } from './config';
 import {
+    validateColumns,
     mergeColumns,
     getInitialValues,
     getSearchValues,
@@ -19,7 +20,7 @@ import './index.scss';
 const { RangePicker } = DatePicker;
 
 class Index extends Component {
-    static displayName = 'DynaSearch';
+    static displayName = componentName;
 
     static defaultProps = {
         autoSubmit: true,
@@ -63,6 +64,7 @@ class Index extends Component {
     async componentDidMount() {
         const { columns, autoSubmit } = this.props;
         const innerColumns = mergeColumns(columns);
+        validateColumns(innerColumns);
         // 初始值
         const initialValues = getInitialValues(innerColumns);
         await setAsyncState(this, { columns: innerColumns, initialValues });
