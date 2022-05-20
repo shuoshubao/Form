@@ -42,9 +42,12 @@ class Index extends Component {
         const isNeedReverse = isEveryTruthy(!isEmptyValue(minValue), !isEmptyValue(maxValue), minValue > maxValue);
         if (isNeedReverse) {
             onChange([maxValue, minValue]);
-            return;
+        } else {
+            onChange([minValue, maxValue]);
         }
-        onChange([minValue, maxValue]);
+        if (this.props.onCustomChange) {
+            this.props.onCustomChange();
+        }
     }
 
     render() {

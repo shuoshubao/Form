@@ -31,7 +31,7 @@ class Index extends Component {
 
     render() {
         const { props } = this;
-        const { onChange, onCustomChange, column, options } = props;
+        const { onChange, column, options } = props;
         const shouldBeNumber = isNumber(last(options).value);
         const innerValue = String(props.value);
         const tabsProps = omit(props, ['column', 'defaultValue', 'value', 'onChange', 'onCustomChange', 'style']);
@@ -43,7 +43,9 @@ class Index extends Component {
                 defaultActiveKey={innerValue}
                 onChange={activeKey => {
                     onChange(shouldBeNumber ? Number(activeKey) : activeKey);
-                    onCustomChange();
+                    if (this.props.onCustomChange) {
+                        this.props.onCustomChange();
+                    }
                 }}
             >
                 {options.map(v => {

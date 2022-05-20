@@ -18,12 +18,15 @@ class Index extends Component {
 
     onChange = value => {
         this.props.onChange(value);
+        if (this.props.onCustomChange) {
+            this.props.onCustomChange();
+        }
     };
 
     render() {
         const { defaultValue, value, style, InputNumberWidth } = this.props;
         const { onChange } = this;
-        const SliderProps = omit(this.props, ['defaultValue', 'value', 'onChange', 'style', 'InputNumberWidth']);
+        const SliderProps = omit(this.props, ['defaultValue', 'value', 'onChange', 'onCustomChange', 'style', 'InputNumberWidth']);
         return (
             <div
                 style={{
