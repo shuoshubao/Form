@@ -5,8 +5,20 @@ import Search from '../lib';
 const columns = [
     {
         label: '关键字',
-        name: 'a',
-        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b']
+        name: 'a1',
+        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
+        template: {
+            inputType: 'search',
+        }
+    },
+    {
+        label: '关键字',
+        name: 'a2',
+        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
+        template: {
+            inputType: 'search',
+            enterButton: '搜索'
+        }
     },
     // {
     //     label: '姓名',
@@ -117,7 +129,7 @@ const columns = [
     // },
     {
         label: '时间区间',
-        name: ['sTime', 'eTime'],
+        name: 'sTime,eTime',
         inline: false,
         template: {
             tpl: 'range-picker',
@@ -167,7 +179,7 @@ export default () => {
     const onSubmit = (params, searchParams) => {
         console.log('搜索:');
         console.log(params);
-        console.log(searchParams);
+        // console.log(searchParams);
     };
     return (
         <div className="App" style={{ padding: 10, background: '#edf0f3' }}>

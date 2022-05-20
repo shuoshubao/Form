@@ -3,6 +3,7 @@ import { Tooltip } from 'antd';
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { omit, merge, cloneDeep, flatten } from 'lodash';
 import { isSomeFalsy, formatTime } from '@nbfe/tools';
+import { createElement } from '@nbfe/js2html';
 import { defaultColumn, pickerFormatMap, formItemTooltopMargin } from './config';
 
 // 日期范围 开始时间 + 结束时间 拼接的分隔符
@@ -162,7 +163,19 @@ const getTooltipTitleNode = tooltip => {
         .map(v => {
             return v.replace(linkReg, (...args) => {
                 const [, text, href] = args;
-                return `<a href="${href}" target="_blank" style="color: #1890ff; text-decoration: underline;">${text}</a>`;
+                return createElement({
+                    tagName: 'a',
+                    attrs: {
+                        href,
+                        target: '_blank',
+                        style: {
+                            color: '#fff',
+                            fontWeight: 'bold',
+                            textDecoration: 'underline'
+                        }
+                    },
+                    text
+                });
             });
         });
     return innerTooltip.map((v2, i2) => {
@@ -179,7 +192,7 @@ export const renderFormItemLabel = (column, { labelWidth }) => {
         <div style={{ width: labelWidth || undefined }}>
             <span>{label}</span>
             {!!tooltip && (
-                <Tooltip title={getTooltipTitleNode(tooltip)}>
+                <Tooltip title={getTooltipTitleNode(tooltip)} overlayClassName="dyna-search-tooltip">
                     <QuestionCircleOutlined style={{ marginLeft: formItemTooltopMargin }} />
                 </Tooltip>
             )}
