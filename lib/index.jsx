@@ -305,7 +305,7 @@ class Index extends Component {
                 );
             }
             return (
-                <Form.Item required {...formItemProps}>
+                <Form.Item {...formItemProps}>
                     {formItemNode}
                 </Form.Item>
             );
