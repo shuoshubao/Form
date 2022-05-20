@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Divider } from 'antd';
+import { Button, Card, Divider, Space, Input } from 'antd';
 import { random } from 'lodash';
 import { sleep, isUniq, rules } from '@nbfe/tools';
 import Form from '../lib';
@@ -92,21 +92,70 @@ const treeData = [
     }
 ];
 
+const PersonInfo = props => {
+    const { value, onChange } = props;
+    return (
+        <Space>
+            <span>姓:</span>
+            <Input
+                value={value.first}
+                onChange={e => {
+                    onChange({
+                        ...value,
+                        first: e.target.value
+                    });
+                }}
+                placeholder="请输入姓"
+            />
+            <span>名:</span>
+            <Input
+                value={value.last}
+                onChange={e => {
+                    onChange({
+                        ...value,
+                        last: e.target.value
+                    });
+                }}
+                placeholder="请输入名"
+            />
+        </Space>
+    );
+};
+
 const columns = [
     {
-        label: '文',
-        name: 'a',
+        label: '文本',
+        name: 'text',
         rules: [required]
     },
     {
-        label: '姓名',
+        label: '用户列表',
+        name: 'users',
+        defaultValue: [
+            {
+                first: '方',
+                last: '涛'
+            }
+        ],
+        formListConfig: {
+            record: {
+                first: '',
+                last: ''
+            }
+        },
+        template: {
+            tpl: PersonInfo
+        }
+    },
+    {
+        label: '数组-下拉款',
         name: 'nameList',
-        defaultValue: [11, null],
+        defaultValue: [],
         // defaultValue: [],
-        formListProps: {
-            min: 1,
+        formListConfig: {
+            min: 0,
             max: 5,
-            entity: '',
+            record: '',
             rules: [
                 {
                     validator: (rule, value) => {
