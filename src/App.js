@@ -1,15 +1,22 @@
+import { UserOutlined } from '@ant-design/icons';
 import Search from './Search';
 
 const columns = [
     {
-        label: '隐藏',
-        prop: 'visibility',
-        visible: false
-    },
-    {
         label: '姓名',
         prop: 'b',
         tooltip: ['这里填写姓名', 'a[a|https://ke.com]b']
+    },
+    {
+        label: '搜索框',
+        prop: 'a',
+        template: {
+            inputType: 'search',
+            // prefix: <UserOutlined />,
+            // addonAfter: 'addonAfter',
+            enterButton: true,
+            allowClear: true
+        }
     },
     {
         label: '性别',

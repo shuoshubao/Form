@@ -113,7 +113,13 @@ class Index extends Component {
                     let formItemName = prop;
                     // Input
                     if (tpl === 'input') {
-                        formItemNode = <Input {...formItemNodeProps} style={getFormItemNodeStyle(v)} />;
+                        const { inputType } = template;
+                        // https://ant.design/components/input-cn/#Input.Search
+                        if (inputType === 'search') {
+                            formItemNode = <Input.Search {...formItemNodeProps} style={getFormItemNodeStyle(v)} />;
+                        } else {
+                            formItemNode = <Input {...formItemNodeProps} style={getFormItemNodeStyle(v)} />;
+                        }
                     }
 
                     // Select
