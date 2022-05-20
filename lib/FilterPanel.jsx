@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Badge, Tag, Button } from 'antd';
 import { omit, find, flatten, sortBy, cloneDeep, remove } from 'lodash';
-import { isEveryFalsy, setAsyncState, isEmptyArray, isEmptyValue, getLabelByValue } from '@nbfe/tools';
+import { isEveryFalsy, setAsyncState, isEmptyArray, isEmptyValue, getLabelByValue, formatTime } from '@nbfe/tools';
 import { defaultColumn, searchSeparator } from './config';
 import { getClassNames, getDisplayName } from './util.jsx';
 
@@ -44,24 +44,40 @@ class Index extends Component {
                 const column = find(columns, { name: key });
                 const { name, label, template } = column;
                 const { tpl, options } = template;
-                if (!['select', 'radio', 'checkbox'].includes(tpl)) {
+                if (!['select', 'radio', 'checkbox', 'date-picker', 'range-picker'].includes(tpl)) {
                     return;
                 }
-                sortBy(flatten([value]), v => {
-                    return options.findIndex(v2 => {
-                        return v2.value === v;
+                // 日期
+                if (['date-picker', 'range-picker'].includes(tpl)) {
+                    const { format } = template;
+                    let valueText = formatTime(value, format);
+                    if (['range-picker'].includes(tpl)) {
+                        valueText = [formatTime(value[0], format), formatTime(value[1], format)].join(' - ');
+                    }
+                    data.push({
+                        name,
+                        value,
+                        label,
+                        valueText
                     });
-                }).forEach(value => {
-                    const valueText = getLabelByValue(value, options);
-                    if (['select', 'radio', 'checkbox'].includes(tpl)) {
+                    return;
+                }
+                // 枚举类
+                if (['select', 'radio', 'checkbox'].includes(tpl)) {
+                    sortBy(flatten([value]), v => {
+                        return options.findIndex(v2 => {
+                            return v2.value === v;
+                        });
+                    }).forEach(value => {
+                        const valueText = getLabelByValue(value, options);
                         data.push({
                             name,
                             value,
                             label,
                             valueText
                         });
-                    }
-                });
+                    });
+                }
             });
         this.setState({ data });
     };
