@@ -197,8 +197,6 @@ export const getSearchValues = (params, columns) => {
 
 // icon 的宽度
 const iconWidth = 14;
-// 分号
-const semicolonWidth = 10;
 
 // 获取 Form.Item label 的宽度
 export const getFormItemLabelWidth = columns => {
@@ -211,7 +209,7 @@ export const getFormItemLabelWidth = columns => {
         if (tooltip.length) {
             labelWidth += iconWidth + formItemTooltopMargin;
         }
-        return labelWidth + semicolonWidth;
+        return labelWidth;
     });
     return Math.max(...labelWidthList);
 };
@@ -230,16 +228,42 @@ export const getFormItemNodeStyle = column => {
     return style;
 };
 
+// Form.Item 的 props
+export const getFormItemProps = (column, { index, labelWidth }) => {
+    const { label, name, inline, template } = column;
+    const formItemProps = omit(column, [
+        'label',
+        'visible',
+        'defaultValue',
+        'immediate',
+        'tooltip',
+        'placeholder',
+        'isSearch',
+        'inline',
+        'formItemStyle',
+        'template'
+    ]);
+    const labelNode = renderFormItemLabel(column, { labelWidth });
+    const key = [index, label, name].join('_');
+    return merge(
+        {
+            label: labelNode,
+            key: key,
+            style: { width: inline ? undefined : '100%' }
+        },
+        formItemProps
+    );
+};
+
 // Form.Item 子组件的 props
 export const getFormItemNodeProps = column => {
     const { placeholder, template } = cloneDeep(column);
     const { tpl } = template;
-    const formItemNodeProps = {
+    return {
         placeholder,
         style: getFormItemNodeStyle(column),
         ...omit(template, ['width', 'tpl'])
     };
-    return formItemNodeProps;
 };
 
 // 解析url: [文案|链接]
@@ -287,10 +311,11 @@ export const renderFormItemLabel = (column, { labelWidth }) => {
             <span>{label}</span>
             {!!tooltip && (
                 <Tooltip title={getTooltipTitleNode(tooltip)} overlayClassName={getClassNames('tooltip')}>
-                    <QuestionCircleOutlined style={{ marginLeft: formItemTooltopMargin }} />
+                    <QuestionCircleOutlined
+                        style={{ marginLeft: formItemTooltopMargin, color: 'rgba(0, 0, 0, 0.45)' }}
+                    />
                 </Tooltip>
             )}
-            <span style={{ width: semicolonWidth, display: 'inline-block', textAlign: 'center' }}>:</span>
         </div>
     );
 };

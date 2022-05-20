@@ -28,6 +28,7 @@ import {
     getSearchValues,
     getFormItemLabelWidth,
     renderFormItemLabel,
+    getFormItemProps,
     getFormItemNodeProps
 } from './util.jsx';
 import './index.scss';
@@ -192,7 +193,7 @@ class Index extends Component {
         const { initialValues, columns, autoCompleteOptions } = state;
         const labelWidth = props.labelWidth || getFormItemLabelWidth(columns);
         const columnsNode = columns.map((v, i) => {
-            const { label, name, inline, rules, template } = v;
+            const { label, name, inline, template } = v;
             const { tpl } = template;
             const formItemNodeProps = getFormItemNodeProps(v);
             formItemNodeProps.onChange = () => {
@@ -284,19 +285,19 @@ class Index extends Component {
                 formItemNode = <Switch {...formItemNodeProps} />;
             }
 
-            const labelNode = renderFormItemLabel(v, { labelWidth });
+            // 自定义组件
+            if (isFunction(tpl)) {
+                const DynamicComponent = tpl;
+                formItemNode = <DynamicComponent {...formItemNodeProps} />;
+            }
 
-            const key = [i, label, name].join('_');
+            // const { label, name, inline, template } = v;
+            const formItemProps = getFormItemProps(v, { index: i, labelWidth });
+
             if (isAntdV3) {
                 const { getFieldDecorator } = this.props.form;
                 return (
-                    <Form.Item
-                        label={labelNode}
-                        name={name}
-                        key={key}
-                        rules={rules}
-                        style={{ width: inline ? undefined : '100%' }}
-                    >
+                    <Form.Item {...formItemProps}>
                         {getFieldDecorator(name, {
                             initialValue: initialValues[name]
                         })(formItemNode)}
@@ -304,20 +305,14 @@ class Index extends Component {
                 );
             }
             return (
-                <Form.Item
-                    label={labelNode}
-                    name={name}
-                    key={key}
-                    rules={rules}
-                    style={{ width: inline ? undefined : '100%' }}
-                >
+                <Form.Item required {...formItemProps}>
                     {formItemNode}
                 </Form.Item>
             );
         });
         if (children) {
             const childrenNode = (
-                <Form.Item label={<div style={{ width: labelWidth }}></div>} name={name} key="-1">
+                <Form.Item colon={false} label={<div style={{ width: labelWidth }} />} key="-1">
                     {props.children}
                 </Form.Item>
             );
@@ -328,7 +323,7 @@ class Index extends Component {
 
     // 查询, 重置
     renderSearchReset = () => {
-        const { state, onReset } = this;
+        const { props, state, onReset } = this;
         const { columns } = state;
         const { showSearchBtn, showResetBtn } = this.props;
         if (isEveryFalsy(showSearchBtn, showResetBtn)) {
@@ -346,19 +341,23 @@ class Index extends Component {
             }
             showReset = false;
         }
+        const labelWidth = props.labelWidth || getFormItemLabelWidth(columns);
         return (
             <Form.Item
-                className={getClassNames('form-item', {
-                    'form-item-hide-submit': !showSearch,
-                    'form-item-hide-reset': !showReset
-                })}
+                colon={false}
+                label={<div style={{ width: labelWidth }} />}
+                className={getClassNames('form-item')}
             >
-                <Button type="primary" htmlType="submit" key="submit" className={getClassNames('form-item-submit')}>
-                    查询
-                </Button>
-                <Button onClick={onReset} key="reset" className={getClassNames('form-item-reset')}>
-                    重置
-                </Button>
+                {showSearch && (
+                    <Button type="primary" htmlType="submit" key="submit">
+                        查询
+                    </Button>
+                )}
+                {showReset && (
+                    <Button onClick={onReset} key="reset">
+                        重置
+                    </Button>
+                )}
             </Form.Item>
         );
     };

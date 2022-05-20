@@ -15,24 +15,17 @@
         margin-top: 10px;
         &.dyna-search-form-item {
             .ant-btn:not(:first-child) {
-                margin-left: 5px;
-            }
-            &.dyna-search-form-item-hide-submit {
-                .dyna-search-form-item-submit {
-                    display: none;
-                }
-            }
-            &.dyna-search-form-item-hide-reset {
-                .dyna-search-form-item-reset {
-                    display: none;
-                }
+                margin-left: 10px;
             }
         }
     }
 
     .ant-form-item-label > label {
-        &::after, &::before {
+        &::before {
             display: none !important;
+        }
+        &::after {
+            width: 4px;
         }
         &.ant-form-item-required {
             .dyna-search-form-item-label::before {
