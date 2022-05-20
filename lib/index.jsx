@@ -507,7 +507,11 @@ class Index extends Component {
     }
 }
 
-export { ComplexInput, RangeNumber, Tabs, Switch, Slider };
+Index.ComplexInput = ComplexInput;
+Index.RangeNumber = RangeNumber;
+Index.Tabs = Tabs;
+Index.Switch = Switch;
+Index.Slider = Slider;
 
 export default (() => {
     if (isAntdV3) {
