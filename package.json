@@ -1,12 +1,12 @@
 {
-  "name": "@ke/form",
+  "name": "@nbfe/form",
   "version": "2.1.7",
   "main": "dist/index.js",
   "files": [
     "dist/"
   ],
   "publishConfig": {
-    "registry": "http://artifactory.ke.com/artifactory/api/npm/npm-virtual/"
+    "registry": "https://registry.npm.taobao.org"
   },
   "scripts": {
     "dev": "npx react-cli serve",
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.13.9",
     "@babel/preset-react": "^7.12.13",
-    "@ke/react-cli": "^1.1.8",
+    "@nbfe/react-cli": "^1.1.8",
     "@rollup/plugin-babel": "^5.3.0",
     "antd": "^4.19.5",
     "prettier": "^2.2.1",
