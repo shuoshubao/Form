@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Divider, Tag, Button } from 'antd';
+import { Divider, Badge, Tag, Button } from 'antd';
 import { omit, find, flatten, sortBy, cloneDeep, remove } from 'lodash';
 import { isEveryFalsy, setAsyncState, isEmptyArray, isEmptyValue, getLabelByValue } from '@nbfe/tools';
 import { defaultColumn, searchSeparator } from './config';
@@ -28,7 +28,7 @@ class Index extends Component {
 
     // 给外部调用
     setFields = () => {
-        const { props, state, onChange } = this;
+        const { props, state } = this;
         const { columns, getFieldsValue } = props;
         const formData = getFieldsValue();
         const data = [];
@@ -66,11 +66,19 @@ class Index extends Component {
         this.setState({ data });
     };
 
-    onChange = item => {
-        const { props } = this;
+    // 移除
+    onRemove = (item, i) => {
+        const { props, state } = this;
         const { onChange, columns, getFieldsValue } = props;
         const formData = getFieldsValue();
         const { name, value } = item;
+        this.setState(prevState => {
+            const oldData = cloneDeep(prevState.data);
+            oldData.splice(i, 1);
+            return {
+                data: oldData
+            };
+        });
         let newValue = cloneDeep(formData[name]);
         if (Array.isArray(newValue)) {
             remove(newValue, v => {
@@ -83,7 +91,7 @@ class Index extends Component {
     };
 
     render() {
-        const { props, state, onChange } = this;
+        const { props, state, onRemove } = this;
         const { columns } = props;
         const { data } = state;
         if (isEmptyArray(data)) {
@@ -91,7 +99,10 @@ class Index extends Component {
         }
         return (
             <div className={getClassNames('filter-panel')}>
-                <Divider orientation="left">已选</Divider>
+                <Divider orientation="left">
+                    <span>已选</span>
+                    <Badge count={data.length} offset={[5, -2]} />
+                </Divider>
                 {data.map((v, i) => {
                     const { label, value, valueText } = v;
                     const tagText = `${label}(${valueText})`;
@@ -101,8 +112,7 @@ class Index extends Component {
                             closable
                             key={[i, value].join()}
                             onClose={() => {
-                                console.log(22, v);
-                                onChange(v);
+                                onRemove(v, i);
                             }}
                         >
                             {tagText}
