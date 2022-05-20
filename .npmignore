@@ -2,3 +2,7 @@
 /lib
 /docs
 /public
+
+/prettier.config.js
+/rollup.config.js
+/vite.config.js
