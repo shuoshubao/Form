@@ -163,8 +163,19 @@ class Index extends Component {
 
     // 重置
     onReset = () => {
+        const { columns } = this.state;
         const formRefNode = this.getFormRefNode();
+        const values = formRefNode.getFieldsValue(true);
         formRefNode.resetFields();
+        columns.forEach(column => {
+            const {
+                name,
+                template: { tpl }
+            } = column;
+            if (tpl === 'tabs') {
+                formRefNode.setFieldsValue({ [name]: values[name] });
+            }
+        });
         this.onSearch();
     };
 

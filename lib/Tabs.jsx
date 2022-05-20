@@ -47,6 +47,7 @@ class Index extends Component {
         ]);
         return (
             <Tabs
+                animated={false}
                 {...tabsProps}
                 activeKey={innerValue}
                 defaultActiveKey={innerValue}
