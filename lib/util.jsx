@@ -2,7 +2,7 @@ import React from 'react';
 import { Tooltip } from './antd';
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { get, pick, omit, merge, cloneDeep, flatten, noop, isFunction, isObject } from 'lodash';
-import { classNames, isSomeFalsy, formatTime, convertDataToEnum, isEmptyValue } from '@nbfe/tools';
+import { classNames, isSomeFalsy, formatTime, convertDataToEnum, isEmptyValue, isEmptyArray } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
 import {
     isAntdV3,
@@ -45,13 +45,13 @@ export const mergeColumns = (columns = [], { disabled }) => {
             if (tpl === 'input') {
                 template = {
                     inputType: 'input',
-                    inputWidth: defaultColumn.template.width,
                     ...template
                 };
                 const { inputType } = template;
                 column.placeholder = label ? ['请输入', label].join('') : '';
                 if (['select-search', 'select-input'].includes(inputType)) {
                     template = {
+                        inputWidth: defaultColumn.template.width,
                         selectWidth: 100,
                         options: [],
                         ...template
@@ -250,7 +250,11 @@ export const getFormItemLabelWidth = columns => {
         }
         return labelWidth;
     });
-    return Math.max(...labelWidthList);
+    // 是否有星号
+    const hasRequired = columns.some(v => {
+        return v.required || !isEmptyArray(v.rules);
+    });
+    return Math.max(...labelWidthList) + (hasRequired ? 12 : 0);
 };
 
 // 获取 Form.Item value 的宽度
