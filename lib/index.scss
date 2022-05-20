@@ -77,6 +77,22 @@
         }
     }
 
+    // antd v3
+    &.dyna-form-container-antd-v3 {
+        .ant-form-item-label {
+            label {
+                display: inline-block;
+                padding-right: 14px;
+                &::after {
+                    position: absolute;
+                    right: 8px;
+                    top: 0;
+                    margin: 0;
+                }
+            }
+        }
+    }
+
     .ant-card-body {
         padding-top: 0px;
     }
