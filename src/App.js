@@ -37,51 +37,51 @@ const selectOptions = {
 };
 
 const cascaderOptions = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-      },
-    ],
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-      },
-    ],
-  },
+    {
+        value: 'zhejiang',
+        label: 'Zhejiang',
+        children: [
+            {
+                value: 'hangzhou',
+                label: 'Hangzhou'
+            }
+        ]
+    },
+    {
+        value: 'jiangsu',
+        label: 'Jiangsu',
+        children: [
+            {
+                value: 'nanjing',
+                label: 'Nanjing'
+            }
+        ]
+    }
 ];
 
 const treeData = [
-  {
-    title: 'Node1',
-    value: '0-0',
-    key: '0-0',
-    children: [
-      {
-        title: 'Child Node1',
-        value: '0-0-1',
-        key: '0-0-1',
-      },
-      {
-        title: 'Child Node2',
-        value: '0-0-2',
-        key: '0-0-2',
-      },
-    ],
-  },
-  {
-    title: 'Node2',
-    value: '0-1',
-    key: '0-1',
-  },
+    {
+        title: 'Node1',
+        value: '0-0',
+        key: '0-0',
+        children: [
+            {
+                title: 'Child Node1',
+                value: '0-0-1',
+                key: '0-0-1'
+            },
+            {
+                title: 'Child Node2',
+                value: '0-0-2',
+                key: '0-0-2'
+            }
+        ]
+    },
+    {
+        title: 'Node2',
+        value: '0-1',
+        key: '0-1'
+    }
 ];
 
 const columns = [
@@ -100,18 +100,39 @@ const columns = [
         }
     },
     {
+        label: '级联',
+        name: 'cascader',
+        tooltip: '级联',
+        transform: value => {
+            return value[1] || '';
+        },
+        template: {
+            tpl: 'cascader',
+            remoteConfig: {
+                fetch: async () => {
+                    return {
+                        code: 0,
+                        data: cascaderOptions,
+                        mesg: 'success'
+                    };
+                },
+                path: 'data'
+            }
+        }
+    },
+    {
         label: '自动完成',
         name: 'auto-complete',
         tooltip: '自动完成',
-        defaultValue: 'shuoshubao',
+        // defaultValue: 'shuoshubao',
         template: {
             tpl: 'auto-complete',
-            options: [
-                {
-                    label: '硕鼠宝',
-                    value: 'shuoshubao'
-                }
-            ],
+            // options: [
+            //     {
+            //         label: '硕鼠宝',
+            //         value: 'shuoshubao'
+            //     }
+            // ],
             remoteConfig: {
                 fetch: async searchText => {
                     await sleep(0.1);
@@ -173,18 +194,6 @@ const columns = [
     //         tpl: 'date-picker'
     //     }
     // },
-    {
-        label: '级联',
-        name: 'cascader',
-        tooltip: '级联',
-        transform: (value) => {
-            return value[1] || '';
-        },
-        template: {
-            tpl: 'cascader',
-            options: cascaderOptions
-        }
-    },
     {
         label: '下拉框1',
         name: 'a',
