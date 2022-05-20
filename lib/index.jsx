@@ -80,6 +80,18 @@ class Index extends Component {
 
     getDomEvents() {
         return {
+            // 立即查询
+            onImmediateSearch: column => {
+                const { immediate, template } = column;
+                const { tpl } = template;
+                if (!immediate) {
+                    return;
+                }
+                if (['input'].includes(tpl)) {
+                    return;
+                }
+                this.domEvents.onSearch();
+            },
             // 查询
             onSearch: debounce(() => {
                 const { state, props } = this;
@@ -108,10 +120,21 @@ class Index extends Component {
                     const { label, name, inline, template } = v;
                     const { tpl } = template;
                     const formItemNodeProps = getFormItemNodeProps(v);
+                    formItemNodeProps.onChange = () => {
+                        this.domEvents.onImmediateSearch(v);
+                    };
                     let formItemNode = null;
                     // Input
                     if (tpl === 'input') {
-                        formItemNode = <Input column={v} {...formItemNodeProps} />;
+                        formItemNode = (
+                            <Input
+                                column={v}
+                                {...formItemNodeProps}
+                                onSearch={() => {
+                                    this.domEvents.onSearch();
+                                }}
+                            />
+                        );
                     }
 
                     // Select

@@ -13,6 +13,7 @@ class Index extends Component {
     static propTypes = {
         value: PropTypes.any,
         onChange: PropTypes.func,
+        onSearch: PropTypes.func,
         column: PropTypes.object
     };
 
@@ -29,12 +30,7 @@ class Index extends Component {
         const { column, value, style } = this.props;
         const { selectValue, inputValue } = state;
         const { name, defaultValue, inline, template } = column;
-        const {
-            inputType,
-            options,
-            selectWidth = 100,
-            inputWidth = defaultColumn.template.width
-        } = template;
+        const { inputType, options, selectWidth = 100, inputWidth = defaultColumn.template.width } = template;
         if (['select-search', 'select-input'].includes(inputType)) {
             if (defaultValue === '') {
                 this.setState({
@@ -60,6 +56,13 @@ class Index extends Component {
         this.onChange();
     };
 
+    onSearch = () => {
+        if (!isFunction(this.props.onSearch)) {
+            return;
+        }
+        this.props.onSearch();
+    };
+
     onChange = () => {
         if (!isFunction(this.props.onChange)) {
             return;
@@ -80,20 +83,23 @@ class Index extends Component {
     };
 
     render() {
-        const { state, onSelectChange, onInputChange } = this;
+        const { state, onSelectChange, onInputChange, onSearch } = this;
         const { column, defaultValue, value, style } = this.props;
         const { selectValue, inputValue } = state;
         const { name, inline, template } = column;
-        const {
-            inputType,
-            options,
-            selectWidth = 100,
-            inputWidth = defaultColumn.template.width
-        } = template;
-        const inputProps = omit(this.props, ['column', 'defaultValue', 'value', 'onChange', 'style']);
+        const { inputType, options, selectWidth = 100, inputWidth = defaultColumn.template.width } = template;
+        const inputProps = omit(this.props, ['column', 'defaultValue', 'value', 'onChange', 'onSearch', 'style']);
         if (inputType === 'search') {
             return (
-                <Input.Search {...inputProps} defaultValue={defaultValue} value={inputValue} onChange={onInputChange} />
+                <Input.Search
+                    {...inputProps}
+                    defaultValue={defaultValue}
+                    value={inputValue}
+                    onChange={onInputChange}
+                    onSearch={() => {
+                        onSearch();
+                    }}
+                />
             );
         }
         const { label } = options.find(v => v.value === selectValue) || {};
@@ -112,6 +118,9 @@ class Index extends Component {
                             value={inputValue}
                             style={{ width: inputWidth }}
                             onChange={onInputChange}
+                            onSearch={() => {
+                                onSearch();
+                            }}
                             placeholder={['请输入', label].join('')}
                         />
                     ) : (
