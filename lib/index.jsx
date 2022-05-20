@@ -103,7 +103,6 @@ class Index extends Component {
         const { validateFields } = formRefNode;
         return new Promise((reslove, reject) => {
             if (isAntdV3) {
-                console.log(11);
                 validateFields((errors, values) => {
                     if (errors) {
                         reslove(null);
@@ -113,7 +112,6 @@ class Index extends Component {
                     }
                 });
             } else {
-                console.log(22);
                 validateFields()
                     .then(values => {
                         reslove(values);

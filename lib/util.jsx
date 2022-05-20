@@ -36,6 +36,12 @@ export const mergeColumns = (columns = []) => {
             const { name, label, defaultValue } = column;
             let { template } = column;
             const { tpl } = template;
+            column.rules = column.rules.map(v2 => {
+                if (isFunction(v2)) {
+                    return v2(label);
+                }
+                return v2;
+            });
             if (tpl === 'input') {
                 template = {
                     inputType: 'input',
