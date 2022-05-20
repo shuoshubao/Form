@@ -4,7 +4,7 @@ import { Divider, Badge, Tag, Button } from 'antd';
 import { omit, find, flatten, sortBy, cloneDeep, remove } from 'lodash';
 import { isEveryFalsy, setAsyncState, isEmptyArray, isEmptyValue, getLabelByValue } from '@nbfe/tools';
 import { defaultColumn, searchSeparator } from './config';
-import { getClassNames, getDisplayName } from './util';
+import { getClassNames, getDisplayName } from './util.jsx';
 
 class Index extends Component {
     static displayName = getDisplayName('FilterPanel');

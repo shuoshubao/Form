@@ -4,7 +4,7 @@ import { Input, Select } from 'antd';
 import { isFunction, omit } from 'lodash';
 import { setAsyncState } from '@nbfe/tools';
 import { defaultColumn, searchSeparator } from './config';
-import { getDisplayName } from './util';
+import { getDisplayName } from './util.jsx';
 
 class Index extends Component {
     static displayName = getDisplayName('Input');
