@@ -109,6 +109,7 @@
                 border-color: #ff4d4f;
             }
         }
+        .ant-form-item-explain-error,
         .ant-form-error {
             color: #ff4d4f;
         }
@@ -153,35 +154,6 @@
         &.dynamic-form-form-item {
             .ant-btn:not(:first-child) {
                 margin-left: 10px;
-            }
-        }
-        .dynamic-form-number-range {
-            .dynamic-form-number-range-min,
-            .dynamic-form-number-range-max {
-                margin-right: 0;
-                position: relative;
-                z-index: 2;
-                &:hover,
-                &:focus {
-                    border-left-color: #40a9ff;
-                    border-right-color: #40a9ff;
-                }
-                .ant-input-number-input {
-                    text-align: center;
-                    padding: 0 24px 0 4px;
-                }
-            }
-            .dynamic-form-number-range-min {
-                border-right-color: transparent;
-            }
-            .dynamic-form-number-range-max {
-                border-left-color: transparent;
-            }
-            .dynamic-form-number-range-separator {
-                border-left: 0;
-                border-right: 0;
-                pointer-events: none;
-                background-color: #fff;
             }
         }
     }
@@ -229,6 +201,36 @@
                 }
             }
         }
+    }
+}
+
+.dynamic-form-number-range {
+    .dynamic-form-number-range-min,
+    .dynamic-form-number-range-max {
+        margin-right: 0;
+        position: relative;
+        z-index: 2;
+        &:hover,
+        &:focus {
+            border-left-color: #40a9ff;
+            border-right-color: #40a9ff;
+        }
+        .ant-input-number-input {
+            text-align: center;
+            padding: 0 24px 0 4px;
+        }
+    }
+    .dynamic-form-number-range-min {
+        border-right-color: transparent;
+    }
+    .dynamic-form-number-range-max {
+        border-left-color: transparent;
+    }
+    .dynamic-form-number-range-separator {
+        border-left: 0;
+        border-right: 0;
+        pointer-events: none;
+        background-color: #fff;
     }
 }
 
