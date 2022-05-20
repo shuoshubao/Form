@@ -159,8 +159,22 @@ const columns = [
         }
     },
     {
+        label: '关键字1',
+        name: 'a1,a11',
+        template: {
+            inputType: 'input',
+        }
+    },
+    {
+        label: '关键字2',
+        name: 'a2,a21',
+        template: {
+            inputType: 'textarea',
+        }
+    },
+    {
         label: '关键字3',
-        name: 'a3,a31',
+        name: 'a3,a33',
         tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
         inline: false,
         template: {
