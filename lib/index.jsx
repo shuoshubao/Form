@@ -228,7 +228,7 @@ class Index extends Component {
                     if (inputType === 'input') {
                         formItemNode = (
                             <Input
-                                {...formItemNodeProps}
+                                {...omit(formItemNodeProps, ['inputType'])}
                                 onPressEnter={() => {
                                     this.onSearch();
                                 }}
@@ -236,12 +236,12 @@ class Index extends Component {
                         );
                     }
                     if (inputType === 'textarea') {
-                        formItemNode = <Input.TextArea {...formItemNodeProps} />;
+                        formItemNode = <Input.TextArea {...omit(formItemNodeProps, ['inputType'])} />;
                     }
                     if (inputType === 'password') {
                         formItemNode = (
                             <Input.Password
-                                {...formItemNodeProps}
+                                {...omit(formItemNodeProps, ['inputType'])}
                                 onPressEnter={() => {
                                     this.onSearch();
                                 }}
