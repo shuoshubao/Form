@@ -19,7 +19,7 @@ const columns = [
             tpl: 'select',
             allowClear: true,
             data: [
-                { label: '男', value: 1 },
+                { label: '男', value: 1, disabled: true },
                 { label: '女', value: 2 }
             ]
         }
@@ -66,6 +66,42 @@ const columns = [
             format: 'YYYY-MM-DD HH:mm:ss',
             startTimeKey: 'sTime',
             endTimeKey: 'eTime'
+        }
+    },
+    {
+        label: '状态',
+        prop: 'f',
+        // defaultValue: 2,
+        template: {
+            tpl: 'radio',
+            data: [
+                { label: '待存管', value: 1 },
+                { label: '部分存管', value: 2, disabled: true },
+                { label: '存管完成', value: 3 },
+                { label: '已解冻', value: 4 }
+            ]
+        }
+    },
+    {
+        label: '状态',
+        prop: 'g',
+        defaultValue: [1, 2],
+        template: {
+            tpl: 'checkbox',
+            data: [
+                { label: '待存管', value: 1 },
+                { label: '部分存管', value: 2, disabled: true },
+                { label: '存管完成', value: 3 },
+                { label: '已解冻', value: 4 }
+            ]
+        }
+    },
+    {
+        label: '开关',
+        prop: 'h',
+        defaultValue: true,
+        template: {
+            tpl: 'switch'
         }
     }
 ];

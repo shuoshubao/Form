@@ -103,8 +103,7 @@ export const getFormItemNodeStyle = column => {
     const { tpl, width } = template;
     const style = {};
     // 日期范围
-    if (tpl === 'range-picker') {
-        // style.width = width === defaultColumn.template.width ? ;
+    if (['radio', 'checkbox', 'range-picker'].includes(tpl)) {
         style.width = undefined;
     } else {
         style.width = width;

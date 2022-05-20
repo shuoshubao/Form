@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button, Form, Input, Select, DatePicker } from 'antd';
+import { Card, Button, Form, Input, Select, DatePicker, Radio, Checkbox } from 'antd';
 import { debounce, isFunction, omit, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy } from '@nbfe/tools';
+import Switch from './Switch';
 import { defaulCardProps, defaulFormProps } from './config';
 import {
     mergeColumns,
@@ -83,8 +84,11 @@ class Index extends Component {
                 const { state, props } = this;
                 const { columns } = state;
                 const params = this.formRef.current.getFieldsValue();
+                const searchValues = getSearchValues(params, columns);
+                console.log('searchValues');
+                console.log(searchValues);
                 if (isFunction(props.onSubmit)) {
-                    props.onSubmit(getSearchValues(params, columns), params);
+                    props.onSubmit(searchValues, params);
                 }
             }, 100),
             // 重置
@@ -104,7 +108,7 @@ class Index extends Component {
                 return columns.map((v, i) => {
                     const { label, prop, placeholder, template } = v;
                     const { tpl } = template;
-                    let formItemNodeProps = { placeholder, ...omit(template, ['tpl', 'width']) };
+                    let formItemNodeProps = { placeholder, ...omit(template, ['tpl', 'width', 'data']) };
                     let formItemNode = null;
                     let formItemName = prop;
                     // Input
@@ -119,14 +123,37 @@ class Index extends Component {
                                 {data.map((v2, i2) => {
                                     const { value, label } = v2;
                                     const key = [i2, label, value].join('_');
-                                    return (
-                                        <Select.Option value={value} key={key}>
-                                            {label}
-                                        </Select.Option>
-                                    );
+                                    const props = { key, ...v2 };
+                                    return <Select.Option {...props}>{label}</Select.Option>;
                                 })}
                             </Select>
                         );
+                    }
+                    // Radio
+                    if (tpl === 'radio') {
+                        const { data = [] } = template;
+                        formItemNode = (
+                            <Radio.Group
+                                {...formItemNodeProps}
+                                options={data}
+                                style={getFormItemNodeStyle(v)}
+                            ></Radio.Group>
+                        );
+                    }
+                    // Checkbox
+                    if (tpl === 'checkbox') {
+                        const { data = [] } = template;
+                        formItemNode = (
+                            <Checkbox.Group
+                                {...formItemNodeProps}
+                                options={data}
+                                style={getFormItemNodeStyle(v)}
+                            ></Checkbox.Group>
+                        );
+                    }
+                    // Switch
+                    if (tpl === 'switch') {
+                        formItemNode = <Switch {...formItemNodeProps} style={getFormItemNodeStyle(v)}></Switch>;
                     }
                     // DatePicker
                     if (tpl === 'date-picker') {
