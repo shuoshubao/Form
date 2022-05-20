@@ -1,6 +1,6 @@
 {
     "name": "@nbfe/form",
-    "version": "0.1.12",
+    "version": "0.1.13",
     "main": "dist/index.js",
     "publishConfig": {
         "registry": "https://registry.npmjs.org"

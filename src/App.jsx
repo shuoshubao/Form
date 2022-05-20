@@ -85,8 +85,7 @@ const columns = [
         name: 'b2',
         tooltip: '级联',
         template: {
-            tpl: 'cascader',
-
+            tpl: 'cascader'
         }
     },
     {
@@ -131,7 +130,15 @@ const columns = [
         name: 'slider',
         defaultValue: 1,
         template: {
-            tpl: 'slider',
+            tpl: 'slider'
+        }
+    },
+    {
+        label: 'switch',
+        name: 'switch',
+        defaultValue: true,
+        template: {
+            tpl: 'switch'
         }
     },
     {
