@@ -507,6 +507,8 @@ class Index extends Component {
     }
 }
 
+export { ComplexInput, RangeNumber, Tabs, Switch, Slider };
+
 export default (() => {
     if (isAntdV3) {
         return Form.create({ name: 'form' })(Index);

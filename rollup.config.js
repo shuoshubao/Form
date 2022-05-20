@@ -6,7 +6,7 @@ export default {
     output: {
         file: 'dist/index.js',
         format: 'cjs',
-        exports: 'default'
+        exports: 'named'
     },
     external: id => {
         return !['.', '/'].some(v => id.startsWith(v));
