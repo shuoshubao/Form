@@ -22,17 +22,9 @@ export default [
     {
         input: 'lib/components.js',
         output: {
-            file: 'dist/components.js',
-            format: 'cjs'
-        },
-        plugins: [babel(babelConfig)]
-    },
-    {
-        input: 'lib/components.js',
-        output: {
             file: 'dist/components.esm.js',
             format: 'esm'
         },
-        plugins: [babel(babelConfig)]
+        plugins: [postcss({ extract: true, minimize: true }), babel(babelConfig)]
     }
 ];
