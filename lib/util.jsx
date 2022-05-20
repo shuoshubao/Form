@@ -1,9 +1,9 @@
 import React from 'react';
 import { Tooltip } from './antd';
-import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { get, pick, omit, merge, cloneDeep, flatten, noop, isFunction, isObject } from 'lodash';
 import { classNames, isSomeFalsy, formatTime, convertDataToEnum, isEmptyValue, isEmptyArray } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
+import { QuestionCircleOutlined } from './Icons.jsx';
 import {
     isAntdV3,
     componentName,
@@ -355,7 +355,12 @@ export const renderFormItemLabel = (column, { labelWidth }) => {
             {!!tooltip && (
                 <Tooltip title={getTooltipTitleNode(tooltip)} overlayClassName={getClassNames('tooltip')}>
                     <QuestionCircleOutlined
-                        style={{ marginLeft: formItemTooltopMargin, color: 'rgba(0, 0, 0, 0.45)' }}
+                        style={{
+                            marginLeft: formItemTooltopMargin,
+                            color: 'rgba(0, 0, 0, 0.45)',
+                            width: 14,
+                            height: 14
+                        }}
                     />
                 </Tooltip>
             )}
