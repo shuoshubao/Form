@@ -356,12 +356,12 @@ const DescriptionsData = {
 
 const DescriptionsColumns = [
     {
-        label: 'A',
+        label: '姓名',
         name: 'a',
         tooltip: '提示文案: [链接|baidu.com]'
     },
     {
-        label: 'B',
+        label: '年龄',
         name: 'b',
         render: (value, record) => {
             return <div>hhh</div>;
