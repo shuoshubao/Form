@@ -11,7 +11,7 @@ import {
     getSearchValues,
     getFormItemLabelWidth,
     renderFormItemLabel,
-    getFormItemNodeStyle
+    getFormItemNodeProps
 } from './util';
 import './index.scss';
 
@@ -106,9 +106,9 @@ class Index extends Component {
                 const { columns } = state;
                 const labelWidth = props.labelWidth || getFormItemLabelWidth(columns);
                 return columns.map((v, i) => {
-                    const { label, prop, placeholder, inline, template } = v;
+                    const { label, prop, inline, template } = v;
                     const { tpl } = template;
-                    let formItemNodeProps = { placeholder, ...omit(template, ['tpl', 'width', 'data']) };
+                    const formItemNodeProps = getFormItemNodeProps(v);
                     let formItemNode = null;
                     let formItemName = prop;
                     // Input
@@ -116,73 +116,45 @@ class Index extends Component {
                         const { inputType } = template;
                         // https://ant.design/components/input-cn/#Input.Search
                         if (inputType === 'search') {
-                            formItemNode = <Input.Search {...formItemNodeProps} style={getFormItemNodeStyle(v)} />;
+                            formItemNode = <Input.Search {...formItemNodeProps} />;
                         } else {
-                            formItemNode = <Input {...formItemNodeProps} style={getFormItemNodeStyle(v)} />;
+                            formItemNode = <Input {...formItemNodeProps} />;
                         }
                     }
 
                     // Select
                     if (tpl === 'select') {
-                        const { data = [] } = template;
-                        formItemNode = (
-                            <Select {...formItemNodeProps} style={getFormItemNodeStyle(v)}>
-                                {data.map((v2, i2) => {
-                                    const { value, label } = v2;
-                                    const key = [i2, label, value].join('_');
-                                    const props = { key, ...v2 };
-                                    return <Select.Option {...props}>{label}</Select.Option>;
-                                })}
-                            </Select>
-                        );
-                    }
-
-                    // Radio
-                    if (tpl === 'radio') {
-                        const { data = [] } = template;
-                        formItemNode = (
-                            <Radio.Group
-                                {...formItemNodeProps}
-                                options={data}
-                                style={getFormItemNodeStyle(v)}
-                            ></Radio.Group>
-                        );
-                    }
-
-                    // Checkbox
-                    if (tpl === 'checkbox') {
-                        const { data = [] } = template;
-                        formItemNode = (
-                            <Checkbox.Group
-                                {...formItemNodeProps}
-                                options={data}
-                                style={getFormItemNodeStyle(v)}
-                            ></Checkbox.Group>
-                        );
-                    }
-
-                    // DatePicker
-                    if (tpl === 'date-picker') {
-                        formItemNode = <DatePicker {...formItemNodeProps} style={getFormItemNodeStyle(v)} />;
-                    }
-
-                    // RangePicker
-                    if (tpl === 'range-picker') {
-                        formItemNodeProps = omit(formItemNodeProps, ['startTimeKey', 'endTimeKey']);
-                        formItemNode = <RangePicker {...formItemNodeProps} style={getFormItemNodeStyle(v)} />;
+                        formItemNode = <Select {...formItemNodeProps} />;
                     }
 
                     // Cascader
                     if (tpl === 'cascader') {
-                        const { data = [] } = template;
-                        formItemNode = (
-                            <Cascader {...formItemNodeProps} options={data} style={getFormItemNodeStyle(v)} />
-                        );
+                        formItemNode = <Cascader {...formItemNodeProps} />;
+                    }
+
+                    // Radio
+                    if (tpl === 'radio') {
+                        formItemNode = <Radio.Group {...formItemNodeProps} />;
+                    }
+
+                    // Checkbox
+                    if (tpl === 'checkbox') {
+                        formItemNode = <Checkbox.Group {...formItemNodeProps} />;
+                    }
+
+                    // DatePicker
+                    if (tpl === 'date-picker') {
+                        formItemNode = <DatePicker {...formItemNodeProps} />;
+                    }
+
+                    // RangePicker
+                    if (tpl === 'range-picker') {
+                        formItemNode = <RangePicker {...formItemNodeProps} />;
                     }
 
                     // Switch
                     if (tpl === 'switch') {
-                        formItemNode = <Switch {...formItemNodeProps} style={getFormItemNodeStyle(v)}></Switch>;
+                        formItemNode = <Switch {...formItemNodeProps} />;
                     }
 
                     const labelNode = renderFormItemLabel(v, { labelWidth });

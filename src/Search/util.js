@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tooltip } from 'antd';
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
-import { merge, cloneDeep, flatten } from 'lodash';
-import { formatTime, isSomeFalsy } from '@nbfe/tools';
+import { omit, merge, cloneDeep, flatten } from 'lodash';
+import { isSomeFalsy, formatTime, removeProperties } from '@nbfe/tools';
 import { defaultColumn, pickerFormatMap, formItemTooltopMargin } from './config';
 
 // 处理 props.columns
@@ -116,6 +116,21 @@ export const getFormItemNodeStyle = column => {
         style.width = width;
     }
     return style;
+};
+
+// Form.Item 子组件的 props
+export const getFormItemNodeProps = column => {
+    const { placeholder, template } = cloneDeep(column);
+    const { tpl } = template;
+    const formItemNodeProps = {
+        placeholder,
+        style: getFormItemNodeStyle(column),
+        ...omit(template, ['width', 'tpl'])
+    };
+    if (tpl === 'range-picker') {
+        removeProperties(formItemNodeProps, ['startTimeKey', 'endTimeKey']);
+    }
+    return formItemNodeProps;
 };
 
 // 解析url: [文案|链接]

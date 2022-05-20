@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'antd';
-import { debounce, isFunction, omit, merge } from 'lodash';
+import { isFunction, omit } from 'lodash';
 
 class Index extends Component {
     static displayName = 'SearchSwitch';
@@ -11,10 +11,6 @@ class Index extends Component {
         value: PropTypes.bool,
         onChange: PropTypes.func
     };
-
-    constructor(props) {
-        super(props);
-    }
 
     onChange = (checked, event) => {
         if (isFunction(this.props.onChange)) {

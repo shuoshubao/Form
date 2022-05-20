@@ -25,7 +25,7 @@ const columns = [
         template: {
             tpl: 'select',
             allowClear: true,
-            data: [
+            options: [
                 { label: '男', value: 1, disabled: true },
                 { label: '女', value: 2 }
             ]
@@ -39,7 +39,7 @@ const columns = [
             tpl: 'cascader',
             allowClear: true,
             expandTrigger: 'hover',
-            data: [
+            options: [
                 {
                     value: 'zhejiang',
                     label: 'Zhejiang',
@@ -127,7 +127,7 @@ const columns = [
         // defaultValue: 2,
         template: {
             tpl: 'radio',
-            data: [
+            options: [
                 { label: '待存管', value: 1 },
                 { label: '部分存管', value: 2, disabled: true },
                 { label: '存管完成', value: 3 },
@@ -141,7 +141,7 @@ const columns = [
         inline: false,
         template: {
             tpl: 'checkbox',
-            data: [
+            options: [
                 { label: '待存管', value: 1 },
                 { label: '部分存管', value: 2, disabled: true },
                 { label: '存管完成', value: 3 },
