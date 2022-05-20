@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Button, Card } from 'antd';
 import { random } from 'lodash';
 import { sleep } from '@nbfe/tools';
 import Form from '../lib';
@@ -95,7 +95,7 @@ const treeData = [
 const columns = [
     {
         label: '数字范围',
-        name: 'a1,a2',
+        name: 'aa1,aa2',
         tooltip: '数字范围',
         defaultValue: [0.1],
         template: {
@@ -370,14 +370,37 @@ const DescriptionsColumns = [
 ];
 
 export default () => {
-    const onSubmit = (params, searchParams) => {
+    const formRef = React.useRef();
+
+    const handleSubmit = (params, searchParams) => {
         console.log('搜索:');
         console.log(params);
         // console.log(searchParams);
     };
+
+    const handleClick = () => {
+        formRef.current.forceUpdateColumns(list => {
+            return list.map((v, i) => {
+                if (i === 0) {
+                    v.visible = false;
+                }
+                return v;
+            });
+        });
+    };
+
     return (
         <div style={{ padding: 10 }}>
-            <Form cardProps={{ bordered: true }} columns={columns} onSubmit={onSubmit} showSearchBtn />
+            <Button onClick={handleClick} type="primary">
+                隐藏第一个
+            </Button>
+            <Form
+                ref={formRef}
+                cardProps={{ bordered: true }}
+                columns={columns}
+                onSubmit={handleSubmit}
+                showSearchBtn
+            />
             <Card title="Descriptions" style={{ marginTop: 10 }} size="small">
                 <Descriptions data={DescriptionsData} columns={DescriptionsColumns} />
             </Card>
