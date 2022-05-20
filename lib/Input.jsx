@@ -163,7 +163,7 @@ class Index extends Component {
                 <Input.Password {...omit(inputProps, ['enterButton'])} value={inputValue} onChange={onInputChange} />
             );
         }
-        return <Input {...omit(inputProps, ['enterButton'])} value={inputValue} onChange={onInputChange} />;
+        return <Input {...omit(inputProps, ['enterButton'])} value={value} onChange={onInputChange} />;
     }
 }
 
