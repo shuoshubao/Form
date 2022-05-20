@@ -145,6 +145,9 @@ class Index extends Component {
         const { state, props } = this;
         const { columns } = state;
         const formRefNode = this.getFormRefNode();
+        if (!formRefNode) {
+            return;
+        }
         const params = formRefNode.getFieldsValue();
         const searchValues = getSearchValues(params, columns);
         if (isFunction(props.onSubmit)) {
