@@ -4,6 +4,10 @@ import { sleep } from '@nbfe/tools';
 import Form from '../lib';
 
 const mockVal = str => {
+    // 模拟搜索不到的情况
+    if (str.length > 5) {
+        return [];
+    }
     return [1, 2, 3].map(v => {
         const name = [str, v].join('');
         return {
