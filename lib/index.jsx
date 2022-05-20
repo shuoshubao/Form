@@ -274,6 +274,7 @@ class Index extends Component {
                                 value
                             }
                         ]);
+                        this.domEvents.onSearch();
                     }}
                 />
             </Card>

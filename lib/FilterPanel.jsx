@@ -101,7 +101,7 @@ class Index extends Component {
             <div className={getClassNames('filter-panel')}>
                 <Divider orientation="left">
                     <span>已选</span>
-                    <Badge count={data.length} offset={[5, -2]} />
+                    <Badge count={data.length} offset={[5, -3]} size="small" />
                 </Divider>
                 {data.map((v, i) => {
                     const { label, value, valueText } = v;
