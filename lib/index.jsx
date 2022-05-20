@@ -13,10 +13,11 @@ import {
     Checkbox,
     Cascader,
     AutoComplete,
+    Input,
     InputNumber,
     message
 } from './antd';
-import Input from './Input.jsx';
+import ComplexInput from './Input.jsx';
 import RangeNumber from './RangeNumber.jsx';
 import Tabs from './Tabs.jsx';
 import Switch from './Switch.jsx';
@@ -222,15 +223,42 @@ class Index extends Component {
             let formItemNode = null;
             // Input
             if (tpl === 'input') {
-                formItemNode = (
-                    <Input
-                        column={v}
-                        {...formItemNodeProps}
-                        onSearch={() => {
-                            this.onSearch();
-                        }}
-                    />
-                );
+                const { inputType } = template;
+                if (['input', 'textarea', 'password'].includes(inputType)) {
+                    if (inputType === 'input') {
+                        formItemNode = (
+                            <Input
+                                {...formItemNodeProps}
+                                onPressEnter={() => {
+                                    this.onSearch();
+                                }}
+                            />
+                        );
+                    }
+                    if (inputType === 'textarea') {
+                        formItemNode = <Input.TextArea {...formItemNodeProps} />;
+                    }
+                    if (inputType === 'password') {
+                        formItemNode = (
+                            <Input.Password
+                                {...formItemNodeProps}
+                                onPressEnter={() => {
+                                    this.onSearch();
+                                }}
+                            />
+                        );
+                    }
+                } else {
+                    formItemNode = (
+                        <ComplexInput
+                            column={v}
+                            {...formItemNodeProps}
+                            onSearch={() => {
+                                this.onSearch();
+                            }}
+                        />
+                    );
+                }
             }
 
             // InputNumber

@@ -44,11 +44,6 @@ class Index extends Component {
                 });
             }
         }
-        if (['input', 'textarea', 'password'].includes(inputType)) {
-            this.setState({
-                inputValue: defaultValue
-            });
-        }
     }
 
     onSelectChange = async value => {
@@ -122,7 +117,12 @@ class Index extends Component {
             const { label } = options.find(v => v.value === selectValue) || {};
             return (
                 <Input.Group compact>
-                    <Select disabled={props.disabled} value={selectValue} onChange={onSelectChange} style={{ width: selectWidth }}>
+                    <Select
+                        disabled={props.disabled}
+                        value={selectValue}
+                        onChange={onSelectChange}
+                        style={{ width: selectWidth }}
+                    >
                         {options.map(v => {
                             return (
                                 <Select.Option value={v.value} key={v.value}>
@@ -152,18 +152,7 @@ class Index extends Component {
                 </Input.Group>
             );
         }
-        if (inputType === 'textarea') {
-            return (
-                <Input.TextArea {...omit(inputProps, ['enterButton'])} value={inputValue} onChange={onInputChange} />
-            );
-        }
-
-        if (inputType === 'password') {
-            return (
-                <Input.Password {...omit(inputProps, ['enterButton'])} value={inputValue} onChange={onInputChange} />
-            );
-        }
-        return <Input {...omit(inputProps, ['enterButton'])} value={value} onChange={onInputChange} />;
+        return null;
     }
 }
 
