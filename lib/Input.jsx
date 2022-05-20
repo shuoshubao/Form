@@ -30,8 +30,8 @@ class Index extends Component {
         const { selectValue, inputValue } = state;
         const { name, defaultValue, inline, template } = column;
         const {
-            inputType = 'input',
-            options = [],
+            inputType,
+            options,
             selectWidth = 100,
             inputWidth = defaultColumn.template.width
         } = template;
@@ -67,7 +67,7 @@ class Index extends Component {
         const { column, value, style } = this.props;
         const { selectValue, inputValue } = this.state;
         const { name, inline, template } = column;
-        const { inputType = 'input' } = template;
+        const { inputType } = template;
         if (['input', 'search'].includes(inputType)) {
             this.props.onChange(inputValue);
             return;
@@ -85,8 +85,8 @@ class Index extends Component {
         const { selectValue, inputValue } = state;
         const { name, inline, template } = column;
         const {
-            inputType = 'input',
-            options = [],
+            inputType,
+            options,
             selectWidth = 100,
             inputWidth = defaultColumn.template.width
         } = template;

@@ -4,7 +4,7 @@ import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { omit, merge, cloneDeep, flatten } from 'lodash';
 import { isSomeFalsy, formatTime } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
-import { defaultColumn, pickerFormatMap, formItemTooltopMargin, searchSeparator } from './config';
+import { defaultColumn, pickerFormatMap, formItemTooltopMargin, searchSeparator, inputTypeList } from './config';
 
 // 处理 props.columns
 export const mergeColumns = columns => {
@@ -14,9 +14,14 @@ export const mergeColumns = columns => {
             const { name, label, defaultValue, template } = column;
             const { tpl } = template;
             if (tpl === 'input') {
+                const { inputType = 'input' } = template;
+                if (!inputTypeList.includes(inputType)) {
+                    throw new Error(`inputType 参数非法, 需为其中一种: ${inputTypeList.join('|')}`);
+                }
+                template.inputType = inputType;
                 column.placeholder = label ? ['请输入', label].join('') : '';
-                const { inputType } = template;
                 if (['select-search', 'select-input'].includes(inputType)) {
+                    template.options = template.options || [];
                     const [selectKey, inputKey] = name.split(',');
                     if (isSomeFalsy(selectKey, inputKey)) {
                         throw new Error('range-picker 必须传参数: "name" 需为长度为 "selectKey,inputKey"');
