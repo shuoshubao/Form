@@ -52,8 +52,8 @@ export const mergeColumns = columns => {
 // 表单初始值
 export const getInitialValues = columns => {
     return cloneDeep(columns).reduce((prev, cur) => {
-        const { prop, defaultValue } = cur;
-        prev[prop] = defaultValue;
+        const { name, defaultValue } = cur;
+        prev[name] = defaultValue;
         return prev;
     }, {});
 };
@@ -62,13 +62,13 @@ export const getInitialValues = columns => {
 export const getSearchValues = (params, columns) => {
     const result = {};
     columns.forEach(v => {
-        const { prop, template } = v;
+        const { name, template } = v;
         const { tpl } = template;
-        const value = params[prop];
+        const value = params[name];
         if (tpl === 'date-picker') {
             const { format } = template;
             if (value) {
-                result[prop] = formatTime(value, format);
+                result[name] = formatTime(value, format);
                 return;
             }
         }
@@ -80,7 +80,7 @@ export const getSearchValues = (params, columns) => {
                 return;
             }
         }
-        result[prop] = value;
+        result[name] = value;
     });
     return result;
 };

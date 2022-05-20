@@ -5,17 +5,17 @@ import Search from '../lib';
 const columns = [
     {
         label: '关键字',
-        prop: 'a',
+        name: 'a',
         tooltip: ['这里填写姓名', 'a[a|https://ke.com]b']
     }
     // {
     //     label: '姓名',
-    //     prop: 'b',
+    //     name: 'b',
     //     tooltip: ['这里填写姓名', 'a[a|https://ke.com]b']
     // },
     // {
     //     label: '搜索框',
-    //     prop: 'a',
+    //     name: 'a',
     //     template: {
     //         inputType: 'search',
     //         prefix: <UserOutlined />,
@@ -26,7 +26,7 @@ const columns = [
     // },
     // {
     //     label: '性别',
-    //     prop: 'c',
+    //     name: 'c',
     //     defaultValue: 2,
     //     template: {
     //         tpl: 'select',
@@ -39,7 +39,7 @@ const columns = [
     // },
     // {
     //     label: '地区',
-    //     prop: 'c2',
+    //     name: 'c2',
     //     defaultValue: ['zhejiang', 'hangzhou', 'xihu'],
     //     template: {
     //         tpl: 'cascader',
@@ -83,7 +83,7 @@ const columns = [
     // },
     // {
     //     label: '创建时间1',
-    //     prop: 'd',
+    //     name: 'd',
     //     tooltip: '创建时间1',
     //     template: {
     //         tpl: 'date-picker'
@@ -91,7 +91,7 @@ const columns = [
     // },
     // {
     //     label: '创建时间2',
-    //     prop: 'd1',
+    //     name: 'd1',
     //     template: {
     //         tpl: 'date-picker',
     //         format: 'YYYY-MM-DD HH:mm',
@@ -100,7 +100,7 @@ const columns = [
     // },
     // {
     //     label: '创建时间3',
-    //     prop: 'd2',
+    //     name: 'd2',
     //     template: {
     //         tpl: 'date-picker',
     //         format: 'YYYY-MM-DD HH:mm:ss',
@@ -109,7 +109,7 @@ const columns = [
     // },
     // {
     //     label: '创建时间4',
-    //     prop: 'd3',
+    //     name: 'd3',
     //     template: {
     //         tpl: 'date-picker',
     //         picker: 'month'
@@ -117,7 +117,7 @@ const columns = [
     // },
     // {
     //     label: '时间区间',
-    //     prop: 'e',
+    //     name: 'e',
     //     inline: false,
     //     template: {
     //         tpl: 'range-picker',
@@ -128,7 +128,7 @@ const columns = [
     // },
     // {
     //     label: '状态',
-    //     prop: 'f',
+    //     name: 'f',
     //     inline: false,
     //     // defaultValue: 2,
     //     template: {
@@ -143,7 +143,7 @@ const columns = [
     // },
     // {
     //     label: '状态',
-    //     prop: 'g',
+    //     name: 'g',
     //     inline: false,
     //     template: {
     //         tpl: 'checkbox',
@@ -157,7 +157,7 @@ const columns = [
     // },
     // {
     //     label: '开关',
-    //     prop: 'h',
+    //     name: 'h',
     //     defaultValue: true,
     //     template: {
     //         tpl: 'switch'
