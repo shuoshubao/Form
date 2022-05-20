@@ -237,10 +237,11 @@ const columns = [
     {
         label: 'checkbox',
         name: 'b',
-        defaultValue: [2],
+        // defaultValue: [2],
         template: {
             tpl: 'checkbox',
             indeterminate: true,
+            defaultSelectAll: true,
             // options: [
             //     {
             //         value: 1,
@@ -264,6 +265,10 @@ const columns = [
                             {
                                 code: 2,
                                 label: 'b'
+                            },
+                            {
+                                code: 3,
+                                label: 'c'
                             }
                         ],
                         message: '成功'
