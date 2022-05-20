@@ -30,7 +30,8 @@ class Index extends Component {
         showResetBtn: true,
         cardProps: {},
         formProps: {},
-        labelWidth: 0
+        labelWidth: 0,
+        visibleFilterPanel: false
     };
 
     static propTypes = {
@@ -48,7 +49,9 @@ class Index extends Component {
         // Form 的属性 https://ant.design/components/form-cn/#API
         formProps: PropTypes.object,
         // Form.Item label 的宽度
-        labelWidth: PropTypes.number
+        labelWidth: PropTypes.number,
+        // 是否显示 筛选区
+        visibleFilterPanel: PropTypes.bool
     };
 
     constructor(props) {
@@ -110,7 +113,10 @@ class Index extends Component {
                 this.domEvents.debounceFilterPanelSetFields();
             }, 100),
             debounceFilterPanelSetFields: debounce(() => {
-                this.filterPanelRef.current.setFields();
+                const { visibleFilterPanel } = this.props;
+                if (visibleFilterPanel) {
+                    this.filterPanelRef.current.setFields();
+                }
             }, 100 + 10),
             // 重置
             onReset: () => {
@@ -244,6 +250,7 @@ class Index extends Component {
     render() {
         const { props, state, domEvents, renderResult } = this;
         const { columns, initialValues } = state;
+        const { visibleFilterPanel } = props;
         const { onSearch } = domEvents;
         if (isEmptyArray(columns)) {
             return null;
@@ -261,17 +268,19 @@ class Index extends Component {
                     {renderResult.renderColumns()}
                     {renderResult.renderSearchReset()}
                 </Form>
-                <FilterPanel
-                    ref={this.filterPanelRef}
-                    columns={columns}
-                    getFieldsValue={() => {
-                        return this.formRef.current.getFieldsValue();
-                    }}
-                    onChange={fields => {
-                        this.formRef.current.setFields(fields);
-                        this.domEvents.onSearch();
-                    }}
-                />
+                {visibleFilterPanel && (
+                    <FilterPanel
+                        ref={this.filterPanelRef}
+                        columns={columns}
+                        getFieldsValue={() => {
+                            return this.formRef.current.getFieldsValue();
+                        }}
+                        onChange={fields => {
+                            this.formRef.current.setFields(fields);
+                            this.domEvents.onSearch();
+                        }}
+                    />
+                )}
             </Card>
         );
     }
