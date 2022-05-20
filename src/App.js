@@ -125,6 +125,15 @@ const PersonInfo = props => {
 
 const columns = [
     {
+        label: '颜色',
+        name: 'color',
+        defaultValue: 'orange',
+        rules: [required],
+        template: {
+            tpl: 'color-picker'
+        }
+    },
+    {
         label: '文本',
         name: 'text',
         defaultValue: 'demo',
