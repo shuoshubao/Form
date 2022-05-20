@@ -1,7 +1,7 @@
-.dyna-search-container {
+.dyna-form-container {
     background-color: #fff;
 
-    &.dyna-search-container-disabled {
+    &.dyna-form-container-disabled {
         .ant-form-item {
             margin-bottom: 10px;
         }
@@ -67,14 +67,14 @@
 
     .ant-form-item {
         margin-top: 10px;
-        &.dyna-search-form-item {
+        &.dyna-form-form-item {
             .ant-btn:not(:first-child) {
                 margin-left: 10px;
             }
         }
-        .dyna-search-range-number {
-            .dyna-search-range-number-min,
-            .dyna-search-range-number-max {
+        .dyna-form-range-number {
+            .dyna-form-range-number-min,
+            .dyna-form-range-number-max {
                 margin-right: 0;
                 position: relative;
                 z-index: 2;
@@ -88,13 +88,13 @@
                     padding: 0 24px 0 4px;
                 }
             }
-            .dyna-search-range-number-min {
+            .dyna-form-range-number-min {
                 border-right-color: transparent;
             }
-            .dyna-search-range-number-max {
+            .dyna-form-range-number-max {
                 border-left-color: transparent;
             }
-            .dyna-search-range-number-separator {
+            .dyna-form-range-number-separator {
                 border-left: 0;
                 border-right: 0;
                 pointer-events: none;
@@ -111,7 +111,7 @@
             width: 4px;
         }
         &.ant-form-item-required {
-            .dyna-search-form-item-label::before {
+            .dyna-form-form-item-label::before {
                 display: inline-block;
                 margin-right: 4px;
                 color: #ff4d4f;
@@ -123,8 +123,8 @@
         }
     }
 
-    .dyna-search-filter-panel {
-        .dyna-search-filter-panel-tags {
+    .dyna-form-filter-panel {
+        .dyna-form-filter-panel-tags {
             margin-top: -8px;
             .ant-tag {
                 padding: 5px 6px;
@@ -137,6 +137,6 @@
     }
 }
 
-.ant-tooltip.dyna-search-tooltip .ant-tooltip-inner a {
+.ant-tooltip.dyna-form-tooltip .ant-tooltip-inner a {
     margin: 0 4px;
 }
