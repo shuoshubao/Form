@@ -1,11 +1,9 @@
 import React from 'react';
-import { Button, Card } from 'antd';
+import { Button, Card, Divider } from 'antd';
 import { random } from 'lodash';
 import { sleep } from '@nbfe/tools';
 import Form from '../lib';
 import '../lib/index.less';
-
-const { Descriptions } = Form;
 
 const mockVal = str => {
     // 模拟搜索不到的情况
@@ -349,26 +347,6 @@ const columns = [
     }
 ];
 
-const DescriptionsData = {
-    a: 123,
-    b: 456
-};
-
-const DescriptionsColumns = [
-    {
-        label: '姓名',
-        name: 'a',
-        tooltip: '提示文案: [链接|baidu.com]'
-    },
-    {
-        label: '年龄',
-        name: 'b',
-        render: (value, record) => {
-            return <div>hhh</div>;
-        }
-    }
-];
-
 export default () => {
     const formRef = React.useRef();
 
@@ -391,9 +369,10 @@ export default () => {
 
     return (
         <div style={{ padding: 10 }}>
-            <Button onClick={handleClick} type="primary">
-                隐藏第一个
-            </Button>
+            <Card title="Descriptions" style={{ marginTop: 10 }} size="small">
+                <Button onClick={handleClick} type="primary">隐藏第一个</Button>
+            </Card>
+            <Divider />
             <Form
                 ref={formRef}
                 cardProps={{ bordered: true }}
@@ -401,9 +380,6 @@ export default () => {
                 onSubmit={handleSubmit}
                 showSearchBtn
             />
-            <Card title="Descriptions" style={{ marginTop: 10 }} size="small">
-                <Descriptions data={DescriptionsData} columns={DescriptionsColumns} />
-            </Card>
         </div>
     );
 };
