@@ -7,6 +7,7 @@ import {
     Button,
     Form,
     Select,
+    TreeSelect,
     DatePicker,
     Radio,
     Checkbox,
@@ -248,6 +249,11 @@ class Index extends Component {
                         })}
                     </Select>
                 );
+            }
+
+            // TreeSelect
+            if (tpl === 'tree-select') {
+                formItemNode = <TreeSelect {...formItemNodeProps} />;
             }
 
             // Cascader
