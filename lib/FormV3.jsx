@@ -18,7 +18,7 @@ import {
     getFormItemNodeProps
 } from './util.jsx';
 
-class Index extends Component {
+class RegistrationForm extends React.Component {
     static displayName = componentName;
 
     static defaultProps = {
@@ -102,7 +102,7 @@ class Index extends Component {
             onSearch: debounce(() => {
                 const { state, props } = this;
                 const { columns } = state;
-                const params = this.formRef.current.getFieldsValue();
+                const params = this.props.form.getFieldsValue();
                 const searchValues = getSearchValues(params, columns);
                 if (isFunction(props.onSubmit)) {
                     props.onSubmit(searchValues, params);
@@ -117,7 +117,7 @@ class Index extends Component {
             }, 100 + 10),
             // 重置
             onReset: () => {
-                this.formRef.current.resetFields();
+                this.props.form.resetFields();
                 this.domEvents.onSearch();
             }
         };
@@ -127,8 +127,9 @@ class Index extends Component {
         return {
             renderColumns: () => {
                 const { props, state } = this;
-                const { columns } = state;
+                const { initialValues, columns } = state;
                 const labelWidth = props.labelWidth || getFormItemLabelWidth(columns);
+                const { getFieldDecorator } = this.props.form;
                 return columns.map((v, i) => {
                     const { label, name, inline, template } = v;
                     const { tpl } = template;
@@ -201,6 +202,18 @@ class Index extends Component {
                             key={key}
                             style={{ width: inline ? undefined : '100%' }}
                         >
+                            {getFieldDecorator(name, {
+                                initialValue: initialValues[name]
+                            })(formItemNode)}
+                        </Form.Item>
+                    );
+                    return (
+                        <Form.Item
+                            label={labelNode}
+                            name={name}
+                            key={key}
+                            style={{ width: inline ? undefined : '100%' }}
+                        >
                             {formItemNode}
                         </Form.Item>
                     );
@@ -260,14 +273,13 @@ class Index extends Component {
         }
         const cardProps = merge({}, props.cardProps, defaulCardProps);
         const formProps = merge({}, props.formProps, defaulFormProps);
+
         return (
             <Card className={getClassNames('container')} {...cardProps}>
-                <Form
-                    ref={this.formRef}
-                    {...omit(formProps, ['ref', 'onFinish', 'initialValues'])}
-                    onFinish={onSearch}
-                    initialValues={initialValues}
-                >
+                <Form layout="inline" onSubmit={(e) => {
+                    e.preventDefault();
+                    onSearch();
+                }}>
                     {renderResult.renderColumns()}
                     {renderResult.renderSearchReset()}
                 </Form>
@@ -276,10 +288,13 @@ class Index extends Component {
                         ref={this.filterPanelRef}
                         columns={columns}
                         getFieldsValue={() => {
-                            return this.formRef.current.getFieldsValue();
+                            return this.props.form.getFieldsValue();
                         }}
                         onChange={fields => {
-                            this.formRef.current.setFields(fields);
+                            console.log('fields');
+                            console.log(fields);
+                            // return;
+                            this.props.form.setFields(fields);
                             this.domEvents.onSearch();
                         }}
                     />
@@ -289,4 +304,4 @@ class Index extends Component {
     }
 }
 
-export default Index;
+export default Form.create({ name: 'register' })(RegistrationForm);

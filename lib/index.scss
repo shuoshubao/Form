@@ -23,6 +23,9 @@
             }
         }
     }
+    .ant-form-item-label > label::after {
+        display: none;
+    }
     .dyna-search-filter-panel {
         .dyna-search-filter-panel-tags {
             margin-top: -8px;

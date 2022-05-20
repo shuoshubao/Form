@@ -5,6 +5,7 @@ import { omit, merge, cloneDeep, flatten } from 'lodash';
 import { classNames, isSomeFalsy, formatTime } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
 import {
+    isAntdV3,
     componentName,
     prefixClassName,
     defaultColumn,
@@ -74,6 +75,9 @@ export const mergeColumns = (columns = []) => {
                     format: pickerFormatMap[template.picker],
                     ...template
                 };
+                if (isAntdV3) {
+                    column.defaultValue = defaultValue === defaultColumn.defaultValue ? null : defaultValue;
+                }
                 column.placeholder = undefined;
             }
             if (tpl === 'range-picker') {
@@ -182,6 +186,8 @@ export const getSearchValues = (params, columns) => {
 
 // icon 的宽度
 const iconWidth = 14;
+// 分号
+const semicolonWidth = 10;
 
 // 获取 Form.Item label 的宽度
 export const getFormItemLabelWidth = columns => {
@@ -194,7 +200,7 @@ export const getFormItemLabelWidth = columns => {
         if (tooltip.length) {
             labelWidth += iconWidth + formItemTooltopMargin;
         }
-        return labelWidth;
+        return labelWidth + semicolonWidth;
     });
     return Math.max(...labelWidthList);
 };
@@ -273,6 +279,7 @@ export const renderFormItemLabel = (column, { labelWidth }) => {
                     <QuestionCircleOutlined style={{ marginLeft: formItemTooltopMargin }} />
                 </Tooltip>
             )}
+            <span style={{ width: semicolonWidth, display: 'inline-block', textAlign: 'center' }}>:</span>
         </div>
     );
 };

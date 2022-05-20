@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Divider, Badge, Tag, Button } from './antd';
 import { omit, find, flatten, sortBy, cloneDeep, remove } from 'lodash';
 import { isEveryFalsy, setAsyncState, isEmptyArray, isEmptyValue, getLabelByValue, formatTime } from '@nbfe/tools';
-import { defaultColumn, searchSeparator } from './config';
+import { isAntdV3, defaultColumn, searchSeparator } from './config';
 import { getClassNames, getDisplayName } from './util.jsx';
 
 class Index extends Component {
@@ -112,12 +112,20 @@ class Index extends Component {
         } else {
             newValue = '';
         }
-        onChange([
-            {
-                name,
-                value: newValue
-            }
-        ]);
+        if (isAntdV3) {
+            onChange({
+                [name]: {
+                    value: newValue
+                }
+            });
+        } else {
+            onChange([
+                {
+                    name,
+                    value: newValue
+                }
+            ]);
+        }
     };
 
     render() {
