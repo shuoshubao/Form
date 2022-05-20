@@ -102,8 +102,8 @@ class Index extends Component {
                 />
             );
         }
-        const { label } = options.find(v => v.value === selectValue) || {};
         if (['select-search', 'select-input'].includes(inputType)) {
+            const { label } = options.find(v => v.value === selectValue) || {};
             return (
                 <Input.Group compact {...inputProps}>
                     <Select

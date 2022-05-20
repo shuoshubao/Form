@@ -4,21 +4,35 @@ import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { omit, merge, cloneDeep, flatten } from 'lodash';
 import { isSomeFalsy, formatTime } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
-import { componentName, defaultColumn, pickerFormatMap, formItemTooltopMargin, searchSeparator, inputTypeList } from './config';
+import {
+    componentName,
+    defaultColumn,
+    pickerFormatMap,
+    formItemTooltopMargin,
+    searchSeparator,
+    inputTypeList
+} from './config';
 
 // 处理 props.columns
 export const mergeColumns = (columns = []) => {
     return cloneDeep(columns)
         .map((v, i) => {
             const column = merge({}, defaultColumn, v);
-            const { name, label, defaultValue, template } = column;
+            const { name, label, defaultValue } = column;
+            let { template } = column;
             const { tpl } = template;
             if (tpl === 'input') {
-                const { inputType = 'input' } = template;
-                template.inputType = inputType;
+                template = {
+                    inputType: 'input',
+                    ...template
+                };
+                const { inputType } = template;
                 column.placeholder = label ? ['请输入', label].join('') : '';
                 if (['select-search', 'select-input'].includes(inputType)) {
-                    template.options = template.options || [];
+                    template = {
+                        options: [],
+                        ...template
+                    };
                     const [selectKey, inputKey] = name.split(',');
                     column.name = [selectKey, inputKey].join(searchSeparator);
                 }
@@ -36,18 +50,23 @@ export const mergeColumns = (columns = []) => {
             }
             if (tpl === 'date-picker') {
                 // picker: date | week | month | quarter | year
-                const picker = template.picker || 'date';
-                const format = template.format || pickerFormatMap[picker];
-                template.picker = picker;
-                template.format = format;
+                template = {
+                    picker: 'date',
+                    ...template
+                };
+                template = {
+                    format: pickerFormatMap[template.picker],
+                    ...template
+                };
                 column.placeholder = undefined;
             }
             if (tpl === 'range-picker') {
                 const [startTimeKey, endTimeKey] = name.split(',');
                 column.name = [startTimeKey, endTimeKey].join(searchSeparator);
-                const format = template.format || 'YYYY-MM-DD HH:mm:ss';
-
-                template.format = format;
+                template = {
+                    format: 'YYYY-MM-DD HH:mm:ss',
+                    ...template
+                };
                 column.placeholder = undefined;
             }
             column.template = template;
@@ -69,14 +88,18 @@ export const validateColumns = (columns = []) => {
             if (['select-search', 'select-input'].includes(inputType)) {
                 const [selectKey, inputKey] = name.split(searchSeparator);
                 if (isSomeFalsy(selectKey, inputKey)) {
-                    throw new Error(`[${componentName}]range-picker 必须传参数: "name" 需为长度为 "selectKey,inputKey"`);
+                    throw new Error(
+                        `[${componentName}]range-picker 必须传参数: "name" 需为长度为 "selectKey,inputKey"`
+                    );
                 }
             }
         }
         if (tpl === 'range-picker') {
             const [startTimeKey, endTimeKey] = name.split(searchSeparator);
             if (isSomeFalsy(startTimeKey, endTimeKey)) {
-                throw new Error(`[${componentName}]range-picker 必须传参数: "name" 需为长度为 "startTimeKey,endTimeKey"`);
+                throw new Error(
+                    `[${componentName}]range-picker 必须传参数: "name" 需为长度为 "startTimeKey,endTimeKey"`
+                );
             }
         }
     });
