@@ -22,7 +22,7 @@ class Index extends Component {
 
     static defaultProps = {
         autoSubmit: true,
-        showSearchBtn: true,
+        showSearchBtn: false,
         showResetBtn: true,
         cardProps: {},
         formProps: {},
@@ -171,7 +171,8 @@ class Index extends Component {
                 });
             },
             renderSearchReset: () => {
-                const { domEvents } = this;
+                const { state, domEvents } = this;
+                const { columns } = state;
                 const { onReset } = domEvents;
                 const { showSearchBtn, showResetBtn } = this.props;
                 if (isEveryFalsy(showSearchBtn, showResetBtn)) {
@@ -185,7 +186,8 @@ class Index extends Component {
                         </Button>
                     );
                 }
-                if (showResetBtn) {
+                // 只有一个子组件时, 就不需要重置按钮了
+                if (columns.length > 1 && showResetBtn) {
                     btns.push(
                         <Button style={{ marginLeft: 5 }} onClick={onReset} key="reset">
                             重置
