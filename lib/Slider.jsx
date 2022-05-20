@@ -33,7 +33,7 @@ class Index extends Component {
                 }}
             >
                 <Slider
-                    style={{ width: style.width - InputNumberWidth - 20 }}
+                    style={{ width: style.width - InputNumberWidth - 15 }}
                     value={value}
                     onChange={onChange}
                     {...SliderProps}
