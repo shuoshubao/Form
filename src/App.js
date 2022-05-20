@@ -111,7 +111,7 @@ const columns = [
         name: 'cascader',
         tooltip: '级联',
         transform: value => {
-            return value && value[1] || '';
+            return (value && value[1]) || '';
         },
         template: {
             tpl: 'cascader',
@@ -376,13 +376,7 @@ export default () => {
     };
     return (
         <div style={{ padding: 10 }}>
-            <Card title="Form" size="small">
-                <Form
-                    columns={columns}
-                    onSubmit={onSubmit}
-                    showSearchBtn
-                />
-            </Card>
+            <Form cardProps={{ bordered: true }} columns={columns} onSubmit={onSubmit} showSearchBtn />
             <Card title="Descriptions" style={{ marginTop: 10 }} size="small">
                 <Descriptions data={DescriptionsData} columns={DescriptionsColumns} />
             </Card>

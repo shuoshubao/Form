@@ -126,8 +126,20 @@
         }
     }
 
-    .ant-card-body > .ant-form {
-        margin-top: -10px;
+    .ant-card-body {
+        padding: 10px;
+        & > .ant-form {
+            margin-top: -10px;
+        }
+    }
+
+    .ant-form.ant-form-inline {
+        .ant-form-item {
+            margin-right: 10px;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
     }
 
     .ant-form.ant-form-horizontal {
