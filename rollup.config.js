@@ -25,6 +25,14 @@ export default [
             file: 'dist/components.esm.js',
             format: 'esm'
         },
-        plugins: [postcss({ extract: true, minimize: true }), babel(babelConfig)]
+        plugins: [babel(babelConfig)]
+    },
+    {
+        input: 'lib/form/index.js',
+        output: {
+            file: 'dist/form.esm.js',
+            format: 'esm'
+        },
+        plugins: [babel(babelConfig)]
     }
 ];
