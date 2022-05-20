@@ -3,9 +3,12 @@ import { random } from 'lodash';
 import { sleep } from '@nbfe/tools';
 import Form from '../lib';
 
-const mockVal = (str, repeat = 1) => ({
-    value: str.repeat(repeat)
-});
+const mockVal = (str, repeat = 1) => {
+    return {
+        value: str.repeat(repeat),
+        label: str.repeat(repeat) + '(label)',
+    }
+};
 
 const selectData = {
     1: [
@@ -42,6 +45,27 @@ const columns = [
                 min: 0,
                 max: 1,
                 step: 0.1
+            }
+        }
+    },
+    {
+        label: '自动完成',
+        name: 'auto-complete',
+        tooltip: '自动完成',
+        defaultValue: 'shuoshubao',
+        template: {
+            tpl: 'auto-complete',
+            options: [
+                {
+                    label: '硕鼠宝',
+                    value: 'shuoshubao'
+                }
+            ],
+            remoteConfig: {
+                fetch: async searchText => {
+                    await sleep(0.1);
+                    return !searchText ? [] : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)];
+                }
             }
         }
     },
@@ -190,8 +214,8 @@ export default () => {
                 onSubmit={onSubmit}
                 showSearchBtn
                 onValuesChange={({ key, value }, { columns, updateColumns, setFieldsValue }) => {
-                    console.log(333);
-                    console.log(key, value);
+                    // console.log(333);
+                    // console.log(key, value);
                     if (key === 'a') {
                         columns.forEach(v => {
                             if (v.name === 'b') {
@@ -201,7 +225,7 @@ export default () => {
                             }
                         });
                     }
-                    console.log(columns);
+                    // console.log(columns);
                     // console.log(allFields);
                 }}
             />
