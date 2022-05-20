@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Card, Divider, Space, Input } from 'antd';
 import { random } from 'lodash';
+import moment from 'moment';
 import { sleep, isUniq, rules } from '@nbfe/tools';
 import Form from '../lib';
 import '../lib/index.less';
@@ -126,11 +127,62 @@ const columns = [
     {
         label: '文本',
         name: 'text',
+        defaultValue: 'demo',
         rules: [required]
+    },
+    {
+        label: '日期',
+        name: 'date',
+        // defaultValue: '2022-02-10',
+        defaultValue: moment(),
+        // rules: [required],
+        template: {
+            tpl: 'date-picker'
+        }
+    },
+    {
+        label: '日期范围',
+        name: 'date1,date2',
+        defaultValue: [moment().subtract(7, 'day'), moment()],
+        // defaultValue: [moment(), moment()],
+        // defaultValue: ['2022-01-01', '2022-03-15'],
+        // rules: [required],
+        template: {
+            tpl: 'date-range-picker',
+            format: 'YYYY-MM-DD'
+        }
+    },
+    {
+        label: '时间',
+        name: 'time',
+        defaultValue: '12:08:02',
+        // rules: [required],
+        template: {
+            tpl: 'time-picker'
+        }
+    },
+    {
+        label: '时间范围',
+        name: 'time1,time2',
+        // defaultValue: ['11:06:02', '12:08:03'],
+        // rules: [required],
+        template: {
+            tpl: 'time-range-picker'
+        }
+    },
+    {
+        label: '数字范围',
+        name: 'number1,number2',
+        defaultValue: [1, 2],
+        // rules: [required],
+        template: {
+            tpl: 'number-range'
+        }
     },
     {
         label: '评分',
         name: 'rate',
+        defaultValue: 0,
         rules: [required],
         template: {
             tpl: 'rate'
@@ -167,9 +219,9 @@ const columns = [
             rules: [
                 {
                     validator: (rule, value) => {
-                        console.log(222);
-                        console.log(value);
-                        console.log(rule);
+                        // console.log(222);
+                        // console.log(value);
+                        // console.log(rule);
                         if (!isUniq(value)) {
                             return Promise.reject(new Error('不得重复'));
                         }
