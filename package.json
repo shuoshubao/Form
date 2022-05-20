@@ -15,8 +15,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nbfe/tools": "^0.2.12",
-    "react-color": "^2.19.3"
+    "@nbfe/react-color": "^0.1.1",
+    "@nbfe/tools": "^0.2.12"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.13.9",
