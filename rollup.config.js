@@ -17,7 +17,7 @@ export default [
             format: 'cjs',
             exports: 'default'
         },
-        plugins: [postcss({ extract: true, minimize: true }), babel(babelConfig)]
+        plugins: [postcss({ extract: true }), babel(babelConfig)]
     },
     {
         input: 'lib/components.js',
