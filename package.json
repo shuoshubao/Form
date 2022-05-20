@@ -1,6 +1,6 @@
 {
     "name": "@jiaoyi/search",
-    "version": "0.1.1-beta-1",
+    "version": "0.1.1-beta-2",
     "main": "dist/index.js",
     "devDependencies": {
         "@babel/preset-env": "^7.13.9",

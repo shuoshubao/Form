@@ -91,6 +91,7 @@ class Index extends Component {
             // 重置
             onReset: () => {
                 this.formRef.current.resetFields();
+                this.domEvents.onSearch();
             }
         };
     }
