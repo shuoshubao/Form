@@ -61,6 +61,7 @@ const columns = [
     {
         label: '时间区间',
         prop: 'e',
+        inline: false,
         template: {
             tpl: 'range-picker',
             format: 'YYYY-MM-DD HH:mm:ss',
@@ -71,6 +72,7 @@ const columns = [
     {
         label: '状态',
         prop: 'f',
+        inline: false,
         // defaultValue: 2,
         template: {
             tpl: 'radio',
@@ -85,7 +87,7 @@ const columns = [
     {
         label: '状态',
         prop: 'g',
-        defaultValue: [1, 2],
+        inline: false,
         template: {
             tpl: 'checkbox',
             data: [

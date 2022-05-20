@@ -19,6 +19,9 @@ export const mergeColumns = columns => {
                 column.placeholder = label ? ['请选择', label].join('') : '';
                 column.defaultValue = defaultValue === defaultColumn.defaultValue ? undefined : defaultValue;
             }
+            if (tpl === 'checkbox') {
+                column.defaultValue = defaultValue === defaultColumn.defaultValue ? [] : defaultValue;
+            }
             if (tpl === 'date-picker') {
                 // picker: date | week | month | quarter | year
                 const picker = template.picker || 'date';

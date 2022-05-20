@@ -106,7 +106,7 @@ class Index extends Component {
                 const { columns } = state;
                 const labelWidth = props.labelWidth || getFormItemLabelWidth(columns);
                 return columns.map((v, i) => {
-                    const { label, prop, placeholder, template } = v;
+                    const { label, prop, placeholder, inline, template } = v;
                     const { tpl } = template;
                     let formItemNodeProps = { placeholder, ...omit(template, ['tpl', 'width', 'data']) };
                     let formItemNode = null;
@@ -169,7 +169,7 @@ class Index extends Component {
 
                     const key = [i, label, prop || formItemName].join('_');
                     return (
-                        <Form.Item label={labelNode} name={formItemName} key={key}>
+                        <Form.Item label={labelNode} name={formItemName} key={key} style={{width: inline ? undefined : '100%'}}>
                             {formItemNode}
                         </Form.Item>
                     );
