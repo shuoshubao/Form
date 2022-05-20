@@ -66,6 +66,7 @@ export const mergeColumns = (columns = []) => {
             if (tpl === 'select') {
                 column.placeholder = label ? ['请选择', label].join('') : '';
                 column.defaultValue = defaultValue === defaultColumn.defaultValue ? undefined : defaultValue;
+                column.allItem = column.allItem || null;
             }
             if (tpl === 'cascader') {
                 column.placeholder = label ? ['请选择', label].join('') : '';

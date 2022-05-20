@@ -249,9 +249,10 @@ class Index extends Component {
 
             // Select
             if (tpl === 'select') {
+                const { options, allItem } = formItemNodeProps;
                 formItemNode = (
-                    <Select {...omit(formItemNodeProps, ['options'])}>
-                        {formItemNodeProps.options.map(v => {
+                    <Select {...omit(formItemNodeProps, ['options', 'allItem'])}>
+                        {[allItem, ...options].filter(Boolean).map(v => {
                             return (
                                 <Select.Option value={v.value} key={v.value}>
                                     {v.label}
