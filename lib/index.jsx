@@ -174,7 +174,7 @@ class Index extends Component {
     onReset = () => {
         const { columns } = this.state;
         const formRefNode = this.getFormRefNode();
-        const values = formRefNode.getFieldsValue(true);
+        const values = formRefNode.getFieldsValue(isAntdV3 ? undefined : true);
         formRefNode.resetFields();
         columns.forEach(column => {
             const {
