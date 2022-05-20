@@ -160,14 +160,15 @@ const columns = [
     },
     {
         label: '关键字1',
-        name: 'a1,a11',
+        name: 'a1',
+        defaultValue: '123',
         template: {
             inputType: 'input',
         }
     },
     {
         label: '关键字2',
-        name: 'a2,a21',
+        name: 'a2',
         template: {
             inputType: 'textarea',
         }
@@ -177,6 +178,7 @@ const columns = [
         name: 'a3,a33',
         tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
         inline: false,
+        defaultValue: ['contractNo', '123'],
         template: {
             inputType: 'select-search',
             options: [
