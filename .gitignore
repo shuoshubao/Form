@@ -9,7 +9,6 @@
 # production
 /dist
 /lib/v3.js
-/lib/Render.js
 
 # misc
 .DS_Store
