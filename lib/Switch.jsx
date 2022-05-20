@@ -5,6 +5,7 @@ import { isFunction, omit } from 'lodash';
 
 class Index extends Component {
     static displayName = 'SearchSwitch';
+
     static defaultProps = {};
 
     static propTypes = {
@@ -13,15 +14,16 @@ class Index extends Component {
     };
 
     onChange = (checked, event) => {
-        if (isFunction(this.props.onChange)) {
-            this.props.onChange(checked, event);
+        if (!isFunction(this.props.onChange)) {
+            return;
         }
+        this.props.onChange(checked, event);
     };
 
     render() {
         const { defaultValue, value, style } = this.props;
         const { onChange } = this;
-        const switchProps = omit(this.props, ['value', 'defaultValue', 'onChange', 'style']);
+        const switchProps = omit(this.props, ['defaultValue', 'value', 'onChange', 'style']);
         return (
             <div style={style}>
                 <Switch checked={value} defaultChecked={defaultValue} onChange={onChange} {...switchProps} />

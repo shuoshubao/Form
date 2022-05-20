@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button, Form, Input, Select, DatePicker, Radio, Checkbox, Cascader } from 'antd';
+import { Card, Button, Form, Select, DatePicker, Radio, Checkbox, Cascader } from 'antd';
 import { debounce, isFunction, omit, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy } from '@nbfe/tools';
 import Switch from './Switch.jsx';
+import Input from './Input.jsx';
 import { defaulCardProps, defaulFormProps } from './config';
 import {
     mergeColumns,
@@ -110,13 +111,7 @@ class Index extends Component {
                     let formItemNode = null;
                     // Input
                     if (tpl === 'input') {
-                        const { inputType } = template;
-                        // https://ant.design/components/input-cn/#Input.Search
-                        if (inputType === 'search') {
-                            formItemNode = <Input.Search {...formItemNodeProps} />;
-                        } else {
-                            formItemNode = <Input {...formItemNodeProps} />;
-                        }
+                        formItemNode = <Input column={v} {...formItemNodeProps} />
                     }
 
                     // Select

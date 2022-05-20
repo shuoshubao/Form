@@ -4,20 +4,47 @@ import Search from '../lib';
 
 const columns = [
     {
-        label: '关键字',
+        label: '关键字1',
         name: 'a1',
         tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
         template: {
-            inputType: 'search',
+            inputType: 'search'
         }
     },
     {
-        label: '关键字',
+        label: '关键字2',
         name: 'a2',
         tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
         template: {
             inputType: 'search',
             enterButton: '搜索'
+        }
+    },
+    {
+        label: '关键字3',
+        name: 'a3,a31',
+        tooltip: ['这里填写姓名', 'a[a|https://ke.com]b'],
+        inline: false,
+        template: {
+            inputType: 'select-search',
+            options: [
+                {
+                    label: '交易编号',
+                    value: 'businessCode'
+                },
+                {
+                    label: '合同编号',
+                    value: 'contractNo'
+                },
+                {
+                    label: '买方',
+                    value: 'buyerName'
+                },
+                {
+                    label: '卖方',
+                    value: 'sellerName'
+                }
+            ]
         }
     },
     // {
@@ -133,9 +160,9 @@ const columns = [
         inline: false,
         template: {
             tpl: 'range-picker',
-            format: 'YYYY-MM-DD HH:mm:ss',
+            format: 'YYYY-MM-DD HH:mm:ss'
         }
-    },
+    }
     // {
     //     label: '状态',
     //     name: 'f',
