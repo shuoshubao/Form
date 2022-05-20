@@ -4,7 +4,7 @@ import { Switch } from './antd';
 import { isFunction, omit } from 'lodash';
 
 class Index extends Component {
-    static displayName = 'DynaFormSwitch';
+    static displayName = 'DynamicFormSwitch';
 
     static defaultProps = {};
 

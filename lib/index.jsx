@@ -471,9 +471,9 @@ class Index extends Component {
         }
         return (
             <Card
-                className={classNames(getClassNames('container'), {
-                    [getClassNames('container-disabled')]: disabled,
-                    [getClassNames('container-antd-v3')]: isAntdV3
+                className={classNames(getClassNames(), {
+                    [getClassNames('disabled')]: disabled,
+                    [getClassNames('antd-v3')]: isAntdV3
                 })}
                 {...cardProps}
             >

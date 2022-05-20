@@ -23,7 +23,7 @@ export const getClassNames = (...args) => {
     return classNames(args)
         .split(' ')
         .map(v => {
-            return [prefixClassName, v].join('-');
+            return [prefixClassName, v].filter(Boolean).join('-');
         })
         .join(' ');
 };

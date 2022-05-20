@@ -1,7 +1,7 @@
-.dyna-form-container {
+.dynamic-form {
     background-color: #fff;
 
-    &.dyna-form-container-disabled {
+    &.dynamic-form-disabled {
         input,
         select,
         textarea {
@@ -9,7 +9,7 @@
                 color: transparent;
             }
         }
-        .dyna-form-form-item-label::before {
+        .dynamic-form-form-item-label::before {
             display: none !important;
         }
         .ant-form-item {
@@ -81,7 +81,7 @@
     }
 
     // antd v3
-    &.dyna-form-container-antd-v3 {
+    &.dynamic-form-antd-v3 {
         .ant-form-item-label {
             label {
                 display: inline-block;
@@ -108,14 +108,14 @@
 
     .ant-form-item {
         margin-top: 10px;
-        &.dyna-form-form-item {
+        &.dynamic-form-form-item {
             .ant-btn:not(:first-child) {
                 margin-left: 10px;
             }
         }
-        .dyna-form-range-number {
-            .dyna-form-range-number-min,
-            .dyna-form-range-number-max {
+        .dynamic-form-range-number {
+            .dynamic-form-range-number-min,
+            .dynamic-form-range-number-max {
                 margin-right: 0;
                 position: relative;
                 z-index: 2;
@@ -129,13 +129,13 @@
                     padding: 0 24px 0 4px;
                 }
             }
-            .dyna-form-range-number-min {
+            .dynamic-form-range-number-min {
                 border-right-color: transparent;
             }
-            .dyna-form-range-number-max {
+            .dynamic-form-range-number-max {
                 border-left-color: transparent;
             }
-            .dyna-form-range-number-separator {
+            .dynamic-form-range-number-separator {
                 border-left: 0;
                 border-right: 0;
                 pointer-events: none;
@@ -152,7 +152,7 @@
             width: 4px;
         }
         &.ant-form-item-required {
-            .dyna-form-form-item-label::before {
+            .dynamic-form-form-item-label::before {
                 display: inline-block;
                 margin-right: 4px;
                 color: #ff4d4f;
@@ -164,8 +164,8 @@
         }
     }
 
-    .dyna-form-filter-panel {
-        .dyna-form-filter-panel-tags {
+    .dynamic-form-filter-panel {
+        .dynamic-form-filter-panel-tags {
             margin-top: -8px;
             .ant-tag {
                 padding: 5px 6px;
@@ -178,6 +178,6 @@
     }
 }
 
-.ant-tooltip.dyna-form-tooltip .ant-tooltip-inner a {
+.ant-tooltip.dynamic-form-tooltip .ant-tooltip-inner a {
     margin: 0 4px;
 }
