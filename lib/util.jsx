@@ -2,16 +2,26 @@ import React from 'react';
 import { Tooltip } from 'antd';
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import { omit, merge, cloneDeep, flatten } from 'lodash';
-import { isSomeFalsy, formatTime } from '@nbfe/tools';
+import { classNames, isSomeFalsy, formatTime } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
 import {
     componentName,
+    prefixClassName,
     defaultColumn,
     pickerFormatMap,
     formItemTooltopMargin,
     searchSeparator,
     inputTypeList
 } from './config';
+
+export const getClassNames = (...args) => {
+    return classNames(args)
+        .split(' ')
+        .map(v => {
+            return [prefixClassName, v].join('-');
+        })
+        .join(' ');
+};
 
 // 处理 props.columns
 export const mergeColumns = (columns = []) => {
@@ -253,7 +263,7 @@ export const renderFormItemLabel = (column, { labelWidth }) => {
         <div style={{ width: labelWidth || undefined }}>
             <span>{label}</span>
             {!!tooltip && (
-                <Tooltip title={getTooltipTitleNode(tooltip)} overlayClassName="dyna-search-tooltip">
+                <Tooltip title={getTooltipTitleNode(tooltip)} overlayClassName={getClassNames('tooltip')}>
                     <QuestionCircleOutlined style={{ marginLeft: formItemTooltopMargin }} />
                 </Tooltip>
             )}

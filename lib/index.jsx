@@ -5,8 +5,10 @@ import { debounce, isFunction, omit, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy, classNames } from '@nbfe/tools';
 import Switch from './Switch.jsx';
 import Input from './Input.jsx';
+import SelectPanel from './SelectPanel.jsx';
 import { componentName, defaulCardProps, defaulFormProps } from './config';
 import {
+    getClassNames,
     validateColumns,
     mergeColumns,
     getInitialValues,
@@ -211,15 +213,20 @@ class Index extends Component {
                 }
                 return (
                     <Form.Item
-                        className={classNames('dyna-search-form-item', {
-                            'dyna-search-form-item-hide-submit': !showSearch,
-                            'dyna-search-form-item-hide-reset': !showReset
+                        className={getClassNames('form-item', {
+                            'form-item-hide-submit': !showSearch,
+                            'form-item-hide-reset': !showReset
                         })}
                     >
-                        <Button type="primary" htmlType="submit" key="submit" className="dyna-search-form-item-submit">
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            key="submit"
+                            className={getClassNames('form-item-submit')}
+                        >
                             查询
                         </Button>
-                        <Button onClick={onReset} key="reset" className="dyna-search-form-item-reset">
+                        <Button onClick={onReset} key="reset" className={getClassNames('form-item-reset')}>
                             重置
                         </Button>
                     </Form.Item>
@@ -238,7 +245,7 @@ class Index extends Component {
         const cardProps = merge({}, props.cardProps, defaulCardProps);
         const formProps = merge({}, props.formProps, defaulFormProps);
         return (
-            <Card className="dyna-search-container" {...cardProps}>
+            <Card className={getClassNames('container')} {...cardProps}>
                 <Form
                     {...omit(formProps, ['ref', 'onFinish', 'initialValues'])}
                     ref={this.formRef}
@@ -248,6 +255,7 @@ class Index extends Component {
                     {renderResult.renderColumns()}
                     {renderResult.renderSearchReset()}
                 </Form>
+                <SelectPanel />
             </Card>
         );
     }

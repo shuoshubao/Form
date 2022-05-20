@@ -26,8 +26,8 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        const { state, onSelectChange, onInputChange } = this;
-        const { column, value, style } = this.props;
+        const { props, state, onSelectChange, onInputChange } = this;
+        const { column, value, style } = props;
         const { selectValue, inputValue } = state;
         const { name, defaultValue, inline, template } = column;
         const { inputType, options, selectWidth = 100, inputWidth = defaultColumn.template.width } = template;
@@ -57,38 +57,42 @@ class Index extends Component {
     };
 
     onSearch = () => {
-        if (!isFunction(this.props.onSearch)) {
+        const { props, state } = this;
+        const { onChange } = props;
+        if (!isFunction(onSearch)) {
             return;
         }
-        this.props.onSearch();
+        onSearch();
     };
 
     onChange = () => {
-        if (!isFunction(this.props.onChange)) {
+        const { props, state } = this;
+        const { onChange } = props;
+        if (!isFunction(onChange)) {
             return;
         }
-        const { column, value, style } = this.props;
-        const { selectValue, inputValue } = this.state;
+        const { column, value, style } = props;
+        const { selectValue, inputValue } = state;
         const { name, inline, template } = column;
         const { inputType } = template;
         if (['input', 'search'].includes(inputType)) {
-            this.props.onChange(inputValue);
+            onChange(inputValue);
             return;
         }
         if (['select-search', 'select-input'].includes(inputType)) {
             const [selectKey, inputKey] = name.split(searchSeparator);
-            this.props.onChange([selectValue, inputValue]);
+            onChange([selectValue, inputValue]);
             return;
         }
     };
 
     render() {
-        const { state, onSelectChange, onInputChange, onSearch } = this;
-        const { column, defaultValue, value, style } = this.props;
+        const { props, state, onSelectChange, onInputChange, onSearch } = this;
+        const { column, defaultValue, value, style } = props;
         const { selectValue, inputValue } = state;
         const { name, inline, template } = column;
         const { inputType, options, selectWidth = 100, inputWidth = defaultColumn.template.width } = template;
-        const inputProps = omit(this.props, ['column', 'defaultValue', 'value', 'onChange', 'onSearch', 'style']);
+        const inputProps = omit(props, ['column', 'defaultValue', 'value', 'onChange', 'onSearch', 'style']);
         if (inputType === 'search') {
             return (
                 <Input.Search
