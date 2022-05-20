@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cloneDeep, debounce, isFunction, omit, merge } from 'lodash';
 import { isEmptyArray, setAsyncState, isEveryFalsy, classNames } from '@nbfe/tools';
-import { Card, Button, Form, Select, DatePicker, Radio, Checkbox, Cascader, AutoComplete } from './antd';
+import { Card, Button, Form, Select, DatePicker, Radio, Checkbox, Cascader, AutoComplete, message } from './antd';
 import Switch from './Switch.jsx';
 import Input from './Input.jsx';
 import FilterPanel from './FilterPanel.jsx';
@@ -84,6 +84,35 @@ class Index extends Component {
         return isAntdV3 ? this.props.form : this.formRef.current;
     };
 
+    // 封装下 validateFields
+    validateFields = () => {
+        const formRefNode = this.getFormRefNode();
+        const { validateFields } = formRefNode;
+        return new Promise((reslove, reject) => {
+            if (isAntdV3) {
+                console.log(11);
+                validateFields((errors, values) => {
+                    if (errors) {
+                        reslove(null);
+                        message.error('表单项填写存在错误！请检查', 2);
+                    } else {
+                        reslove(values);
+                    }
+                });
+            } else {
+                console.log(22);
+                validateFields()
+                    .then(values => {
+                        reslove(values);
+                    })
+                    .catch(errors => {
+                        reslove(null);
+                        message.error('表单项填写存在错误！请检查', 2);
+                    });
+            }
+        });
+    };
+
     // 立即查询
     onImmediateSearch = column => {
         const { immediate, template } = column;
@@ -148,10 +177,11 @@ class Index extends Component {
     // Form.Item
     renderColumns = () => {
         const { props, state } = this;
+        const { children } = props;
         const { initialValues, columns, autoCompleteOptions } = state;
         const labelWidth = props.labelWidth || getFormItemLabelWidth(columns);
-        return columns.map((v, i) => {
-            const { label, name, inline, template } = v;
+        const columnsNode = columns.map((v, i) => {
+            const { label, name, inline, rules, template } = v;
             const { tpl } = template;
             const formItemNodeProps = getFormItemNodeProps(v);
             formItemNodeProps.onChange = () => {
@@ -239,7 +269,13 @@ class Index extends Component {
             if (isAntdV3) {
                 const { getFieldDecorator } = this.props.form;
                 return (
-                    <Form.Item label={labelNode} name={name} key={key} style={{ width: inline ? undefined : '100%' }}>
+                    <Form.Item
+                        label={labelNode}
+                        name={name}
+                        key={key}
+                        rules={rules}
+                        style={{ width: inline ? undefined : '100%' }}
+                    >
                         {getFieldDecorator(name, {
                             initialValue: initialValues[name]
                         })(formItemNode)}
@@ -247,11 +283,26 @@ class Index extends Component {
                 );
             }
             return (
-                <Form.Item label={labelNode} name={name} key={key} style={{ width: inline ? undefined : '100%' }}>
+                <Form.Item
+                    label={labelNode}
+                    name={name}
+                    key={key}
+                    rules={rules}
+                    style={{ width: inline ? undefined : '100%' }}
+                >
                     {formItemNode}
                 </Form.Item>
             );
         });
+        if (children) {
+            const childrenNode = (
+                <Form.Item label={<div style={{ width: labelWidth }}></div>} name={name} key="-1">
+                    {props.children}
+                </Form.Item>
+            );
+            columnsNode.push(childrenNode);
+        }
+        return columnsNode;
     };
 
     // 查询, 重置
@@ -298,8 +349,8 @@ class Index extends Component {
         if (isEmptyArray(columns)) {
             return null;
         }
-        const cardProps = merge({}, props.cardProps, defaulCardProps);
-        const formProps = merge({}, props.formProps, defaulFormProps);
+        const cardProps = merge({}, defaulCardProps, props.cardProps);
+        const formProps = merge({}, defaulFormProps, props.formProps);
         if (isAntdV3) {
             formProps.onSubmit = e => {
                 e.preventDefault();

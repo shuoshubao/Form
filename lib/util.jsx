@@ -277,7 +277,7 @@ export const renderFormItemLabel = (column, { labelWidth }) => {
         return null;
     }
     return (
-        <div style={{ width: labelWidth || undefined }}>
+        <div style={{ width: labelWidth || undefined }} className={getClassNames('form-item-label')}>
             <span>{label}</span>
             {!!tooltip && (
                 <Tooltip title={getTooltipTitleNode(tooltip)} overlayClassName={getClassNames('tooltip')}>

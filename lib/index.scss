@@ -5,6 +5,12 @@
         padding-top: 0px;
     }
 
+    .ant-form.ant-form-horizontal {
+        .ant-col.ant-form-item-label {
+            padding-right: 10px;
+        }
+    }
+
     .ant-form-item {
         margin-top: 10px;
         &.dyna-search-form-item {
@@ -23,9 +29,24 @@
             }
         }
     }
-    .ant-form-item-label > label::after {
-        display: none;
+
+    .ant-form-item-label > label {
+        &::after, &::before {
+            display: none !important;
+        }
+        &.ant-form-item-required {
+            .dyna-search-form-item-label::before {
+                display: inline-block;
+                margin-right: 4px;
+                color: #ff4d4f;
+                font-size: 14px;
+                font-family: SimSun, sans-serif;
+                line-height: 1;
+                content: '*';
+            }
+        }
     }
+
     .dyna-search-filter-panel {
         .dyna-search-filter-panel-tags {
             margin-top: -8px;
