@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@nbfe/react-color": "^0.1.2",
-    "@nbfe/tools": "^0.2.12"
+    "@nbfe/tools": "^0.2.15"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.13.9",
